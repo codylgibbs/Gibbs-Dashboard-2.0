@@ -44,31 +44,36 @@ export default function Calendar() {
   }
 
   const fetchIcs = async (url: string): Promise<string> => {
-    const fetchText = async (target: string) => {
-      const response = await fetch(target)
+    // Convert Google Calendar URL to use Vite proxy
+    const proxyUrl = url.replace('https://calendar.google.com/calendar', '/api/calendar')
+    
+    try {
+      const response = await fetch(proxyUrl)
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`)
       }
       return response.text()
-    }
-
-    try {
-      return await fetchText(url)
-    } catch (directError) {
+    } catch (error) {
+      console.error(`Failed to fetch calendar from ${url}:`, error)
+      // Try fallback proxies
       const proxies = [
         `https://corsproxy.io/?${encodeURIComponent(url)}`,
-        `https://cors.isomorphic-git.org/${url}`,
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`
       ]
 
       for (const proxy of proxies) {
         try {
-          return await fetchText(proxy)
+          const response = await fetch(proxy)
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`)
+          }
+          return response.text()
         } catch (proxyError) {
           console.warn(`Calendar proxy failed for ${url}:`, proxyError)
         }
       }
 
-      throw directError
+      throw error
     }
   }
 

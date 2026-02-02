@@ -5,6 +5,14 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '0.0.0.0',
-    port: 5173
+    port: 5173,
+    proxy: {
+      '/api/calendar': {
+        target: 'https://calendar.google.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/calendar/, '/calendar'),
+        secure: false
+      }
+    }
   }
 })
