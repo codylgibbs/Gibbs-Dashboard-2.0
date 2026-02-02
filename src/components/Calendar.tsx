@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import '../styles/Calendar.css'
 
 interface CalendarEvent {
@@ -18,7 +17,7 @@ interface ParsedEvent {
   end: Date
 }
 
-const COLORS = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F']
+const DEFAULT_COLORS = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F']
 
 export default function Calendar() {
   const [events, setEvents] = useState<CalendarEvent[]>([])
@@ -26,21 +25,69 @@ export default function Calendar() {
   const [daysInMonth, setDaysInMonth] = useState<number[]>([])
   const [firstDayOffset, setFirstDayOffset] = useState(0)
 
+  const getCalendarColors = (count: number): string[] => {
+    const colors: string[] = []
+    for (let i = 1; i <= count; i++) {
+      const raw = import.meta.env?.[`VITE_Calendar_color_${i}` as keyof ImportMetaEnv] as
+        | string
+        | undefined
+      if (raw && raw.trim().length > 0) {
+        colors.push(raw.trim().replace(/^['"]|['"]$/g, ''))
+      }
+    }
+
+    if (colors.length === 0) {
+      return DEFAULT_COLORS
+    }
+
+    return colors
+  }
+
+  const fetchIcs = async (url: string): Promise<string> => {
+    const fetchText = async (target: string) => {
+      const response = await fetch(target)
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`)
+      }
+      return response.text()
+    }
+
+    try {
+      return await fetchText(url)
+    } catch (directError) {
+      const proxies = [
+        `https://corsproxy.io/?${encodeURIComponent(url)}`,
+        `https://cors.isomorphic-git.org/${url}`,
+      ]
+
+      for (const proxy of proxies) {
+        try {
+          return await fetchText(proxy)
+        } catch (proxyError) {
+          console.warn(`Calendar proxy failed for ${url}:`, proxyError)
+        }
+      }
+
+      throw directError
+    }
+  }
+
   useEffect(() => {
     const fetchCalendars = async () => {
-      const calendarUrlsStr = import.meta.env.VITE_CALENDAR_URLS
+      const calendarUrlsStr = import.meta.env?.VITE_CALENDAR_URLS as string | undefined
       if (!calendarUrlsStr) {
         console.warn('No calendar URLs configured in VITE_CALENDAR_URLS')
         return
       }
 
       const urls = calendarUrlsStr.split(',').map(u => u.trim())
+      const calendarColors = getCalendarColors(urls.length)
       const allEvents: CalendarEvent[] = []
 
       for (let i = 0; i < urls.length; i++) {
         try {
-          const response = await axios.get(urls[i])
-          const parsed = parseICS(response.data)
+          const data = await fetchIcs(urls[i])
+          const parsed = parseICS(data)
           
           parsed.forEach((event: ParsedEvent) => {
             const startDate = new Date(event.start)
@@ -55,7 +102,7 @@ export default function Calendar() {
               title: event.title,
               start: startDate,
               end: endDate,
-              color: COLORS[i % COLORS.length],
+              color: calendarColors[i % calendarColors.length],
               calendarIndex: i,
               daysSpanned,
             })
