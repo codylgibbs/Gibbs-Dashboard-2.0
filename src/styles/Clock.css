@@ -1,0 +1,25 @@
+.clock {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.time-display {
+  font-size: 4.6rem;
+  font-weight: bold;
+  color: #fff;
+  letter-spacing: 1px;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 1024px) {
+  .time-display {
+    font-size: 3.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .time-display {
+    font-size: 2.4rem;
+  }
+}
