@@ -78,7 +78,7 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
   padding: 10px;
-  display: flex;
+  display: flex
   flex-direction: column;
   min-height: 110px;
   position: relative;
@@ -96,7 +96,7 @@
 }
 
 .day-number {
-  font-size: 0.75rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #e0e6ee;
   margin-bottom: 6px;
@@ -115,7 +115,7 @@
 }
 
 .event-bar {
-  background: linear-gradient(90deg, #FF6B6B, #FF8787);
+  /* background is set inline via style prop based on calendar color from .env.local */
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 0.7rem;
