@@ -24,7 +24,7 @@ interface ParsedEvent {
 const DEFAULT_COLORS = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F']
 
 type ViewMode = 'monthly' | 'weekly' | 'daily'
-type Theme = 'dark' | 'light'
+type Theme = 'dark' | 'light' | 'auto'
 
 interface CalendarProps {
   theme: Theme
@@ -731,20 +731,28 @@ export default function Calendar({ theme, onThemeChange }: CalendarProps) {
   const year = currentDate.getFullYear()
   const lastDayOfMonth = new Date(year, currentDate.getMonth() + 1, 0).getDate()
   
-  // Generate title label based on view mode (without date ranges)
+  // Generate title label based on view mode
   let titleLabel = ''
   if (viewMode === 'monthly') {
-    titleLabel = `${currentDate.toLocaleString('en-US', { month: 'long' })} ${year}`
+    titleLabel = `${monthShort} 1 - ${monthShort} ${lastDayOfMonth}, ${year}`
   } else if (viewMode === 'weekly') {
     const dayOfWeek = currentDate.getDay()
     const weekStart = new Date(currentDate)
     weekStart.setDate(currentDate.getDate() - dayOfWeek)
+    const weekEnd = new Date(weekStart)
+    weekEnd.setDate(weekStart.getDate() + 6)
     
-    const startMonth = weekStart.toLocaleString('en-US', { month: 'long' })
-    titleLabel = `${startMonth} ${weekStart.getFullYear()}`
+    const startMonth = weekStart.toLocaleString('en-US', { month: 'short' })
+    const endMonth = weekEnd.toLocaleString('en-US', { month: 'short' })
+    
+    if (startMonth === endMonth) {
+      titleLabel = `${startMonth} ${weekStart.getDate()} - ${weekEnd.getDate()}, ${weekStart.getFullYear()}`
+    } else {
+      titleLabel = `${startMonth} ${weekStart.getDate()} - ${endMonth} ${weekEnd.getDate()}, ${weekStart.getFullYear()}`
+    }
   } else {
     // daily view
-    titleLabel = currentDate.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+    titleLabel = currentDate.toLocaleString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
   }
   
   const monthStart = new Date(year, currentDate.getMonth(), 1)
@@ -1061,38 +1069,17 @@ export default function Calendar({ theme, onThemeChange }: CalendarProps) {
   return (
     <div className="calendar">
       <div className="calendar-toolbar">
-        <div className="calendar-title-row">
-          <h2 className="calendar-title">{titleLabel}</h2>
-          <div className="calendar-nav-compact">
-            <button 
-              className="calendar-btn icon" 
-              onClick={goToPrev} 
-              aria-label={`Previous ${viewMode === 'monthly' ? 'month' : viewMode === 'weekly' ? 'week' : 'day'}`}
-            >
-              ‹
-            </button>
-            <button className="calendar-btn compact" onClick={goToToday} aria-label="Go to today">
-              Today
-            </button>
-            <button 
-              className="calendar-btn icon" 
-              onClick={goToNext} 
-              aria-label={`Next ${viewMode === 'monthly' ? 'month' : viewMode === 'weekly' ? 'week' : 'day'}`}
-            >
-              ›
-            </button>
-            <button
-              className="calendar-btn icon"
-              aria-label="Settings"
-              aria-pressed={settingsOpen}
-              onClick={() => setSettingsOpen((open) => !open)}
-              ref={settingsButtonRef}
-            >
-              ⚙︎
-            </button>
-          </div>
-        </div>
+        {viewMode !== 'monthly' && <h2 className="calendar-title">{titleLabel}</h2>}
         <div className="calendar-controls">
+          <button
+            className="calendar-btn icon"
+            aria-label="Settings"
+            aria-pressed={settingsOpen}
+            onClick={() => setSettingsOpen((open) => !open)}
+            ref={settingsButtonRef}
+          >
+            ⚙︎
+          </button>
           {settingsOpen && (
             <div
               className="calendar-settings"
@@ -1100,6 +1087,39 @@ export default function Calendar({ theme, onThemeChange }: CalendarProps) {
               aria-label="Calendar settings"
               ref={settingsRef}
             >
+              <div className="settings-title">Navigate</div>
+              <div className="settings-nav-buttons">
+                <button 
+                  className="calendar-btn nav" 
+                  onClick={() => {
+                    goToPrev()
+                    setSettingsOpen(false)
+                  }} 
+                  aria-label={`Previous ${viewMode === 'monthly' ? 'month' : viewMode === 'weekly' ? 'week' : 'day'}`}
+                >
+                  ← Prev
+                </button>
+                <button 
+                  className="calendar-btn nav" 
+                  onClick={() => {
+                    goToToday()
+                    setSettingsOpen(false)
+                  }} 
+                  aria-label="Go to today"
+                >
+                  Today
+                </button>
+                <button 
+                  className="calendar-btn nav" 
+                  onClick={() => {
+                    goToNext()
+                    setSettingsOpen(false)
+                  }} 
+                  aria-label={`Next ${viewMode === 'monthly' ? 'month' : viewMode === 'weekly' ? 'week' : 'day'}`}
+                >
+                  Next →
+                </button>
+              </div>
               <div className="settings-title">View</div>
               <div className="settings-view-modes">
                 <button
@@ -1176,6 +1196,13 @@ export default function Calendar({ theme, onThemeChange }: CalendarProps) {
                   aria-pressed={theme === 'light'}
                 >
                   Light
+                </button>
+                <button
+                  className={`view-mode-btn ${theme === 'auto' ? 'active' : ''}`}
+                  onClick={() => toggleTheme('auto')}
+                  aria-pressed={theme === 'auto'}
+                >
+                  Auto
                 </button>
               </div>
             </div>

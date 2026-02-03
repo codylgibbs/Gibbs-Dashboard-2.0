@@ -2,19 +2,98 @@
   --alert-height: clamp(56px, 6vh, 80px);
 }
 
-.alert-banner {
+.alert-settings-btn {
   position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: var(--alert-height);
+  bottom: clamp(12px, 1.5vh, 20px);
+  right: clamp(12px, 1.5vw, 20px);
+  z-index: 49;
+  width: clamp(40px, 5vw, 56px);
+  height: clamp(40px, 5vw, 56px);
+  border-radius: 50%;
+  border: none;
+  background: rgba(100, 100, 100, 0.7);
+  color: #fff;
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: clamp(10px, 1.6vw, 20px);
-  padding: 0 clamp(16px, 2.4vw, 32px);
-  z-index: 50;
-  border-top: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  transition: background 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.alert-settings-btn:hover {
+  background: rgba(100, 100, 100, 0.9);
+}
+
+.alert-settings-panel {
+  position: fixed;
+  bottom: clamp(70px, 9vh, 100px);
+  right: clamp(12px, 1.5vw, 20px);
+  z-index: 49;
+  background: rgba(40, 40, 40, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: clamp(8px, 1vh, 12px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+}
+
+.settings-menu-item {
+  background: #4a5568;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  padding: clamp(6px, 0.8vh, 10px) clamp(12px, 1.6vw, 16px);
+  font-size: clamp(0.75rem, 0.9vw, 1rem);
+  cursor: pointer;
+  transition: background 0.2s ease;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.settings-menu-item:hover {
+  background: #5a6578;
+}
+
+.settings-menu-item.active {
+  background: #48bb78;
+}
+
+.settings-menu-item.active:hover {
+  background: #38a169;
+}
+
+.app-container.theme-light .alert-settings-btn {
+  background: rgba(180, 180, 180, 0.7);
+}
+
+.app-container.theme-light .alert-settings-btn:hover {
+  background: rgba(180, 180, 180, 0.9);
+}
+
+.app-container.theme-light .alert-settings-panel {
+  background: rgba(240, 240, 240, 0.95);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.app-container.theme-light .settings-menu-item {
+  background: #cbd5e0;
+  color: #1a202c;
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.app-container.theme-light .settings-menu-item:hover {
+  background: #b8c6db;
+}
+
+.app-container.theme-light .settings-menu-item.active {
+  background: #9ae6b4;
+  color: #1a202c;
+}
+
+.app-container.theme-light .settings-menu-item.active:hover {
+  background: #68d391;
 }
 
 .alert-banner.active {

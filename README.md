@@ -16,6 +16,11 @@ A full-screen, TV-friendly dashboard displaying the current time (EST), a multi-
   - 5-day forecast with high/low temps
   - Weather icons and conditions
   - Humidity and wind speed display
+- **Emergency Alerts**:
+  - Auto-fetches from National Weather Service (NWS) for location
+  - Support for custom local alert feeds via JSON
+  - Scrolling marquee display with severity-based styling
+  - Manual test alert toggle in development mode
 - **TV-Optimized UI**:
   - Full-screen, dark theme with large readable fonts
   - Responsive grid layout (2-column on desktop, 1-column on smaller screens)
@@ -42,6 +47,7 @@ Edit `.env.local`:
 ```
 VITE_OPENWEATHER_API_KEY=your_api_key_here
 VITE_CALENDAR_URLS=https://example.com/calendar1.ics,https://example.com/calendar2.ics
+VITE_ALERT_FEED_URL=https://example.com/alerts.json
 ```
 
 **Get an OpenWeatherMap API Key:**
@@ -53,6 +59,23 @@ VITE_CALENDAR_URLS=https://example.com/calendar1.ics,https://example.com/calenda
 - Export your calendars as `.ics` files from Google Calendar, Outlook, etc.
 - Host them on a web server or use public calendar sharing links
 - Comma-separate multiple URLs in `VITE_CALENDAR_URLS`
+
+**Configure Emergency Alerts (Optional):**
+- **Automatic**: Dashboard fetches active alerts from National Weather Service (NWS) for Winterville, GA
+- **Custom Feed**: Set `VITE_ALERT_FEED_URL` to a JSON endpoint. Expected format:
+  ```json
+  [
+    {
+      "id": "unique-id",
+      "headline": "Alert text",
+      "event": "Alert type",
+      "severity": "extreme|severe|moderate|minor",
+      "urgency": "Expected|Likely|...",
+      "area": "Location name"
+    }
+  ]
+  ```
+- **Test Mode**: In development, click the ⚙️ button (bottom-right) to toggle test alerts
 
 ### 3. Run Development Server
 
