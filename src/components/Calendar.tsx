@@ -148,11 +148,30 @@ export default function Calendar() {
 
       for (let i = 0; i < urls.length; i++) {
         try {
+          const calendarName = getCalendarName(i + 1)
           const data = await fetchIcs(urls[i])
           const parsed = parseICS(data)
           
+          // Debug: Log Family calendar parsing
+          if (calendarName === 'Family') {
+            console.log(`[Family Calendar] Fetched and parsed ${parsed.length} events`)
+            console.log(`[Family Calendar] Date range: ${rangeStart.toDateString()} to ${rangeEnd.toDateString()}`)
+          }
+          
           parsed.forEach((event: ParsedEvent) => {
             const occurrences = expandRecurringEvent(event, rangeStart, rangeEnd)
+            
+            // Debug: Log Family calendar expansions
+            if (calendarName === 'Family' && event.title) {
+              if (occurrences.length > 0) {
+                console.log(`[Family Calendar] "${event.title}" expanded to ${occurrences.length} occurrence(s)`)
+                occurrences.forEach(occ => {
+                  console.log(`  - ${occ.start.toDateString()}`)
+                })
+              } else if (event.rrule || (event.start.getMonth() === currentDate.getMonth() && event.start.getFullYear() === currentDate.getFullYear())) {
+                console.log(`[Family Calendar] "${event.title}" (${event.start.toDateString()}) - NO occurrences in range`)
+              }
+            }
 
             occurrences.forEach(occurrence => {
               const startDate = new Date(occurrence.start)
@@ -444,6 +463,75 @@ export default function Calendar() {
       return occurrences
     }
 
+    if (rule.freq === 'YEARLY') {
+      const startYear = event.start.getFullYear()
+      const rangeStartYear = rangeStart.getFullYear()
+      const rangeEndYear = rangeEnd.getFullYear()
+      let count = 0
+
+      for (let year = rangeStartYear; year <= rangeEndYear; year++) {
+        if ((year - startYear) % interval !== 0) continue
+
+        let occDate: Date | null = null
+
+        if (rule.byday && rule.byday.length > 0 && rule.bymonth) {
+          // Handle BYDAY with BYMONTH (e.g., 2nd Sunday of November)
+          for (const entry of rule.byday) {
+            const parsed = parseByDayEntry(entry)
+            if (!parsed) continue
+            const month = rule.bymonth[0] - 1 // Convert to 0-indexed
+            occDate = getNthWeekdayOfMonth(year, month, weekdayToIndex(parsed.day), parsed.ordinal)
+            if (!occDate) continue
+            occDate.setHours(
+              event.start.getHours(),
+              event.start.getMinutes(),
+              event.start.getSeconds(),
+              event.start.getMilliseconds()
+            )
+
+            if (occDate < event.start) continue
+            if (until && occDate > until) continue
+            if (occDate >= rangeStart && occDate < rangeEnd) {
+              occurrences.push({
+                title: event.title,
+                start: new Date(occDate),
+                end: new Date(occDate.getTime() + durationMs),
+                location: event.location,
+              })
+              count += 1
+              if (rule.count && count >= rule.count) return occurrences
+            }
+          }
+        } else {
+          // Simple yearly: same month and day
+          occDate = new Date(
+            year,
+            event.start.getMonth(),
+            event.start.getDate(),
+            event.start.getHours(),
+            event.start.getMinutes(),
+            event.start.getSeconds(),
+            event.start.getMilliseconds()
+          )
+
+          if (occDate < event.start) continue
+          if (until && occDate > until) continue
+          if (occDate >= rangeStart && occDate < rangeEnd) {
+            occurrences.push({
+              title: event.title,
+              start: new Date(occDate),
+              end: new Date(occDate.getTime() + durationMs),
+              location: event.location,
+            })
+            count += 1
+            if (rule.count && count >= rule.count) return occurrences
+          }
+        }
+      }
+
+      return occurrences
+    }
+
     return eventInRange(event, rangeStart, rangeEnd) ? [event] : []
   }
 
@@ -453,7 +541,7 @@ export default function Calendar() {
 
   const parseRRule = (rrule: string) => {
     const parts = rrule.split(';')
-    const data: { freq?: string; interval?: number; until?: Date; count?: number; byday?: string[] } = {}
+    const data: { freq?: string; interval?: number; until?: Date; count?: number; byday?: string[]; bymonth?: number[] } = {}
 
     parts.forEach(part => {
       const [key, value] = part.split('=')
@@ -463,6 +551,7 @@ export default function Calendar() {
       if (key === 'COUNT') data.count = Number(value)
       if (key === 'UNTIL') data.until = parseICSDate(value)
       if (key === 'BYDAY') data.byday = value.split(',')
+      if (key === 'BYMONTH') data.bymonth = value.split(',').map(m => Number(m))
     })
 
     return data
@@ -564,6 +653,12 @@ export default function Calendar() {
       if (hiddenCalendars.includes(event.calendarIndex)) {
         return false
       }
+      
+      // Skip all-day events (they're shown as spanning bars)
+      if (isAllDayEvent(event)) {
+        return false
+      }
+      
       const eventStart = new Date(event.start)
       const eventEnd = new Date(event.end)
       eventStart.setHours(0, 0, 0, 0)
@@ -639,6 +734,19 @@ export default function Calendar() {
     return adjusted
   }
 
+  // Helper to check if event is all-day
+  const isAllDayEvent = (event: CalendarEvent): boolean => {
+    const start = event.start
+    const end = event.end
+    return (
+      start.getHours() === 0 &&
+      start.getMinutes() === 0 &&
+      end.getHours() === 0 &&
+      end.getMinutes() === 0 &&
+      event.daysSpanned >= 1
+    )
+  }
+
   const formatEventTime = (event: CalendarEvent): string => {
     const start = event.start
     const end = event.end
@@ -685,7 +793,8 @@ export default function Calendar() {
       const eventEnd = getAdjustedEndDate(event.end)
       const sameDay = eventStart.toDateString() === eventEnd.toDateString()
 
-      if (sameDay && event.daysSpanned <= 1) return
+      // Include multi-day events or all-day events (even if single-day)
+      if (sameDay && event.daysSpanned <= 1 && !isAllDayEvent(event)) return
 
       if (eventEnd < monthStart || eventStart > monthEnd) return
 
@@ -808,19 +917,6 @@ export default function Calendar() {
   // Helper to get hour slots for timeline view (00:00 to 23:00)
   const getHourSlots = () => {
     return Array.from({ length: 24 }, (_, i) => i)
-  }
-
-  // Helper to check if event is all-day
-  const isAllDayEvent = (event: CalendarEvent): boolean => {
-    const start = event.start
-    const end = event.end
-    return (
-      start.getHours() === 0 &&
-      start.getMinutes() === 0 &&
-      end.getHours() === 0 &&
-      end.getMinutes() === 0 &&
-      event.daysSpanned >= 1
-    )
   }
 
   // Helper to get event position and height in timeline

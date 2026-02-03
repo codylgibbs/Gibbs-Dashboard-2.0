@@ -17,7 +17,7 @@
 }
 
 .calendar-title {
-  font-size: clamp(1.1rem, 1.5vw, 1.8rem);
+  font-size: clamp(0.95rem, 1.3vw, 1.55rem);
   font-weight: 600;
   color: #f1f3f6;
   margin: 0;
@@ -45,7 +45,7 @@
 }
 
 .settings-title {
-  font-size: 0.832rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: #e6edf3;
   text-transform: uppercase;
@@ -71,7 +71,7 @@
   color: #9aa4b2;
   padding: 8px 12px;
   border-radius: 6px;
-  font-size: 0.832rem;
+  font-size: 0.72rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
@@ -99,7 +99,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.884rem;
+  font-size: 0.75rem;
   color: #e3e7ee;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -128,7 +128,7 @@
 }
 
 .settings-empty {
-  font-size: 0.832rem;
+  font-size: 0.72rem;
   color: #9aa4b2;
 }
 
@@ -138,7 +138,7 @@
   color: #e9f2ff;
   padding: 6px 12px;
   border-radius: 4px;
-  font-size: 0.78rem;
+  font-size: 0.66rem;
   font-weight: 600;
   letter-spacing: 0.3px;
   cursor: pointer;
@@ -178,7 +178,7 @@
   text-align: center;
   font-weight: 700;
   color: #8b95a5;
-  font-size: clamp(0.65rem, 0.9vw, 1rem);
+  font-size: clamp(0.55rem, 0.75vw, 0.85rem);
   padding: clamp(6px, 1vh, 12px) 0 clamp(5px, 0.8vh, 10px);
   text-transform: uppercase;
   letter-spacing: clamp(0.8px, 0.1vw, 1.4px);
@@ -253,7 +253,7 @@
   margin-bottom: clamp(4px, 0.6vh, 8px);
   text-transform: uppercase;
   letter-spacing: 0.6px;
-  font-size: clamp(0.55rem, 0.7vw, 0.75rem);
+  font-size: clamp(0.47rem, 0.6vw, 0.65rem);
   color: #9aa4b2;
 }
 
@@ -269,7 +269,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  font-size: clamp(0.8rem, 1vw, 1.1rem);
+  font-size: clamp(0.68rem, 0.85vw, 0.9rem);
   font-weight: 600;
   color: #e6edf3;
 }
@@ -311,7 +311,7 @@
   grid-template-columns: 10px auto 1fr;
   align-items: center;
   gap: clamp(4px, 0.6vw, 8px);
-  font-size: clamp(0.65rem, 0.82vw, 0.95rem);
+  font-size: clamp(0.55rem, 0.7vw, 0.8rem);
   color: #cfd6e0;
   white-space: nowrap;
   overflow: hidden;
@@ -328,7 +328,7 @@
 .event-time {
   color: #9aa4b2;
   font-weight: 600;
-  font-size: clamp(0.6rem, 0.75vw, 0.85rem);
+  font-size: clamp(0.51rem, 0.62vw, 0.68rem);
 }
 
 .event-title {
@@ -337,7 +337,7 @@
 }
 
 .event-overflow {
-  font-size: clamp(0.6rem, 0.73vw, 0.8rem);
+  font-size: clamp(0.51rem, 0.62vw, 0.68rem);
   color: #8b95a5;
   margin-top: 2px;
   font-weight: 600;
@@ -436,7 +436,7 @@
 }
 
 .timeline-day-name {
-  font-size: 0.85rem;
+  font-size: 0.72rem;
   font-weight: 600;
   color: #9aa4b2;
   text-transform: uppercase;
@@ -444,7 +444,7 @@
 }
 
 .timeline-day-num {
-  font-size: 0.85rem;
+  font-size: 0.72rem;
   font-weight: 600;
   color: #e6edf3;
 }
@@ -471,7 +471,7 @@
   display: flex;
   align-items: flex-start;
   padding: 8px 8px 0 0;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   color: #8b95a5;
   text-align: right;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -483,7 +483,7 @@
   align-items: flex-start;
   justify-content: flex-end;
   padding: 4px 8px 0 0;
-  font-size: 0.75rem;
+  font-size: 0.64rem;
   color: #8b95a5;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -513,7 +513,7 @@
 .timeline-all-day-event {
   padding: 4px 8px;
   border-radius: 4px;
-  font-size: 0.75rem;
+  font-size: 0.64rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.95);
   white-space: nowrap;
@@ -562,7 +562,7 @@
   position: absolute;
   padding: 4px 8px;
   border-radius: 4px;
-  font-size: 0.75rem;
+  font-size: 0.64rem;
   color: rgba(255, 255, 255, 0.95);
   overflow: hidden;
   border-left: 3px solid rgba(255, 255, 255, 0.3);
@@ -580,7 +580,7 @@
 
 .timeline-event-time {
   font-weight: 700;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   margin-bottom: 2px;
   opacity: 0.95;
 }
