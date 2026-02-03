@@ -916,6 +916,8 @@ export default function Calendar({ theme, onThemeChange }: CalendarProps) {
   const getEventsForDate = (date: Date): CalendarEvent[] => {
     const targetDate = new Date(date)
     targetDate.setHours(0, 0, 0, 0)
+    const nextDay = new Date(targetDate)
+    nextDay.setDate(nextDay.getDate() + 1)
 
     return events.filter(event => {
       if (hiddenCalendars.includes(event.calendarIndex)) {
@@ -923,13 +925,10 @@ export default function Calendar({ theme, onThemeChange }: CalendarProps) {
       }
       const eventStart = new Date(event.start)
       const eventEnd = new Date(event.end)
-      eventStart.setHours(0, 0, 0, 0)
-      eventEnd.setHours(0, 0, 0, 0)
       
-      if (eventEnd.getTime() === eventStart.getTime()) {
-        return targetDate.getTime() === eventStart.getTime()
-      }
-      return targetDate >= eventStart && targetDate < eventEnd
+      // Check if event overlaps with this day at all
+      // Event overlaps if it starts before the end of this day AND ends after the start of this day
+      return eventStart < nextDay && eventEnd > targetDate
     }).sort((a, b) => a.start.getTime() - b.start.getTime())
   }
 
@@ -946,6 +945,12 @@ export default function Calendar({ theme, onThemeChange }: CalendarProps) {
   // Helper to get hour slots for timeline view (00:00 to 23:00)
   const getHourSlots = () => {
     return Array.from({ length: 24 }, (_, i) => i)
+  }
+
+  const formatHourLabel = (hour: number): string => {
+    const period = hour >= 12 ? 'PM' : 'AM'
+    const hour12 = hour % 12 === 0 ? 12 : hour % 12
+    return `${hour12} ${period}`
   }
 
   // Helper to get event position and height in timeline
@@ -1027,7 +1032,7 @@ export default function Calendar({ theme, onThemeChange }: CalendarProps) {
   const getCurrentTimePosition = (): number => {
     const now = new Date()
     const minutes = now.getHours() * 60 + now.getMinutes()
-    return (minutes / 60) * 60 // 60px per hour
+    return (minutes / 60) * 60 + 60 // 60px per hour + all-day row height
   }
 
   return (
@@ -1224,7 +1229,7 @@ export default function Calendar({ theme, onThemeChange }: CalendarProps) {
               <div className="timeline-all-day-label">all-day</div>
               {getHourSlots().map(hour => (
                 <div key={hour} className="timeline-hour-label">
-                  {hour.toString().padStart(2, '0')}:00
+                  {formatHourLabel(hour)}
                 </div>
               ))}
             </div>
