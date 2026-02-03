@@ -10,4 +10,4 @@ fi
 LOCAL_FILE="$1"
 DROPBOX_PATH="$2"
 
-dropbox_uploader upload "$LOCAL_FILE" "$DROPBOX_PATH"
+./Dropbox-Uploader/dropbox_uploader.sh upload "$LOCAL_FILE" "$DROPBOX_PATH"
