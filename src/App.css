@@ -9,6 +9,10 @@
   gap: clamp(10px, 1.2vw, 20px);
 }
 
+.app-container.theme-light {
+  background: radial-gradient(circle at top, #f5f7fa 0%, #eaeef2 55%, #e0e6eb 100%);
+}
+
 .app-container.has-alerts {
   padding-bottom: clamp(70px, 8vh, 110px);
 }
@@ -19,6 +23,10 @@
   justify-content: space-between;
   padding: clamp(6px, 0.8vh, 12px) clamp(4px, 0.6vw, 10px) clamp(10px, 1.2vh, 18px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.app-container.theme-light .top-bar {
+  border-bottom-color: rgba(0, 0, 0, 0.08);
 }
 
 .top-left {
@@ -80,11 +88,22 @@
   background: #1a1a1a;
 }
 
+.app-container.theme-light ::-webkit-scrollbar-track {
+  background: #e0e6eb;
+}
+
 ::-webkit-scrollbar-thumb {
   background: #444;
   border-radius: 6px;
 }
 
+.app-container.theme-light ::-webkit-scrollbar-thumb {
+  background: #b0b8c4;
+}
+
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.app-container.theme-light ::-webkit-scrollbar-thumb:hover {
+  background: #9aa5b8;

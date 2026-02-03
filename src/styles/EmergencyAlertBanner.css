@@ -107,3 +107,53 @@
     padding: 0 8px;
   }
 }
+/* Light Theme Overrides */
+.app-container.theme-light .alert-banner {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.app-container.theme-light .alert-banner.active {
+  background: linear-gradient(90deg, #fee2e2 0%, #fecaca 45%, #fee2e2 100%);
+}
+
+.app-container.theme-light .alert-banner.inactive {
+  background: linear-gradient(90deg, #f5f7fa 0%, #eaeef2 60%, #f5f7fa 100%);
+}
+
+.app-container.theme-light .alert-label {
+  color: #1a202c;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.app-container.theme-light .alert-content {
+  color: #2d3748;
+}
+
+.app-container.theme-light .alert-status {
+  color: #374151;
+}
+
+.app-container.theme-light .alert-status.error {
+  color: #dc2626;
+}
+
+.app-container.theme-light .alert-item {
+  color: #1a202c;
+}
+
+.app-container.theme-light .severity-extreme {
+  color: #991b1b;
+}
+
+.app-container.theme-light .severity-severe {
+  color: #92400e;
+}
+
+.app-container.theme-light .severity-moderate {
+  color: #78350f;
+}
+
+.app-container.theme-light .severity-minor {
+  color: #0c4a6e;
+}

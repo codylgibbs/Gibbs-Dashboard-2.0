@@ -246,15 +246,18 @@
 }
 
 .day-number {
+  position: absolute;
+  top: 6px;
+  left: 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  margin-bottom: clamp(4px, 0.6vh, 8px);
   text-transform: uppercase;
   letter-spacing: 0.6px;
   font-size: clamp(0.47rem, 0.6vw, 0.65rem);
   color: #9aa4b2;
+  z-index: 3;
 }
 
 .day-month {
@@ -284,27 +287,17 @@
   flex-direction: column;
   gap: 6px;
   flex: 1;
-  overflow: hidden;
+  overflow-y: auto;
   margin-top: 1px;
   position: relative;
+  padding-left: 32px;
 }
 
 .day-events.scrollable {
-  animation: scroll-events 20s linear infinite;
+  /* Manual scrolling enabled via overflow-y: auto */
 }
 
-@keyframes scroll-events {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(calc(-100% + 100px));
-  }
-}
 
-.day-events.scrollable:hover {
-  animation-play-state: paused;
-}
 
 .event-row {
   display: grid;
@@ -719,4 +712,174 @@
   padding: clamp(30px, 4vh, 50px);
   color: #8b95a5;
   font-size: clamp(0.9rem, 1.05vw, 1.2rem);
+}
+/* Light Theme Overrides */
+.app-container.theme-light .calendar {
+  background: #ffffff;
+  border: none;
+}
+
+.app-container.theme-light .calendar-title {
+  color: #1a202c;
+}
+
+.app-container.theme-light .calendar-settings {
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.app-container.theme-light .settings-title {
+  color: #1a202c;
+}
+
+.app-container.theme-light .settings-view-modes {
+  margin-bottom: 12px;
+}
+
+.app-container.theme-light .view-mode-btn {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #4a5568;
+}
+
+.app-container.theme-light .view-mode-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.15);
+  color: #1a202c;
+}
+
+.app-container.theme-light .view-mode-btn.active {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.5);
+  color: #1e40af;
+}
+
+.app-container.theme-light .settings-row {
+  color: #2d3748;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.app-container.theme-light .settings-row.is-hidden {
+  opacity: 0.6;
+}
+
+.app-container.theme-light .settings-empty {
+  color: #718096;
+}
+
+.app-container.theme-light .calendar-btn {
+  background: rgba(59, 130, 246, 0.2);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  color: #1e40af;
+}
+
+.app-container.theme-light .calendar-btn:hover {
+  background: rgba(59, 130, 246, 0.3);
+}
+
+.app-container.theme-light .calendar-grid {
+  background: transparent;
+}
+
+.app-container.theme-light .calendar-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.app-container.theme-light .calendar-header-cell {
+  color: #4a5568;
+}
+
+.app-container.theme-light .calendar-day {
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  color: #1a202c;
+}
+
+.app-container.theme-light .calendar-day.other-month {
+  color: #a0aec0;
+}
+
+.app-container.theme-light .calendar-day.today {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.app-container.theme-light .calendar-event {
+  background: rgba(59, 130, 246, 0.3);
+  color: #1e40af;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+.app-container.theme-light .calendar-event:hover {
+  background: rgba(59, 130, 246, 0.4);
+}
+
+.app-container.theme-light .calendar-event-overflow {
+  color: #4a5568;
+}
+
+.app-container.theme-light .calendar-week {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.app-container.theme-light .calendar-week-day {
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+  color: #1a202c;
+  background: transparent;
+}
+
+.app-container.theme-light .calendar-week-day.other-month {
+  background: rgba(0, 0, 0, 0.02);
+  color: #a0aec0;
+}
+
+.app-container.theme-light .calendar-week-day.today {
+  background: rgba(59, 130, 246, 0.15);
+}
+
+.app-container.theme-light .calendar-week-day-header {
+  color: #4a5568;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.app-container.theme-light .calendar-week-day-header-date {
+  color: #1a202c;
+}
+
+.app-container.theme-light .calendar-event-label {
+  background: rgba(59, 130, 246, 0.3);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  color: #1e40af;
+}
+
+.app-container.theme-light .calendar-daily-date {
+  color: #1a202c;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.app-container.theme-light .daily-events-list {
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.app-container.theme-light .daily-event {
+  border-left: 3px solid #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+  color: #1a202c;
+}
+
+.app-container.theme-light .daily-event-title {
+  color: #1a202c;
+}
+
+.app-container.theme-light .daily-event-time {
+  color: #718096;
+}
+
+.app-container.theme-light .daily-event-location {
+  color: #4a5568;
+}
+
+.app-container.theme-light .daily-no-events {
+  color: #a0aec0;
 }

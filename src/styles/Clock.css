@@ -17,3 +17,7 @@
     font-size: clamp(1.8rem, 8vw, 2.5rem);
   }
 }
+/* Light Theme Overrides */
+.app-container.theme-light .time-display {
+  color: #1a202c;
+}

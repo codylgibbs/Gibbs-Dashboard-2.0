@@ -24,8 +24,14 @@ interface ParsedEvent {
 const DEFAULT_COLORS = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F']
 
 type ViewMode = 'monthly' | 'weekly' | 'daily'
+type Theme = 'dark' | 'light'
 
-export default function Calendar() {
+interface CalendarProps {
+  theme: Theme
+  onThemeChange: (theme: Theme) => void
+}
+
+export default function Calendar({ theme, onThemeChange }: CalendarProps) {
   const [events, setEvents] = useState<CalendarEvent[]>([])
   const [currentDate, setCurrentDate] = useState(new Date())
   const [daysInMonth, setDaysInMonth] = useState<number[]>([])
@@ -85,6 +91,10 @@ export default function Calendar() {
     setHiddenCalendars((prev) =>
       prev.includes(index) ? prev.filter((value) => value !== index) : [...prev, index]
     )
+  }
+
+  const toggleTheme = (newTheme: Theme) => {
+    onThemeChange(newTheme)
   }
 
   const fetchIcs = async (url: string): Promise<string> => {
@@ -775,6 +785,25 @@ export default function Calendar() {
     return `${startHour12}${startMinuteText}${startSuffix} - ${endHour12}${endMinuteText}${endSuffix}`
   }
 
+  const formatEventStartTime = (event: CalendarEvent): string => {
+    const start = event.start
+    const startHours = start.getHours()
+    const startMinutes = start.getMinutes()
+
+    const isAllDay =
+      startHours === 0 &&
+      startMinutes === 0 &&
+      event.daysSpanned >= 1
+
+    if (isAllDay) return 'All day'
+
+    const startHour12 = startHours % 12 || 12
+    const startMinuteText = startMinutes === 0 ? '' : `:${String(startMinutes).padStart(2, '0')}`
+    const startSuffix = startHours >= 12 ? 'pm' : 'am'
+    
+    return `${startHour12}${startMinuteText}${startSuffix}`
+  }
+
   const buildMultiDaySegments = () => {
     type Segment = {
       id: string
@@ -1085,6 +1114,23 @@ export default function Calendar() {
                   })
                 )}
               </div>
+              <div className="settings-title">Theme</div>
+              <div className="settings-view-modes">
+                <button
+                  className={`view-mode-btn ${theme === 'dark' ? 'active' : ''}`}
+                  onClick={() => toggleTheme('dark')}
+                  aria-pressed={theme === 'dark'}
+                >
+                  Dark
+                </button>
+                <button
+                  className={`view-mode-btn ${theme === 'light' ? 'active' : ''}`}
+                  onClick={() => toggleTheme('light')}
+                  aria-pressed={theme === 'light'}
+                >
+                  Light
+                </button>
+              </div>
             </div>
           )}
         </div>
@@ -1146,7 +1192,7 @@ export default function Calendar() {
                             title={event.title}
                           >
                             <span className="event-dot" style={{ backgroundColor: event.color }}></span>
-                            <span className="event-time">{formatEventTime(event)}</span>
+                            <span className="event-time">{formatEventStartTime(event)}</span>
                             <span className="event-title">{event.title}</span>
                           </div>
                         ))}

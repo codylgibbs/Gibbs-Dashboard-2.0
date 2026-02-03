@@ -236,3 +236,81 @@
     grid-template-columns: 1fr;
   }
 }
+/* Light Theme Overrides */
+.app-container.theme-light .weather-container {
+  background: transparent;
+  border: none;
+}
+
+.app-container.theme-light .weather-container.error {
+  color: #dc2626;
+}
+
+.app-container.theme-light .current-weather {
+  background: transparent;
+  border: none;
+}
+
+.app-container.theme-light .temp {
+  color: #1a202c;
+}
+
+.app-container.theme-light .condition {
+  color: #2d3748;
+}
+
+.app-container.theme-light .location {
+  color: #4a5568;
+}
+
+.app-container.theme-light .forecast-day-header {
+  color: #1a202c;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.app-container.theme-light .forecast-day {
+  background: transparent;
+  border: none;
+}
+
+.app-container.theme-light .forecast-temp {
+  color: #1a202c;
+}
+
+.app-container.theme-light .forecast-condition {
+  color: #2d3748;
+}
+
+.app-container.theme-light .additional {
+  color: #4a5568;
+}
+
+.app-container.theme-light .forecast h3 {
+  color: #1a202c;
+}
+
+.app-container.theme-light .forecast-item {
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.app-container.theme-light .forecast-date {
+  color: #4a5568;
+}
+
+.app-container.theme-light .forecast-temps .high {
+  color: #1a202c;
+}
+
+.app-container.theme-light .forecast-temps .low {
+  color: #4a5568;
+}
+
+.app-container.theme-light .chip-day {
+  color: #2d3748;
+}
+
+.app-container.theme-light .forecast-chip {
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
