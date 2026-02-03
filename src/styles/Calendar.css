@@ -319,9 +319,7 @@
   padding-left: 32px;
 }
 
-.day-events.scrollable {
-  /* Manual scrolling enabled via overflow-y: auto */
-}
+
 
 
 
@@ -544,6 +542,7 @@
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 4;
+  line-clamp: 4;
   -webkit-box-orient: vertical;
   border-left: 3px solid rgba(255, 255, 255, 0.3);
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.25);
@@ -623,6 +622,7 @@
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 4;
+  line-clamp: 4;
   -webkit-box-orient: vertical;
   color: #0b1220;
   word-break: break-word;

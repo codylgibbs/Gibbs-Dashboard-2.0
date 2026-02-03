@@ -122,12 +122,16 @@ function App() {
         </div>
       </header>
       <main className="main-content">
-        <Calendar theme={theme} onThemeChange={handleThemeChange} />
+        <Calendar 
+          theme={theme} 
+          onThemeChange={handleThemeChange}
+          manualAlertActive={manualAlertActive}
+          onToggleManualAlert={() => setManualAlertActive(!manualAlertActive)}
+        />
       </main>
       <EmergencyAlertBanner 
         onAlertsChange={setHasAlerts}
         manualAlertActive={manualAlertActive}
-        onToggleManualAlert={() => setManualAlertActive(!manualAlertActive)}
       />
     </div>
   )

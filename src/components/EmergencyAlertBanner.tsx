@@ -24,18 +24,15 @@ const LON = -83.2139
 interface EmergencyAlertBannerProps {
   onAlertsChange?: (hasAlerts: boolean) => void
   manualAlertActive?: boolean
-  onToggleManualAlert?: () => void
 }
 
 export default function EmergencyAlertBanner({ 
   onAlertsChange,
-  manualAlertActive,
-  onToggleManualAlert
+  manualAlertActive 
 }: EmergencyAlertBannerProps) {
   const [alerts, setAlerts] = useState<NwsAlert[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [showSettings, setShowSettings] = useState(false)
 
   useEffect(() => {
     let isMounted = true
@@ -119,7 +116,7 @@ export default function EmergencyAlertBanner({
     }
 
     fetchAlerts()
-    const interval = setInterval(fetchAlerts, 5 * 60 * 1000)
+    const interval = setInterval(fetchAlerts, 1 * 60 * 1000)
 
     return () => {
       isMounted = false
@@ -156,30 +153,8 @@ export default function EmergencyAlertBanner({
     onAlertsChange?.(hasAlerts && !loading && !error)
   }, [hasAlerts, loading, error, onAlertsChange])
 
-  const isDev = import.meta.env.DEV
-
   return (
     <>
-      {isDev && (
-        <button
-          onClick={() => setShowSettings(!showSettings)}
-          className="alert-settings-btn"
-          title="Alert controls"
-          aria-label="Toggle alert settings"
-        >
-          ⚙️
-        </button>
-      )}
-      {showSettings && isDev && (
-        <div className="alert-settings-panel">
-          <button 
-            onClick={onToggleManualAlert}
-            className={`settings-menu-item ${manualAlertActive ? 'active' : ''}`}
-          >
-            {manualAlertActive ? '✓ Test Alert Active' : '+ Test Alert'}
-          </button>
-        </div>
-      )}
       {(loading || !hasAlerts) && !manualAlertActive ? null : (
         <div className={`alert-banner ${hasAlerts || manualAlertActive ? 'active' : 'inactive'}`}>
           <div className="alert-label">{manualAlertActive ? 'TEST' : 'Emergency Alert'}</div>

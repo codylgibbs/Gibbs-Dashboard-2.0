@@ -39,6 +39,17 @@
   backdrop-filter: blur(4px);
 }
 
+.settings-menu-header {
+  font-size: clamp(0.7rem, 0.85vw, 1rem);
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: clamp(4px, 0.6vh, 8px) clamp(12px, 1.6vw, 16px);
+  margin-bottom: clamp(4px, 0.5vh, 8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
 .settings-menu-item {
   background: #4a5568;
   color: #fff;
@@ -77,6 +88,11 @@
   border-color: rgba(0, 0, 0, 0.1);
 }
 
+.app-container.theme-light .settings-menu-header {
+  color: #1a202c;
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
 .app-container.theme-light .settings-menu-item {
   background: #cbd5e0;
   color: #1a202c;
@@ -94,6 +110,21 @@
 
 .app-container.theme-light .settings-menu-item.active:hover {
   background: #68d391;
+}
+
+.alert-banner {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--alert-height);
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.6vw, 20px);
+  padding: 0 clamp(16px, 2.4vw, 32px);
+  z-index: 50;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.4);
 }
 
 .alert-banner.active {

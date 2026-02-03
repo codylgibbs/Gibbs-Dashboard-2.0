@@ -93,7 +93,7 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
     }
 
     fetchWeather()
-    const interval = setInterval(fetchWeather, 10 * 60 * 1000) // Refresh every 10 minutes
+    const interval = setInterval(fetchWeather, 1 * 60 * 1000) // Refresh every 1 minute
     return () => clearInterval(interval)
   }, [])
 

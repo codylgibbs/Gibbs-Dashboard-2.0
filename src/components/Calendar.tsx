@@ -29,9 +29,11 @@ type Theme = 'dark' | 'light' | 'auto'
 interface CalendarProps {
   theme: Theme
   onThemeChange: (theme: Theme) => void
+  manualAlertActive?: boolean
+  onToggleManualAlert?: () => void
 }
 
-export default function Calendar({ theme, onThemeChange }: CalendarProps) {
+export default function Calendar({ theme, onThemeChange, manualAlertActive, onToggleManualAlert }: CalendarProps) {
   const [events, setEvents] = useState<CalendarEvent[]>([])
   const [currentDate, setCurrentDate] = useState(new Date())
   const [daysInMonth, setDaysInMonth] = useState<number[]>([])
@@ -1205,6 +1207,20 @@ export default function Calendar({ theme, onThemeChange }: CalendarProps) {
                   Auto
                 </button>
               </div>
+              {import.meta.env.DEV && (
+                <>
+                  <div className="settings-title">Testing</div>
+                  <div className="settings-view-modes">
+                    <button
+                      className={`view-mode-btn ${manualAlertActive ? 'active' : ''}`}
+                      onClick={onToggleManualAlert}
+                      aria-pressed={manualAlertActive}
+                    >
+                      {manualAlertActive ? '✓ Test Alert' : '+ Test Alert'}
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           )}
         </div>
