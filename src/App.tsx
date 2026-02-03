@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import Clock from './components/Clock'
 import Calendar from './components/Calendar'
 import Weather from './components/Weather'

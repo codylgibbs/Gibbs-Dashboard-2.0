@@ -386,17 +386,6 @@ export default function Calendar() {
     return next
   }
 
-  const addMonths = (date: Date, months: number) => {
-    const next = new Date(date)
-    const day = next.getDate()
-    next.setMonth(next.getMonth() + months)
-    if (next.getDate() !== day) {
-      // Skip invalid dates (e.g., Feb 30)
-      next.setDate(0)
-    }
-    return next
-  }
-
   const parseByDayEntry = (entry: string) => {
     const match = entry.match(/^([+-]?\d+)?(SU|MO|TU|WE|TH|FR|SA)$/)
     if (!match) return null
@@ -502,6 +491,21 @@ export default function Calendar() {
   const year = currentDate.getFullYear()
   const lastDayOfMonth = new Date(year, currentDate.getMonth() + 1, 0).getDate()
   const monthRangeLabel = `${monthShort} 1 - ${monthShort} ${lastDayOfMonth}, ${year}`
+  const monthStart = new Date(year, currentDate.getMonth(), 1)
+  const monthEnd = new Date(year, currentDate.getMonth(), lastDayOfMonth, 23, 59, 59, 999)
+
+  const getAdjustedEndDate = (date: Date) => {
+    const adjusted = new Date(date)
+    if (
+      adjusted.getHours() === 0 &&
+      adjusted.getMinutes() === 0 &&
+      adjusted.getSeconds() === 0 &&
+      adjusted.getMilliseconds() === 0
+    ) {
+      adjusted.setDate(adjusted.getDate() - 1)
+    }
+    return adjusted
+  }
 
   const formatEventTime = (event: CalendarEvent): string => {
     const start = event.start
@@ -526,6 +530,99 @@ export default function Calendar() {
     return `${hour12}${minuteText}${suffix}`
   }
 
+  const buildMultiDaySegments = () => {
+    type Segment = {
+      id: string
+      title: string
+      color: string
+      weekIndex: number
+      startCol: number
+      span: number
+    }
+
+    const segments: Segment[] = []
+
+    events.forEach(event => {
+      const eventStart = new Date(event.start)
+      const eventEnd = getAdjustedEndDate(event.end)
+      const sameDay = eventStart.toDateString() === eventEnd.toDateString()
+
+      if (sameDay && event.daysSpanned <= 1) return
+
+      if (eventEnd < monthStart || eventStart > monthEnd) return
+
+      const startDay = eventStart < monthStart ? 1 : eventStart.getDate()
+      const endDay = eventEnd > monthEnd ? lastDayOfMonth : eventEnd.getDate()
+
+      if (endDay < startDay) return
+
+      let dayCursor = startDay
+      while (dayCursor <= endDay) {
+        const dayIndex = firstDayOffset + (dayCursor - 1)
+        const weekIndex = Math.floor(dayIndex / 7)
+        const weekStartDay = weekIndex * 7 - firstDayOffset + 1
+        const weekEndDay = weekStartDay + 6
+        const segmentStartDay = dayCursor
+        const segmentEndDay = Math.min(endDay, weekEndDay)
+        const startCol = (firstDayOffset + (segmentStartDay - 1)) % 7
+        const span = segmentEndDay - segmentStartDay + 1
+
+        segments.push({
+          id: `${event.id}-${segmentStartDay}`,
+          title: event.title,
+          color: event.color,
+          weekIndex,
+          startCol,
+          span,
+        })
+
+        dayCursor = segmentEndDay + 1
+      }
+    })
+
+    return segments
+  }
+
+  const buildWeekLanes = (segments: ReturnType<typeof buildMultiDaySegments>) => {
+    const sorted = [...segments].sort((a, b) => a.startCol - b.startCol || b.span - a.span)
+    const lanes: typeof sorted[] = []
+    const laneEnds: number[] = []
+
+    sorted.forEach(segment => {
+      let laneIndex = laneEnds.findIndex(end => segment.startCol > end)
+      if (laneIndex === -1) {
+        laneIndex = laneEnds.length
+        laneEnds.push(segment.startCol + segment.span - 1)
+        lanes.push([segment])
+        return
+      }
+
+      laneEnds[laneIndex] = segment.startCol + segment.span - 1
+      lanes[laneIndex].push(segment)
+    })
+
+    return lanes
+  }
+
+  const totalSlots = firstDayOffset + daysInMonth.length
+  const weekCount = Math.ceil(totalSlots / 7)
+  const weeks = Array.from({ length: weekCount }, (_, weekIndex) =>
+    Array.from({ length: 7 }, (_, dayIndex) => {
+      const dayNumber = weekIndex * 7 + dayIndex - firstDayOffset + 1
+      return dayNumber >= 1 && dayNumber <= daysInMonth.length ? dayNumber : null
+    })
+  )
+
+  const multiDaySegments = buildMultiDaySegments()
+  const segmentsByWeek = multiDaySegments.reduce<Record<number, typeof multiDaySegments>>(
+    (acc, segment) => {
+      if (!acc[segment.weekIndex]) acc[segment.weekIndex] = []
+      acc[segment.weekIndex].push(segment)
+      return acc
+    },
+    {}
+  )
+
   return (
     <div className="calendar">
       <div className="calendar-toolbar">
@@ -546,58 +643,85 @@ export default function Calendar() {
         </div>
       </div>
       <div className="calendar-grid">
-        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-          <div key={day} className="calendar-header-cell">{day}</div>
-        ))}
-        
-        {Array.from({ length: firstDayOffset }).map((_, i) => (
-          <div key={`empty-${i}`} className="calendar-cell empty"></div>
-        ))}
+        <div className="calendar-header">
+          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+            <div key={day} className="calendar-header-cell">{day}</div>
+          ))}
+        </div>
 
-        {daysInMonth.map(day => {
-          const dayEvents = getEventsForDay(day)
-          const isTodayFlag = isToday(day)
-          const isMonthStart = day === 1
-          
+        {weeks.map((week, weekIndex) => {
+          const weekSegments = segmentsByWeek[weekIndex] ?? []
+          const weekLanes = buildWeekLanes(weekSegments).slice(0, 2)
+
           return (
-            <div
-              key={day}
-              className={`calendar-cell ${isTodayFlag ? 'today' : ''}`}
-            >
-              <div className="day-number">
-                {isMonthStart && <span className="day-month">{monthShort}</span>}
-                <span className="day-date">{day}</span>
-              </div>
-              <div className="day-events">
-                {dayEvents.length > 3 ? (
-                  <>
-                    {dayEvents.slice(0, 2).map(event => (
-                      <div
-                        key={event.id}
-                        className="event-row"
-                        title={event.title}
-                      >
-                        <span className="event-dot" style={{ backgroundColor: event.color }}></span>
-                        <span className="event-time">{formatEventTime(event)}</span>
-                        <span className="event-title">{event.title}</span>
-                      </div>
-                    ))}
-                    <div className="event-overflow">+{dayEvents.length - 2} more</div>
-                  </>
-                ) : (
-                  dayEvents.map(event => (
+            <div key={`week-${weekIndex}`} className="calendar-week">
+              <div className="week-multiday">
+                {weekLanes.map((lane, laneIndex) =>
+                  lane.map(segment => (
                     <div
-                      key={event.id}
-                      className="event-row"
-                      title={event.title}
+                      key={segment.id}
+                      className="multiday-pill"
+                      style={{
+                        gridColumn: `${segment.startCol + 1} / span ${segment.span}`,
+                        gridRow: `${laneIndex + 1}`,
+                        backgroundColor: segment.color,
+                      }}
+                      title={segment.title}
                     >
-                      <span className="event-dot" style={{ backgroundColor: event.color }}></span>
-                      <span className="event-time">{formatEventTime(event)}</span>
-                      <span className="event-title">{event.title}</span>
+                      <span className="multiday-title">{segment.title}</span>
                     </div>
                   ))
                 )}
               </div>
+              {week.map((day, dayIndex) => {
+                if (!day) {
+                  return <div key={`empty-${weekIndex}-${dayIndex}`} className="calendar-cell empty"></div>
+                }
+
+                const dayEvents = getEventsForDay(day)
+                const isTodayFlag = isToday(day)
+
+                return (
+                  <div
+                    key={day}
+                    className={`calendar-cell ${isTodayFlag ? 'today' : ''}`}
+                  >
+                    <div className="day-number">
+                      <span className="day-date">{day}</span>
+                    </div>
+                    <div className="day-events">
+                      {dayEvents.length > 3 ? (
+                        <>
+                          {dayEvents.slice(0, 2).map(event => (
+                            <div
+                              key={event.id}
+                              className="event-row"
+                              title={event.title}
+                            >
+                              <span className="event-dot" style={{ backgroundColor: event.color }}></span>
+                              <span className="event-time">{formatEventTime(event)}</span>
+                              <span className="event-title">{event.title}</span>
+                            </div>
+                          ))}
+                          <div className="event-overflow">+{dayEvents.length - 2} more</div>
+                        </>
+                      ) : (
+                        dayEvents.map(event => (
+                          <div
+                            key={event.id}
+                            className="event-row"
+                            title={event.title}
+                          >
+                            <span className="event-dot" style={{ backgroundColor: event.color }}></span>
+                            <span className="event-time">{formatEventTime(event)}</span>
+                            <span className="event-title">{event.title}</span>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           )
         })}
