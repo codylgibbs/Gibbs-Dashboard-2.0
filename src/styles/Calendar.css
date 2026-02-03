@@ -1,8 +1,8 @@
 .calendar {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  padding: 12px 14px 14px;
+  gap: clamp(10px, 1.2vh, 18px);
+  padding: clamp(10px, 1.2vw, 16px) clamp(12px, 1.4vw, 18px) clamp(12px, 1.4vw, 18px);
   background: rgba(12, 13, 15, 0.8);
   border-radius: 18px;
   border: 1px solid rgba(255, 255, 255, 0.06);
@@ -13,11 +13,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: clamp(12px, 1.6vw, 20px);
 }
 
 .calendar-title {
-  font-size: 1.4rem;
+  font-size: clamp(1.1rem, 1.5vw, 1.8rem);
   font-weight: 600;
   color: #f1f3f6;
   margin: 0;
@@ -45,12 +45,48 @@
 }
 
 .settings-title {
-  font-size: 0.8rem;
+  font-size: 0.832rem;
   font-weight: 700;
   color: #e6edf3;
   text-transform: uppercase;
   letter-spacing: 0.8px;
   margin-bottom: 10px;
+  margin-top: 12px;
+}
+
+.settings-title:first-child {
+  margin-top: 0;
+}
+
+.settings-view-modes {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.view-mode-btn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #9aa4b2;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.832rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.view-mode-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #e3e7ee;
+}
+
+.view-mode-btn.active {
+  background: rgba(59, 130, 246, 0.3);
+  border-color: rgba(59, 130, 246, 0.6);
+  color: #e9f2ff;
 }
 
 .settings-list {
@@ -63,7 +99,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.85rem;
+  font-size: 0.884rem;
   color: #e3e7ee;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -92,7 +128,7 @@
 }
 
 .settings-empty {
-  font-size: 0.8rem;
+  font-size: 0.832rem;
   color: #9aa4b2;
 }
 
@@ -102,7 +138,7 @@
   color: #e9f2ff;
   padding: 6px 12px;
   border-radius: 4px;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.3px;
   cursor: pointer;
@@ -142,10 +178,10 @@
   text-align: center;
   font-weight: 700;
   color: #8b95a5;
-  font-size: 0.85rem;
-  padding: 10px 0 8px;
+  font-size: clamp(0.65rem, 0.9vw, 1rem);
+  padding: clamp(6px, 1vh, 12px) 0 clamp(5px, 0.8vh, 10px);
   text-transform: uppercase;
-  letter-spacing: 1.2px;
+  letter-spacing: clamp(0.8px, 0.1vw, 1.4px);
   background: rgba(20, 22, 26, 0.9);
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -175,7 +211,7 @@
 .multiday-pill {
   border-radius: 999px;
   padding: 2px 8px;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 600;
   color: #1a1c22;
   overflow: hidden;
@@ -214,10 +250,10 @@
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  margin-bottom: 6px;
+  margin-bottom: clamp(4px, 0.6vh, 8px);
   text-transform: uppercase;
   letter-spacing: 0.6px;
-  font-size: 0.65rem;
+  font-size: clamp(0.55rem, 0.7vw, 0.75rem);
   color: #9aa4b2;
 }
 
@@ -227,13 +263,13 @@
 }
 
 .day-date {
-  width: 24px;
-  height: 24px;
+  width: clamp(20px, 2.4vw, 28px);
+  height: clamp(20px, 2.4vw, 28px);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  font-size: 0.95rem;
+  font-size: clamp(0.8rem, 1vw, 1.1rem);
   font-weight: 600;
   color: #e6edf3;
 }
@@ -249,7 +285,7 @@
   gap: 6px;
   flex: 1;
   overflow: hidden;
-  margin-top: 4px;
+  margin-top: 1px;
   position: relative;
 }
 
@@ -274,8 +310,8 @@
   display: grid;
   grid-template-columns: 10px auto 1fr;
   align-items: center;
-  gap: 6px;
-  font-size: 0.78rem;
+  gap: clamp(4px, 0.6vw, 8px);
+  font-size: clamp(0.65rem, 0.82vw, 0.95rem);
   color: #cfd6e0;
   white-space: nowrap;
   overflow: hidden;
@@ -283,8 +319,8 @@
 }
 
 .event-dot {
-  width: 6px;
-  height: 6px;
+  width: clamp(5px, 0.6vw, 7px);
+  height: clamp(5px, 0.6vw, 7px);
   border-radius: 999px;
   flex-shrink: 0;
 }
@@ -292,6 +328,7 @@
 .event-time {
   color: #9aa4b2;
   font-weight: 600;
+  font-size: clamp(0.6rem, 0.75vw, 0.85rem);
 }
 
 .event-title {
@@ -300,7 +337,7 @@
 }
 
 .event-overflow {
-  font-size: 0.7rem;
+  font-size: clamp(0.6rem, 0.73vw, 0.8rem);
   color: #8b95a5;
   margin-top: 2px;
   font-weight: 600;
@@ -309,18 +346,6 @@
 .calendar-header-cell:nth-child(7n),
 .calendar-week .calendar-cell:nth-child(7n) {
   border-right: none;
-}
-
-@media (max-width: 1024px) {
-  .calendar-cell {
-    padding: 8px;
-  }
-}
-
-@media (max-width: 768px) {
-  .calendar-cell {
-    padding: 8px;
-  }
 }
 
 @media (max-width: 900px) {
@@ -332,4 +357,133 @@
   .calendar-controls {
     flex-wrap: wrap;
   }
+}
+
+@media (max-width: 768px) {
+  .calendar-cell {
+    padding: 6px;
+  }
+  
+  .event-row {
+    grid-template-columns: 8px auto 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar {
+    border-radius: 12px;
+  }
+  
+  .calendar-cell {
+    padding: 4px 6px;
+  }
+  
+  .day-events {
+    gap: 4px;
+  }
+  
+  .calendar-title {
+    font-size: 1rem;
+  }
+}
+
+/* Very large displays */
+@media (min-width: 2560px) {
+  .calendar-cell {
+    padding: 12px 14px;
+  }
+}
+
+/* Weekly View Styles */
+.calendar-grid.weekly-view .calendar-header-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: clamp(8px, 1.2vh, 14px) 0;
+}
+
+.calendar-grid.weekly-view .header-date {
+  font-size: clamp(0.9rem, 1.1vw, 1.3rem);
+  font-weight: 700;
+  color: #e6edf3;
+  letter-spacing: 0;
+}
+
+.calendar-grid.weekly-view .week-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  flex: 1;
+  min-height: 0;
+}
+
+.calendar-grid.weekly-view .calendar-cell {
+  padding: clamp(10px, 1.2vw, 16px);
+}
+
+.calendar-grid.weekly-view .day-events {
+  overflow-y: auto;
+  gap: 8px;
+}
+
+/* Daily View Styles */
+.calendar-grid.daily-view {
+  padding: clamp(16px, 2vw, 24px);
+}
+
+.daily-header {
+  text-align: center;
+  padding-bottom: clamp(12px, 1.5vh, 20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: clamp(12px, 1.5vh, 20px);
+}
+
+.daily-date {
+  font-size: clamp(1.2rem, 1.6vw, 2rem);
+  font-weight: 600;
+  color: #e6edf3;
+}
+
+.daily-events {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.2vh, 14px);
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.daily-event-row {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.5vw, 18px);
+  padding: clamp(12px, 1.4vw, 16px);
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 4px solid;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.daily-event-row:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.daily-event-time {
+  color: #9aa4b2;
+  font-weight: 600;
+  font-size: clamp(0.85rem, 1vw, 1.1rem);
+  min-width: clamp(60px, 8vw, 80px);
+}
+
+.daily-event-title {
+  color: #e6edf3;
+  font-size: clamp(0.95rem, 1.1vw, 1.3rem);
+  font-weight: 500;
+  flex: 1;
+}
+
+.daily-no-events {
+  text-align: center;
+  padding: clamp(30px, 4vh, 50px);
+  color: #8b95a5;
+  font-size: clamp(0.9rem, 1.05vw, 1.2rem);
 }

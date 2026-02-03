@@ -5,21 +5,15 @@
 }
 
 .time-display {
-  font-size: 4.6rem;
+  font-size: clamp(2rem, 4.5vw, 6rem);
   font-weight: bold;
   color: #fff;
   letter-spacing: 1px;
   font-variant-numeric: tabular-nums;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 480px) {
   .time-display {
-    font-size: 3.2rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .time-display {
-    font-size: 2.4rem;
+    font-size: clamp(1.8rem, 8vw, 2.5rem);
   }
 }

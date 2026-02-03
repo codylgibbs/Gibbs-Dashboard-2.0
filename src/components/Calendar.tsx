@@ -21,12 +21,25 @@ interface ParsedEvent {
 
 const DEFAULT_COLORS = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F']
 
+type ViewMode = 'monthly' | 'weekly' | 'daily'
+
 export default function Calendar() {
   const [events, setEvents] = useState<CalendarEvent[]>([])
   const [currentDate, setCurrentDate] = useState(new Date())
   const [daysInMonth, setDaysInMonth] = useState<number[]>([])
   const [firstDayOffset, setFirstDayOffset] = useState(0)
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [viewMode, setViewMode] = useState<ViewMode>(() => {
+    try {
+      const stored = localStorage.getItem('calendarViewMode')
+      if (stored === 'monthly' || stored === 'weekly' || stored === 'daily') {
+        return stored
+      }
+      return 'monthly'
+    } catch {
+      return 'monthly'
+    }
+  })
   const [hiddenCalendars, setHiddenCalendars] = useState<number[]>(() => {
     try {
       const stored = localStorage.getItem('hiddenCalendars')
@@ -199,16 +212,36 @@ export default function Calendar() {
     localStorage.setItem('hiddenCalendars', JSON.stringify(hiddenCalendars))
   }, [hiddenCalendars])
 
+  useEffect(() => {
+    localStorage.setItem('calendarViewMode', viewMode)
+  }, [viewMode])
+
   const goToToday = () => setCurrentDate(new Date())
-  const goToPrevMonth = () => {
+  const goToPrev = () => {
     const year = currentDate.getFullYear()
     const month = currentDate.getMonth()
-    setCurrentDate(new Date(year, month - 1, 1))
+    const day = currentDate.getDate()
+    
+    if (viewMode === 'monthly') {
+      setCurrentDate(new Date(year, month - 1, 1))
+    } else if (viewMode === 'weekly') {
+      setCurrentDate(new Date(year, month, day - 7))
+    } else {
+      setCurrentDate(new Date(year, month, day - 1))
+    }
   }
-  const goToNextMonth = () => {
+  const goToNext = () => {
     const year = currentDate.getFullYear()
     const month = currentDate.getMonth()
-    setCurrentDate(new Date(year, month + 1, 1))
+    const day = currentDate.getDate()
+    
+    if (viewMode === 'monthly') {
+      setCurrentDate(new Date(year, month + 1, 1))
+    } else if (viewMode === 'weekly') {
+      setCurrentDate(new Date(year, month, day + 7))
+    } else {
+      setCurrentDate(new Date(year, month, day + 1))
+    }
   }
 
   const parseICS = (icsText: string): ParsedEvent[] => {
@@ -546,7 +579,31 @@ export default function Calendar() {
   const monthShort = currentDate.toLocaleString('en-US', { month: 'short' })
   const year = currentDate.getFullYear()
   const lastDayOfMonth = new Date(year, currentDate.getMonth() + 1, 0).getDate()
-  const monthRangeLabel = `${monthShort} 1 - ${monthShort} ${lastDayOfMonth}, ${year}`
+  
+  // Generate title label based on view mode
+  let titleLabel = ''
+  if (viewMode === 'monthly') {
+    titleLabel = `${monthShort} 1 - ${monthShort} ${lastDayOfMonth}, ${year}`
+  } else if (viewMode === 'weekly') {
+    const dayOfWeek = currentDate.getDay()
+    const weekStart = new Date(currentDate)
+    weekStart.setDate(currentDate.getDate() - dayOfWeek)
+    const weekEnd = new Date(weekStart)
+    weekEnd.setDate(weekStart.getDate() + 6)
+    
+    const startMonth = weekStart.toLocaleString('en-US', { month: 'short' })
+    const endMonth = weekEnd.toLocaleString('en-US', { month: 'short' })
+    
+    if (startMonth === endMonth) {
+      titleLabel = `${startMonth} ${weekStart.getDate()} - ${weekEnd.getDate()}, ${weekStart.getFullYear()}`
+    } else {
+      titleLabel = `${startMonth} ${weekStart.getDate()} - ${endMonth} ${weekEnd.getDate()}, ${weekStart.getFullYear()}`
+    }
+  } else {
+    // daily view
+    titleLabel = currentDate.toLocaleString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
+  }
+  
   const monthStart = new Date(year, currentDate.getMonth(), 1)
   const monthEnd = new Date(year, currentDate.getMonth(), lastDayOfMonth, 23, 59, 59, 999)
   const calendarUrlsStr = import.meta.env?.VITE_CALENDAR_URLS as string | undefined
@@ -684,18 +741,70 @@ export default function Calendar() {
     {}
   )
 
+  // Helper function for weekly view
+  const getWeekDays = () => {
+    const dayOfWeek = currentDate.getDay()
+    const weekStart = new Date(currentDate)
+    weekStart.setDate(currentDate.getDate() - dayOfWeek)
+    
+    return Array.from({ length: 7 }, (_, i) => {
+      const day = new Date(weekStart)
+      day.setDate(weekStart.getDate() + i)
+      return day
+    })
+  }
+
+  // Helper function to get events for a specific date
+  const getEventsForDate = (date: Date): CalendarEvent[] => {
+    const targetDate = new Date(date)
+    targetDate.setHours(0, 0, 0, 0)
+
+    return events.filter(event => {
+      if (hiddenCalendars.includes(event.calendarIndex)) {
+        return false
+      }
+      const eventStart = new Date(event.start)
+      const eventEnd = new Date(event.end)
+      eventStart.setHours(0, 0, 0, 0)
+      eventEnd.setHours(0, 0, 0, 0)
+      
+      if (eventEnd.getTime() === eventStart.getTime()) {
+        return targetDate.getTime() === eventStart.getTime()
+      }
+      return targetDate >= eventStart && targetDate < eventEnd
+    }).sort((a, b) => a.start.getTime() - b.start.getTime())
+  }
+
+  // Helper function to check if a date is today
+  const isDateToday = (date: Date): boolean => {
+    const today = new Date()
+    return (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    )
+  }
+
   return (
     <div className="calendar">
       <div className="calendar-toolbar">
-        <h2 className="calendar-title">{monthRangeLabel}</h2>
+        <h2 className="calendar-title">{titleLabel}</h2>
         <div className="calendar-controls">
-          <button className="calendar-btn" onClick={goToPrevMonth} aria-label="Previous month">
+          <button 
+            className="calendar-btn" 
+            onClick={goToPrev} 
+            aria-label={`Previous ${viewMode === 'monthly' ? 'month' : viewMode === 'weekly' ? 'week' : 'day'}`}
+          >
             ← Prev
           </button>
           <button className="calendar-btn" onClick={goToToday} aria-label="Go to today">
             Today
           </button>
-          <button className="calendar-btn" onClick={goToNextMonth} aria-label="Next month">
+          <button 
+            className="calendar-btn" 
+            onClick={goToNext} 
+            aria-label={`Next ${viewMode === 'monthly' ? 'month' : viewMode === 'weekly' ? 'week' : 'day'}`}
+          >
             Next →
           </button>
           <button
@@ -708,6 +817,30 @@ export default function Calendar() {
           </button>
           {settingsOpen && (
             <div className="calendar-settings" role="dialog" aria-label="Calendar settings">
+              <div className="settings-title">View</div>
+              <div className="settings-view-modes">
+                <button
+                  className={`view-mode-btn ${viewMode === 'monthly' ? 'active' : ''}`}
+                  onClick={() => setViewMode('monthly')}
+                  aria-pressed={viewMode === 'monthly'}
+                >
+                  Monthly
+                </button>
+                <button
+                  className={`view-mode-btn ${viewMode === 'weekly' ? 'active' : ''}`}
+                  onClick={() => setViewMode('weekly')}
+                  aria-pressed={viewMode === 'weekly'}
+                >
+                  Weekly
+                </button>
+                <button
+                  className={`view-mode-btn ${viewMode === 'daily' ? 'active' : ''}`}
+                  onClick={() => setViewMode('daily')}
+                  aria-pressed={viewMode === 'daily'}
+                >
+                  Daily
+                </button>
+              </div>
               <div className="settings-title">Calendars</div>
               <div className="settings-list">
                 {calendarUrls.length === 0 ? (
@@ -740,74 +873,141 @@ export default function Calendar() {
           )}
         </div>
       </div>
-      <div className="calendar-grid">
-        <div className="calendar-header">
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-            <div key={day} className="calendar-header-cell">{day}</div>
-          ))}
-        </div>
+      {viewMode === 'monthly' && (
+        <div className="calendar-grid">
+          <div className="calendar-header">
+            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+              <div key={day} className="calendar-header-cell">{day}</div>
+            ))}
+          </div>
 
-        {weeks.map((week, weekIndex) => {
-          const weekSegments = segmentsByWeek[weekIndex] ?? []
-          const weekLanes = buildWeekLanes(weekSegments).slice(0, 2)
+          {weeks.map((week, weekIndex) => {
+            const weekSegments = segmentsByWeek[weekIndex] ?? []
+            const weekLanes = buildWeekLanes(weekSegments).slice(0, 2)
 
-          return (
-            <div key={`week-${weekIndex}`} className="calendar-week">
-              <div className="week-multiday">
-                {weekLanes.map((lane, laneIndex) =>
-                  lane.map(segment => (
+            return (
+              <div key={`week-${weekIndex}`} className="calendar-week">
+                <div className="week-multiday">
+                  {weekLanes.map((lane, laneIndex) =>
+                    lane.map(segment => (
+                      <div
+                        key={segment.id}
+                        className="multiday-pill"
+                        style={{
+                          gridColumn: `${segment.startCol + 1} / span ${segment.span}`,
+                          gridRow: `${laneIndex + 1}`,
+                          backgroundColor: segment.color,
+                        }}
+                        title={segment.title}
+                      >
+                        <span className="multiday-title">{segment.title}</span>
+                      </div>
+                    ))
+                  )}
+                </div>
+                {week.map((day, dayIndex) => {
+                  if (!day) {
+                    return <div key={`empty-${weekIndex}-${dayIndex}`} className="calendar-cell empty"></div>
+                  }
+
+                  const dayEvents = getEventsForDay(day)
+                  const isTodayFlag = isToday(day)
+                  const shouldScroll = dayEvents.length > 3
+
+                  return (
                     <div
-                      key={segment.id}
-                      className="multiday-pill"
-                      style={{
-                        gridColumn: `${segment.startCol + 1} / span ${segment.span}`,
-                        gridRow: `${laneIndex + 1}`,
-                        backgroundColor: segment.color,
-                      }}
-                      title={segment.title}
+                      key={day}
+                      className={`calendar-cell ${isTodayFlag ? 'today' : ''}`}
                     >
-                      <span className="multiday-title">{segment.title}</span>
+                      <div className="day-number">
+                        <span className="day-date">{day}</span>
+                      </div>
+                      <div className={`day-events ${shouldScroll ? 'scrollable' : ''}`}>
+                        {dayEvents.map(event => (
+                          <div
+                            key={event.id}
+                            className="event-row"
+                            title={event.title}
+                          >
+                            <span className="event-dot" style={{ backgroundColor: event.color }}></span>
+                            <span className="event-time">{formatEventTime(event)}</span>
+                            <span className="event-title">{event.title}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  ))
-                )}
+                  )
+                })}
               </div>
-              {week.map((day, dayIndex) => {
-                if (!day) {
-                  return <div key={`empty-${weekIndex}-${dayIndex}`} className="calendar-cell empty"></div>
-                }
+            )
+          })}
+        </div>
+      )}
+      
+      {viewMode === 'weekly' && (
+        <div className="calendar-grid weekly-view">
+          <div className="calendar-header">
+            {getWeekDays().map((date, index) => (
+              <div key={index} className="calendar-header-cell">
+                <div>{['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][index]}</div>
+                <div className="header-date">{date.getDate()}</div>
+              </div>
+            ))}
+          </div>
+          <div className="week-row">
+            {getWeekDays().map((date, index) => {
+              const dayEvents = getEventsForDate(date)
+              const isTodayFlag = isDateToday(date)
 
-                const dayEvents = getEventsForDay(day)
-                const isTodayFlag = isToday(day)
-                const shouldScroll = dayEvents.length > 3
-
-                return (
-                  <div
-                    key={day}
-                    className={`calendar-cell ${isTodayFlag ? 'today' : ''}`}
-                  >
-                    <div className="day-number">
-                      <span className="day-date">{day}</span>
-                    </div>
-                    <div className={`day-events ${shouldScroll ? 'scrollable' : ''}`}>
-                      {dayEvents.map(event => (
-                        <div
-                          key={event.id}
-                          className="event-row"
-                          title={event.title}
-                        >
-                          <span className="event-dot" style={{ backgroundColor: event.color }}></span>
-                          <span className="event-time">{formatEventTime(event)}</span>
-                          <span className="event-title">{event.title}</span>
-                        </div>
-                      ))}
-                    </div>
+              return (
+                <div
+                  key={index}
+                  className={`calendar-cell ${isTodayFlag ? 'today' : ''}`}
+                >
+                  <div className="day-events scrollable">
+                    {dayEvents.map(event => (
+                      <div
+                        key={event.id}
+                        className="event-row"
+                        title={event.title}
+                      >
+                        <span className="event-dot" style={{ backgroundColor: event.color }}></span>
+                        <span className="event-time">{formatEventTime(event)}</span>
+                        <span className="event-title">{event.title}</span>
+                      </div>
+                    ))}
                   </div>
-                )
-              })}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+      
+      {viewMode === 'daily' && (
+        <div className="calendar-grid daily-view">
+          <div className="daily-header">
+            <div className="daily-date">
+              {currentDate.toLocaleString('en-US', { weekday: 'short' })} {currentDate.getDate()}
             </div>
-          )
-        })}
-      </div>
+          </div>
+          <div className="daily-events">
+            {getEventsForDate(currentDate).map(event => (
+              <div
+                key={event.id}
+                className="daily-event-row"
+                style={{ borderLeftColor: event.color }}
+              >
+                <div className="daily-event-time">{formatEventTime(event)}</div>
+                <div className="daily-event-title">{event.title}</div>
+              </div>
+            ))}
+            {getEventsForDate(currentDate).length === 0 && (
+              <div className="daily-no-events">No events scheduled</div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
