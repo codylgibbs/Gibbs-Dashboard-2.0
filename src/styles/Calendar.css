@@ -655,6 +655,7 @@
   gap: clamp(10px, 1.2vh, 14px);
   overflow-y: auto;
   max-height: 100%;
+  padding: 4px 8px 12px 4px;
 }
 
 .daily-event-row {
@@ -783,16 +784,21 @@
   background: transparent;
 }
 
-.app-container.theme-light .calendar-header {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+.app-container.theme-light .calendar-grid {
+  border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 .app-container.theme-light .calendar-header-cell {
-  color: #4a5568;
+  background: #ffffff;
+  border-left: 1px solid rgba(0, 0, 0, 0.3);
+  border-top: 1px solid rgba(0, 0, 0, 0.3);
+  border-right: 1px solid rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  color: #1a202c;
 }
 
 .app-container.theme-light .calendar-day {
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.3);
   color: #1a202c;
 }
 
@@ -805,26 +811,69 @@
   border-color: rgba(59, 130, 246, 0.3);
 }
 
-.app-container.theme-light .calendar-event {
-  background: rgba(59, 130, 246, 0.3);
-  color: #1e40af;
-  border: 1px solid rgba(59, 130, 246, 0.4);
+.app-container.theme-light .calendar-cell {
+  background: #f9fafb;
+  border-left: 1px solid rgba(0, 0, 0, 0.3);
+  border-top: 1px solid rgba(0, 0, 0, 0.3);
+  border-right: 1px solid rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
 
-.app-container.theme-light .calendar-event:hover {
-  background: rgba(59, 130, 246, 0.4);
+.app-container.theme-light .calendar-cell.today {
+  background: #e0e7ff;
 }
 
-.app-container.theme-light .calendar-event-overflow {
+.app-container.theme-light .calendar-cell.empty {
+  background: #ffffff;
+}
+
+.app-container.theme-light .day-number {
   color: #4a5568;
 }
 
+.app-container.theme-light .day-month {
+  color: #2d3748;
+}
+
+.app-container.theme-light .day-date {
+  color: #1a202c;
+}
+
+.app-container.theme-light .calendar-cell.today .day-date {
+  background: #3b82f6;
+  color: #fff;
+}
+
+.app-container.theme-light .calendar-event-overflow {
+  color: #1a202c;
+}
+
+.app-container.theme-light .event-row {
+  color: #1a202c;
+}
+
+.app-container.theme-light .event-time {
+  color: #1a202c;
+  font-weight: 600;
+}
+
+.app-container.theme-light .event-title {
+  color: #1a202c;
+}
+
+.app-container.theme-light .event-overflow {
+  color: #2d3748;
+}
+
 .app-container.theme-light .calendar-week {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 .app-container.theme-light .calendar-week-day {
-  border-right: 1px solid rgba(0, 0, 0, 0.06);
+  border-left: 1px solid rgba(0, 0, 0, 0.3);
+  border-top: 1px solid rgba(0, 0, 0, 0.3);
+  border-right: 1px solid rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
   color: #1a202c;
   background: transparent;
 }
@@ -853,6 +902,15 @@
   color: #1e40af;
 }
 
+.app-container.theme-light .daily-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.app-container.theme-light .daily-date {
+  color: #1a202c;
+  font-weight: 700;
+}
+
 .app-container.theme-light .calendar-daily-date {
   color: #1a202c;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
@@ -872,8 +930,29 @@
   color: #1a202c;
 }
 
+.app-container.theme-light .daily-event-row {
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+  border: 2px solid rgba(0, 0, 0, 0.25);
+  border-left: 5px solid;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 
+              0 2px 4px rgba(0, 0, 0, 0.1),
+              inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transform: translateX(0);
+  transition: all 0.2s ease;
+}
+
+.app-container.theme-light .daily-event-row:hover {
+  background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2), 
+              0 3px 6px rgba(0, 0, 0, 0.12),
+              inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transform: translateX(4px);
+}
+
 .app-container.theme-light .daily-event-time {
-  color: #718096;
+  color: #1a202c;
+  font-weight: 700;
 }
 
 .app-container.theme-light .daily-event-location {
@@ -882,4 +961,81 @@
 
 .app-container.theme-light .daily-no-events {
   color: #a0aec0;
+}
+
+/* Weekly View Light Theme */
+.app-container.theme-light .calendar-grid.weekly-timeline {
+  background: #ffffff;
+}
+
+.app-container.theme-light .timeline-header {
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.app-container.theme-light .timeline-header-corner {
+  border-right: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.app-container.theme-light .timeline-header-day {
+  border-right: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.app-container.theme-light .timeline-day-name {
+  color: #2d3748;
+}
+
+.app-container.theme-light .timeline-day-num {
+  color: #1a202c;
+}
+
+.app-container.theme-light .timeline-header-day.today .timeline-day-num {
+  background: #dc2626;
+  color: #fff;
+}
+
+.app-container.theme-light .timeline-hours {
+  background: #f9fafb;
+  border-right: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.app-container.theme-light .timeline-all-day-label {
+  color: #4a5568;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.app-container.theme-light .timeline-hour-label {
+  color: #4a5568;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.app-container.theme-light .timeline-all-day-row {
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.app-container.theme-light .timeline-all-day-cell {
+  border-right: 1px solid rgba(0, 0, 0, 0.3);
+  background: #ffffff;
+}
+
+.app-container.theme-light .timeline-hour-row {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.app-container.theme-light .timeline-hour-cell {
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+}
+
+.app-container.theme-light .timeline-event {
+  color: #1a202c;
+}
+
+.app-container.theme-light .timeline-event-time {
+  color: #1a202c;
+}
+
+.app-container.theme-light .timeline-event-title {
+  color: #1a202c;
 }
