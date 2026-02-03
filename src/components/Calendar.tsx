@@ -9,6 +9,7 @@ interface CalendarEvent {
   color: string
   calendarIndex: number
   daysSpanned: number
+  location?: string
 }
 
 interface ParsedEvent {
@@ -17,6 +18,7 @@ interface ParsedEvent {
   end: Date
   rrule?: string
   allDay?: boolean
+  location?: string
 }
 
 const DEFAULT_COLORS = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F']
@@ -168,6 +170,7 @@ export default function Calendar() {
                 color: calendarColors[i % calendarColors.length],
                 calendarIndex: i,
                 daysSpanned,
+                location: occurrence.location,
               })
             })
           })
@@ -275,6 +278,7 @@ export default function Calendar() {
             end: endDate,
             rrule: currentEvent.rrule,
             allDay: currentEvent.allDay,
+            location: currentEvent.location,
           })
         }
         inEvent = false
@@ -294,6 +298,14 @@ export default function Calendar() {
         } else if (trimmed.startsWith('DURATION:')) {
           const durationStr = trimmed.substring(9)
           currentEvent.durationMs = parseDurationMs(durationStr)
+        } else if (trimmed.startsWith('LOCATION:')) {
+          const rawLocation = trimmed.substring(9)
+          // Unescape ICS text: replace \n with spaces, \, with commas, and \\ with \
+          currentEvent.location = rawLocation
+            .replace(/\\n/g, ', ')
+            .replace(/\\,/g, ',')
+            .replace(/\\\\/g, '\\')
+            .trim()
         }
       }
     }
@@ -370,6 +382,7 @@ export default function Calendar() {
                 title: event.title,
                 start: new Date(occDate),
                 end: new Date(occDate.getTime() + durationMs),
+                location: event.location,
               })
               count += 1
               if (rule.count && count >= rule.count) return occurrences
@@ -390,6 +403,7 @@ export default function Calendar() {
               title: event.title,
               start: new Date(cursor),
               end: new Date(cursor.getTime() + durationMs),
+              location: event.location,
             })
             count += 1
             if (rule.count && count >= rule.count) return occurrences
@@ -420,6 +434,7 @@ export default function Calendar() {
                 title: event.title,
                 start: new Date(occStart),
                 end: new Date(occStart.getTime() + durationMs),
+                location: event.location,
               })
             }
           }
@@ -641,10 +656,15 @@ export default function Calendar() {
 
     if (isAllDay) return 'All day'
 
-    const hour12 = startHours % 12 || 12
-    const minuteText = startMinutes === 0 ? '' : `:${String(startMinutes).padStart(2, '0')}`
-    const suffix = startHours >= 12 ? 'pm' : 'am'
-    return `${hour12}${minuteText}${suffix}`
+    const startHour12 = startHours % 12 || 12
+    const startMinuteText = startMinutes === 0 ? '' : `:${String(startMinutes).padStart(2, '0')}`
+    const startSuffix = startHours >= 12 ? 'pm' : 'am'
+    
+    const endHour12 = endHours % 12 || 12
+    const endMinuteText = endMinutes === 0 ? '' : `:${String(endMinutes).padStart(2, '0')}`
+    const endSuffix = endHours >= 12 ? 'pm' : 'am'
+    
+    return `${startHour12}${startMinuteText}${startSuffix} - ${endHour12}${endMinuteText}${endSuffix}`
   }
 
   const buildMultiDaySegments = () => {
@@ -783,6 +803,106 @@ export default function Calendar() {
       date.getMonth() === today.getMonth() &&
       date.getFullYear() === today.getFullYear()
     )
+  }
+
+  // Helper to get hour slots for timeline view (00:00 to 23:00)
+  const getHourSlots = () => {
+    return Array.from({ length: 24 }, (_, i) => i)
+  }
+
+  // Helper to check if event is all-day
+  const isAllDayEvent = (event: CalendarEvent): boolean => {
+    const start = event.start
+    const end = event.end
+    return (
+      start.getHours() === 0 &&
+      start.getMinutes() === 0 &&
+      end.getHours() === 0 &&
+      end.getMinutes() === 0 &&
+      event.daysSpanned >= 1
+    )
+  }
+
+  // Helper to get event position and height in timeline
+  const getEventTimelinePosition = (event: CalendarEvent, date: Date) => {
+    const dayStart = new Date(date)
+    dayStart.setHours(0, 0, 0, 0)
+    const dayEnd = new Date(date)
+    dayEnd.setHours(23, 59, 59, 999)
+
+    const eventStart = new Date(event.start)
+    const eventEnd = new Date(event.end)
+
+    // Clamp to the day boundaries
+    const displayStart = eventStart < dayStart ? dayStart : eventStart
+    const displayEnd = eventEnd > dayEnd ? dayEnd : eventEnd
+
+    const startMinutes = displayStart.getHours() * 60 + displayStart.getMinutes()
+    const endMinutes = displayEnd.getHours() * 60 + displayEnd.getMinutes()
+    const durationMinutes = endMinutes - startMinutes
+
+    return {
+      top: (startMinutes / 60) * 60, // 60px per hour
+      height: Math.max((durationMinutes / 60) * 60, 30), // minimum 30px
+      startMinutes,
+      endMinutes,
+    }
+  }
+
+  // Helper to check if two events overlap
+  const eventsOverlap = (event1: CalendarEvent, event2: CalendarEvent, date: Date): boolean => {
+    const pos1 = getEventTimelinePosition(event1, date)
+    const pos2 = getEventTimelinePosition(event2, date)
+    return pos1.startMinutes < pos2.endMinutes && pos2.startMinutes < pos1.endMinutes
+  }
+
+  // Helper to assign events to columns to avoid overlap
+  const layoutEventsInColumns = (events: CalendarEvent[], date: Date) => {
+    if (events.length === 0) return []
+
+    // Sort events by start time, then by duration (longer first)
+    const sortedEvents = [...events].sort((a, b) => {
+      const aPos = getEventTimelinePosition(a, date)
+      const bPos = getEventTimelinePosition(b, date)
+      if (aPos.startMinutes !== bPos.startMinutes) {
+        return aPos.startMinutes - bPos.startMinutes
+      }
+      return bPos.height - aPos.height
+    })
+
+    const columns: CalendarEvent[][] = []
+    const eventColumns: Map<string, number> = new Map()
+
+    for (const event of sortedEvents) {
+      let placed = false
+      for (let colIndex = 0; colIndex < columns.length; colIndex++) {
+        const column = columns[colIndex]
+        const hasOverlap = column.some(e => eventsOverlap(e, event, date))
+        if (!hasOverlap) {
+          column.push(event)
+          eventColumns.set(event.id, colIndex)
+          placed = true
+          break
+        }
+      }
+      if (!placed) {
+        columns.push([event])
+        eventColumns.set(event.id, columns.length - 1)
+      }
+    }
+
+    return sortedEvents.map(event => ({
+      event,
+      column: eventColumns.get(event.id) || 0,
+      totalColumns: columns.length,
+    }))
+  }
+
+  // Helper to get current time position
+  const getCurrentTimePosition = (): number => {
+    const now = new Date()
+    const minutes = now.getHours() * 60 + now.getMinutes()
+    return (minutes / 60) * 60 // 60px per hour
   }
 
   return (
@@ -945,41 +1065,100 @@ export default function Calendar() {
       )}
       
       {viewMode === 'weekly' && (
-        <div className="calendar-grid weekly-view">
-          <div className="calendar-header">
-            {getWeekDays().map((date, index) => (
-              <div key={index} className="calendar-header-cell">
-                <div>{['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][index]}</div>
-                <div className="header-date">{date.getDate()}</div>
-              </div>
-            ))}
-          </div>
-          <div className="week-row">
+        <div className="calendar-grid weekly-timeline">
+          <div className="timeline-header">
+            <div className="timeline-header-corner"></div>
             {getWeekDays().map((date, index) => {
-              const dayEvents = getEventsForDate(date)
               const isTodayFlag = isDateToday(date)
-
               return (
-                <div
-                  key={index}
-                  className={`calendar-cell ${isTodayFlag ? 'today' : ''}`}
-                >
-                  <div className="day-events scrollable">
-                    {dayEvents.map(event => (
-                      <div
-                        key={event.id}
-                        className="event-row"
-                        title={event.title}
-                      >
-                        <span className="event-dot" style={{ backgroundColor: event.color }}></span>
-                        <span className="event-time">{formatEventTime(event)}</span>
-                        <span className="event-title">{event.title}</span>
-                      </div>
-                    ))}
-                  </div>
+                <div key={index} className={`timeline-header-day ${isTodayFlag ? 'today' : ''}`}>
+                  <div className="timeline-day-name">{['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][index]} <span className="timeline-day-num">{date.getDate()}</span></div>
                 </div>
               )
             })}
+          </div>
+          <div className="timeline-body">
+            <div className="timeline-hours">
+              <div className="timeline-all-day-label">all-day</div>
+              {getHourSlots().map(hour => (
+                <div key={hour} className="timeline-hour-label">
+                  {hour.toString().padStart(2, '0')}:00
+                </div>
+              ))}
+            </div>
+            <div className="timeline-grid">
+              {/* All-day events row */}
+              <div className="timeline-all-day-row">
+                {getWeekDays().map((date, dayIndex) => {
+                  const dayEvents = getEventsForDate(date).filter(e => isAllDayEvent(e))
+                  return (
+                    <div key={dayIndex} className="timeline-all-day-cell">
+                      {dayEvents.map(event => (
+                        <div
+                          key={event.id}
+                          className="timeline-all-day-event"
+                          style={{ backgroundColor: event.color }}
+                          title={event.title}
+                        >
+                          {event.title}
+                        </div>
+                      ))}
+                    </div>
+                  )
+                })}
+              </div>
+              {/* Time grid */}
+              <div className="timeline-time-grid">
+                {getHourSlots().map(hour => (
+                  <div key={hour} className="timeline-hour-row">
+                    {getWeekDays().map((_date, dayIndex) => (
+                      <div key={dayIndex} className="timeline-hour-cell"></div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+              {/* Events overlay */}
+              <div className="timeline-events-overlay">
+                {getWeekDays().map((date, dayIndex) => {
+                  const dayEvents = getEventsForDate(date).filter(e => !isAllDayEvent(e))
+                  const layoutedEvents = layoutEventsInColumns(dayEvents, date)
+                  return (
+                    <div key={dayIndex} className="timeline-day-events" style={{ left: `${(dayIndex / 7) * 100}%` }}>
+                      {layoutedEvents.map(({ event, column, totalColumns }) => {
+                        const position = getEventTimelinePosition(event, date)
+                        const columnWidth = 100 / totalColumns
+                        const leftOffset = column * columnWidth
+                        return (
+                          <div
+                            key={event.id}
+                            className="timeline-event"
+                            style={{
+                              top: `${position.top}px`,
+                              height: `${position.height}px`,
+                              left: `${leftOffset}%`,
+                              width: `${columnWidth}%`,
+                              backgroundColor: event.color,
+                            }}
+                            title={event.title}
+                          >
+                            <div className="timeline-event-time">{formatEventTime(event)}</div>
+                            <div className="timeline-event-title">{event.title}</div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )
+                })}
+              </div>
+              {/* Current time marker */}
+              <div 
+                className="timeline-current-time" 
+                style={{ top: `${getCurrentTimePosition()}px` }}
+              >
+                <div className="timeline-current-time-dot"></div>
+                <div className="timeline-current-time-line"></div>
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -999,7 +1178,10 @@ export default function Calendar() {
                 style={{ borderLeftColor: event.color }}
               >
                 <div className="daily-event-time">{formatEventTime(event)}</div>
-                <div className="daily-event-title">{event.title}</div>
+                <div className="daily-event-details">
+                  <div className="daily-event-title">{event.title}</div>
+                  {event.location && <div className="daily-event-location">{event.location}</div>}
+                </div>
               </div>
             ))}
             {getEventsForDate(currentDate).length === 0 && (
