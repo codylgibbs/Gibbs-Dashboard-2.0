@@ -102,6 +102,7 @@ export default function Calendar() {
       const allEvents: CalendarEvent[] = []
       const rangeStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
       const rangeEnd = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
+      let eventCounter = 0
 
       for (let i = 0; i < urls.length; i++) {
         try {
@@ -120,7 +121,7 @@ export default function Calendar() {
               )
 
               allEvents.push({
-                id: `${i}-${occurrence.title}-${occurrence.start.getTime()}`,
+                id: `${i}-${occurrence.title}-${occurrence.start.getTime()}-${eventCounter++}`,
                 title: occurrence.title,
                 start: startDate,
                 end: endDate,
@@ -135,7 +136,15 @@ export default function Calendar() {
         }
       }
 
-      setEvents(allEvents)
+      // Deduplicate events based on title and start time
+      const uniqueEvents = allEvents.filter((event, index, self) => {
+        return index === self.findIndex((e) => 
+          e.title === event.title && 
+          e.start.getTime() === event.start.getTime()
+        )
+      })
+
+      setEvents(uniqueEvents)
     }
 
     fetchCalendars()
@@ -429,6 +438,7 @@ export default function Calendar() {
 
   const parseICSDate = (dateStr: string): Date => {
     // Handle both YYYYMMDD and YYYYMMDDTHHMMSS formats
+    const isUTC = dateStr.endsWith('Z')
     const normalized = dateStr.replace(/Z$/, '')
     if (normalized.includes('T')) {
       const [date, time] = normalized.split('T')
@@ -438,6 +448,11 @@ export default function Calendar() {
       const hours = parseInt(time.substring(0, 2))
       const minutes = parseInt(time.substring(2, 4))
       const seconds = parseInt(time.substring(4, 6))
+      
+      if (isUTC) {
+        // Use UTC constructor and let JavaScript convert to local time
+        return new Date(Date.UTC(year, month, day, hours, minutes, seconds))
+      }
       return new Date(year, month, day, hours, minutes, seconds)
     } else {
       const year = parseInt(normalized.substring(0, 4))
@@ -471,6 +486,13 @@ export default function Calendar() {
       const eventEnd = new Date(event.end)
       eventStart.setHours(0, 0, 0, 0)
       eventEnd.setHours(0, 0, 0, 0)
+      
+      // Skip multi-day events (they're shown in the multi-day section)
+      const sameDay = eventStart.toDateString() === getAdjustedEndDate(event.end).toDateString()
+      if (!sameDay || event.daysSpanned > 1) {
+        return false
+      }
+      
       if (eventEnd.getTime() === eventStart.getTime()) {
         return targetDate.getTime() === eventStart.getTime()
       }
@@ -680,6 +702,7 @@ export default function Calendar() {
 
                 const dayEvents = getEventsForDay(day)
                 const isTodayFlag = isToday(day)
+                const shouldScroll = dayEvents.length > 3
 
                 return (
                   <div
@@ -689,35 +712,18 @@ export default function Calendar() {
                     <div className="day-number">
                       <span className="day-date">{day}</span>
                     </div>
-                    <div className="day-events">
-                      {dayEvents.length > 3 ? (
-                        <>
-                          {dayEvents.slice(0, 2).map(event => (
-                            <div
-                              key={event.id}
-                              className="event-row"
-                              title={event.title}
-                            >
-                              <span className="event-dot" style={{ backgroundColor: event.color }}></span>
-                              <span className="event-time">{formatEventTime(event)}</span>
-                              <span className="event-title">{event.title}</span>
-                            </div>
-                          ))}
-                          <div className="event-overflow">+{dayEvents.length - 2} more</div>
-                        </>
-                      ) : (
-                        dayEvents.map(event => (
-                          <div
-                            key={event.id}
-                            className="event-row"
-                            title={event.title}
-                          >
-                            <span className="event-dot" style={{ backgroundColor: event.color }}></span>
-                            <span className="event-time">{formatEventTime(event)}</span>
-                            <span className="event-title">{event.title}</span>
-                          </div>
-                        ))
-                      )}
+                    <div className={`day-events ${shouldScroll ? 'scrollable' : ''}`}>
+                      {dayEvents.map(event => (
+                        <div
+                          key={event.id}
+                          className="event-row"
+                          title={event.title}
+                        >
+                          <span className="event-dot" style={{ backgroundColor: event.color }}></span>
+                          <span className="event-time">{formatEventTime(event)}</span>
+                          <span className="event-title">{event.title}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 )
