@@ -26,6 +26,17 @@ export default function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [daysInMonth, setDaysInMonth] = useState<number[]>([])
   const [firstDayOffset, setFirstDayOffset] = useState(0)
+  const [settingsOpen, setSettingsOpen] = useState(false)
+  const [hiddenCalendars, setHiddenCalendars] = useState<number[]>(() => {
+    try {
+      const stored = localStorage.getItem('hiddenCalendars')
+      if (!stored) return []
+      const parsed = JSON.parse(stored)
+      return Array.isArray(parsed) ? parsed.filter((value) => Number.isFinite(value)) : []
+    } catch {
+      return []
+    }
+  })
 
   const getCalendarColors = (count: number): string[] => {
     const colors: string[] = []
@@ -43,6 +54,22 @@ export default function Calendar() {
     }
 
     return colors
+  }
+
+  const getCalendarName = (index: number): string => {
+    const raw = import.meta.env?.[`VITE_Calendar_name_${index}` as keyof ImportMetaEnv] as
+      | string
+      | undefined
+    if (raw && raw.trim().length > 0) {
+      return raw.trim().replace(/^['"]|['"]$/g, '')
+    }
+    return `Calendar ${index}`
+  }
+
+  const toggleCalendarVisibility = (index: number) => {
+    setHiddenCalendars((prev) =>
+      prev.includes(index) ? prev.filter((value) => value !== index) : [...prev, index]
+    )
   }
 
   const fetchIcs = async (url: string): Promise<string> => {
@@ -167,6 +194,10 @@ export default function Calendar() {
     }
     setDaysInMonth(days)
   }, [currentDate])
+
+  useEffect(() => {
+    localStorage.setItem('hiddenCalendars', JSON.stringify(hiddenCalendars))
+  }, [hiddenCalendars])
 
   const goToToday = () => setCurrentDate(new Date())
   const goToPrevMonth = () => {
@@ -482,6 +513,9 @@ export default function Calendar() {
     targetDate.setHours(0, 0, 0, 0)
 
     return events.filter(event => {
+      if (hiddenCalendars.includes(event.calendarIndex)) {
+        return false
+      }
       const eventStart = new Date(event.start)
       const eventEnd = new Date(event.end)
       eventStart.setHours(0, 0, 0, 0)
@@ -515,6 +549,10 @@ export default function Calendar() {
   const monthRangeLabel = `${monthShort} 1 - ${monthShort} ${lastDayOfMonth}, ${year}`
   const monthStart = new Date(year, currentDate.getMonth(), 1)
   const monthEnd = new Date(year, currentDate.getMonth(), lastDayOfMonth, 23, 59, 59, 999)
+  const calendarUrlsStr = import.meta.env?.VITE_CALENDAR_URLS as string | undefined
+  const calendarUrls = calendarUrlsStr ? calendarUrlsStr.split(',').map(u => u.trim()) : []
+  const calendarColors = getCalendarColors(calendarUrls.length)
+  const calendarNames = calendarUrls.map((_, index) => getCalendarName(index + 1))
 
   const getAdjustedEndDate = (date: Date) => {
     const adjusted = new Date(date)
@@ -565,6 +603,7 @@ export default function Calendar() {
     const segments: Segment[] = []
 
     events.forEach(event => {
+      if (hiddenCalendars.includes(event.calendarIndex)) return
       const eventStart = new Date(event.start)
       const eventEnd = getAdjustedEndDate(event.end)
       const sameDay = eventStart.toDateString() === eventEnd.toDateString()
@@ -659,9 +698,46 @@ export default function Calendar() {
           <button className="calendar-btn" onClick={goToNextMonth} aria-label="Next month">
             Next →
           </button>
-          <button className="calendar-btn icon" aria-label="Settings">
+          <button
+            className="calendar-btn icon"
+            aria-label="Settings"
+            aria-pressed={settingsOpen}
+            onClick={() => setSettingsOpen((open) => !open)}
+          >
             ⚙︎
           </button>
+          {settingsOpen && (
+            <div className="calendar-settings" role="dialog" aria-label="Calendar settings">
+              <div className="settings-title">Calendars</div>
+              <div className="settings-list">
+                {calendarUrls.length === 0 ? (
+                  <div className="settings-empty">No calendars configured</div>
+                ) : (
+                  calendarUrls.map((_, index) => {
+                    const isHidden = hiddenCalendars.includes(index)
+                    const color = calendarColors[index % calendarColors.length]
+                    const name = calendarNames[index]
+
+                    return (
+                      <label
+                        key={`calendar-setting-${index}`}
+                        className={`settings-row ${isHidden ? 'is-hidden' : ''}`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={!isHidden}
+                          onChange={() => toggleCalendarVisibility(index)}
+                          aria-label={`Toggle ${name}`}
+                        />
+                        <span className="settings-color" style={{ backgroundColor: color }}></span>
+                        <span className="settings-name">{name}</span>
+                      </label>
+                    )
+                  })
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <div className="calendar-grid">
