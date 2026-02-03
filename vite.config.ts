@@ -12,6 +12,12 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/calendar/, '/calendar'),
         secure: false
+      },
+      '/api/calendar-import': {
+        target: 'https://import.calendar.google.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/calendar-import/, '/calendar'),
+        secure: false
       }
     }
   }

@@ -45,7 +45,17 @@ export default function Calendar() {
 
   const fetchIcs = async (url: string): Promise<string> => {
     // Convert Google Calendar URL to use Vite proxy
-    const proxyUrl = url.replace('https://calendar.google.com/calendar', '/api/calendar')
+    let proxyUrl = url
+    try {
+      const parsed = new URL(url)
+      if (parsed.hostname === 'calendar.google.com') {
+        proxyUrl = url.replace('https://calendar.google.com/calendar', '/api/calendar')
+      } else if (parsed.hostname === 'import.calendar.google.com') {
+        proxyUrl = url.replace('https://import.calendar.google.com/calendar', '/api/calendar-import')
+      }
+    } catch {
+      // leave proxyUrl as-is for non-standard URLs
+    }
     
     try {
       const response = await fetch(proxyUrl)
