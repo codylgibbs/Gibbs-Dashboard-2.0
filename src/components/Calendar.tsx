@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import '../styles/Calendar.css'
 
 interface CalendarEvent {
@@ -37,6 +37,8 @@ export default function Calendar({ theme, onThemeChange }: CalendarProps) {
   const [daysInMonth, setDaysInMonth] = useState<number[]>([])
   const [firstDayOffset, setFirstDayOffset] = useState(0)
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const settingsRef = useRef<HTMLDivElement | null>(null)
+  const settingsButtonRef = useRef<HTMLButtonElement | null>(null)
   const [viewMode, setViewMode] = useState<ViewMode>(() => {
     try {
       const stored = localStorage.getItem('calendarViewMode')
@@ -91,10 +93,12 @@ export default function Calendar({ theme, onThemeChange }: CalendarProps) {
     setHiddenCalendars((prev) =>
       prev.includes(index) ? prev.filter((value) => value !== index) : [...prev, index]
     )
+    setSettingsOpen(false)
   }
 
   const toggleTheme = (newTheme: Theme) => {
     onThemeChange(newTheme)
+    setSettingsOpen(false)
   }
 
   const fetchIcs = async (url: string): Promise<string> => {
@@ -247,6 +251,30 @@ export default function Calendar({ theme, onThemeChange }: CalendarProps) {
   useEffect(() => {
     localStorage.setItem('calendarViewMode', viewMode)
   }, [viewMode])
+
+  useEffect(() => {
+    if (!settingsOpen) return
+
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node
+      if (settingsRef.current?.contains(target)) return
+      if (settingsButtonRef.current?.contains(target)) return
+      setSettingsOpen(false)
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setSettingsOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [settingsOpen])
 
   const goToToday = () => setCurrentDate(new Date())
   const goToPrev = () => {
@@ -659,7 +687,7 @@ export default function Calendar({ theme, onThemeChange }: CalendarProps) {
     const targetDate = new Date(year, month, day)
     targetDate.setHours(0, 0, 0, 0)
 
-    return events.filter(event => {
+    const filteredEvents = events.filter(event => {
       if (hiddenCalendars.includes(event.calendarIndex)) {
         return false
       }
@@ -685,6 +713,9 @@ export default function Calendar({ theme, onThemeChange }: CalendarProps) {
       }
       return targetDate >= eventStart && targetDate < eventEnd
     })
+
+    // Sort events by start time
+    return filteredEvents.sort((a, b) => a.start.getTime() - b.start.getTime())
   }
 
   const isToday = (day: number): boolean => {
@@ -700,28 +731,20 @@ export default function Calendar({ theme, onThemeChange }: CalendarProps) {
   const year = currentDate.getFullYear()
   const lastDayOfMonth = new Date(year, currentDate.getMonth() + 1, 0).getDate()
   
-  // Generate title label based on view mode
+  // Generate title label based on view mode (without date ranges)
   let titleLabel = ''
   if (viewMode === 'monthly') {
-    titleLabel = `${monthShort} 1 - ${monthShort} ${lastDayOfMonth}, ${year}`
+    titleLabel = `${currentDate.toLocaleString('en-US', { month: 'long' })} ${year}`
   } else if (viewMode === 'weekly') {
     const dayOfWeek = currentDate.getDay()
     const weekStart = new Date(currentDate)
     weekStart.setDate(currentDate.getDate() - dayOfWeek)
-    const weekEnd = new Date(weekStart)
-    weekEnd.setDate(weekStart.getDate() + 6)
     
-    const startMonth = weekStart.toLocaleString('en-US', { month: 'short' })
-    const endMonth = weekEnd.toLocaleString('en-US', { month: 'short' })
-    
-    if (startMonth === endMonth) {
-      titleLabel = `${startMonth} ${weekStart.getDate()} - ${weekEnd.getDate()}, ${weekStart.getFullYear()}`
-    } else {
-      titleLabel = `${startMonth} ${weekStart.getDate()} - ${endMonth} ${weekEnd.getDate()}, ${weekStart.getFullYear()}`
-    }
+    const startMonth = weekStart.toLocaleString('en-US', { month: 'long' })
+    titleLabel = `${startMonth} ${weekStart.getFullYear()}`
   } else {
     // daily view
-    titleLabel = currentDate.toLocaleString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
+    titleLabel = currentDate.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
   }
   
   const monthStart = new Date(year, currentDate.getMonth(), 1)
@@ -1038,54 +1061,73 @@ export default function Calendar({ theme, onThemeChange }: CalendarProps) {
   return (
     <div className="calendar">
       <div className="calendar-toolbar">
-        <h2 className="calendar-title">{titleLabel}</h2>
+        <div className="calendar-title-row">
+          <h2 className="calendar-title">{titleLabel}</h2>
+          <div className="calendar-nav-compact">
+            <button 
+              className="calendar-btn icon" 
+              onClick={goToPrev} 
+              aria-label={`Previous ${viewMode === 'monthly' ? 'month' : viewMode === 'weekly' ? 'week' : 'day'}`}
+            >
+              ‹
+            </button>
+            <button className="calendar-btn compact" onClick={goToToday} aria-label="Go to today">
+              Today
+            </button>
+            <button 
+              className="calendar-btn icon" 
+              onClick={goToNext} 
+              aria-label={`Next ${viewMode === 'monthly' ? 'month' : viewMode === 'weekly' ? 'week' : 'day'}`}
+            >
+              ›
+            </button>
+            <button
+              className="calendar-btn icon"
+              aria-label="Settings"
+              aria-pressed={settingsOpen}
+              onClick={() => setSettingsOpen((open) => !open)}
+              ref={settingsButtonRef}
+            >
+              ⚙︎
+            </button>
+          </div>
+        </div>
         <div className="calendar-controls">
-          <button 
-            className="calendar-btn" 
-            onClick={goToPrev} 
-            aria-label={`Previous ${viewMode === 'monthly' ? 'month' : viewMode === 'weekly' ? 'week' : 'day'}`}
-          >
-            ← Prev
-          </button>
-          <button className="calendar-btn" onClick={goToToday} aria-label="Go to today">
-            Today
-          </button>
-          <button 
-            className="calendar-btn" 
-            onClick={goToNext} 
-            aria-label={`Next ${viewMode === 'monthly' ? 'month' : viewMode === 'weekly' ? 'week' : 'day'}`}
-          >
-            Next →
-          </button>
-          <button
-            className="calendar-btn icon"
-            aria-label="Settings"
-            aria-pressed={settingsOpen}
-            onClick={() => setSettingsOpen((open) => !open)}
-          >
-            ⚙︎
-          </button>
           {settingsOpen && (
-            <div className="calendar-settings" role="dialog" aria-label="Calendar settings">
+            <div
+              className="calendar-settings"
+              role="dialog"
+              aria-label="Calendar settings"
+              ref={settingsRef}
+            >
               <div className="settings-title">View</div>
               <div className="settings-view-modes">
                 <button
                   className={`view-mode-btn ${viewMode === 'monthly' ? 'active' : ''}`}
-                  onClick={() => setViewMode('monthly')}
+                  onClick={() => {
+                    setViewMode('monthly')
+                    setSettingsOpen(false)
+                  }}
                   aria-pressed={viewMode === 'monthly'}
                 >
                   Monthly
                 </button>
                 <button
                   className={`view-mode-btn ${viewMode === 'weekly' ? 'active' : ''}`}
-                  onClick={() => setViewMode('weekly')}
+                  onClick={() => {
+                    setViewMode('weekly')
+                    setSettingsOpen(false)
+                  }}
                   aria-pressed={viewMode === 'weekly'}
                 >
                   Weekly
                 </button>
                 <button
                   className={`view-mode-btn ${viewMode === 'daily' ? 'active' : ''}`}
-                  onClick={() => setViewMode('daily')}
+                  onClick={() => {
+                    setViewMode('daily')
+                    setSettingsOpen(false)
+                  }}
                   aria-pressed={viewMode === 'daily'}
                 >
                   Daily
@@ -1143,7 +1185,7 @@ export default function Calendar({ theme, onThemeChange }: CalendarProps) {
       {viewMode === 'monthly' && (
         <div className="calendar-grid">
           <div className="calendar-header">
-            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+            {['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map(day => (
               <div key={day} className="calendar-header-cell">{day}</div>
             ))}
           </div>
@@ -1219,7 +1261,7 @@ export default function Calendar({ theme, onThemeChange }: CalendarProps) {
               const isTodayFlag = isDateToday(date)
               return (
                 <div key={index} className={`timeline-header-day ${isTodayFlag ? 'today' : ''}`}>
-                  <div className="timeline-day-name">{['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][index]} <span className="timeline-day-num">{date.getDate()}</span></div>
+                  <div className="timeline-day-name">{['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][index]} <span className="timeline-day-num">{date.getDate()}</span></div>
                 </div>
               )
             })}
@@ -1314,7 +1356,7 @@ export default function Calendar({ theme, onThemeChange }: CalendarProps) {
         <div className="calendar-grid daily-view">
           <div className="daily-header">
             <div className="daily-date">
-              {currentDate.toLocaleString('en-US', { weekday: 'short' })} {currentDate.getDate()}
+              {currentDate.toLocaleString('en-US', { weekday: 'long' })} {currentDate.getDate()}
             </div>
           </div>
           <div className="daily-events">

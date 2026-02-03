@@ -11,6 +11,12 @@
 
 .calendar-toolbar {
   display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1vh, 12px);
+}
+
+.calendar-title-row {
+  display: flex;
   align-items: center;
   justify-content: space-between;
   gap: clamp(12px, 1.6vw, 20px);
@@ -21,6 +27,13 @@
   font-weight: 600;
   color: #f1f3f6;
   margin: 0;
+  white-space: nowrap;
+}
+
+.calendar-nav-compact {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .calendar-controls {
@@ -149,13 +162,18 @@
 }
 
 .calendar-btn.icon {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
+}
+
+.calendar-btn.compact {
+  padding: 5px 10px;
+  font-size: 0.62rem;
 }
 
 .calendar-grid {
@@ -509,13 +527,19 @@
 .timeline-all-day-event {
   padding: 4px 8px;
   border-radius: 4px;
-  font-size: 0.64rem;
+  font-size: 0.78rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.95);
-  white-space: nowrap;
+  color: #0b1220;
+  white-space: normal;
+  line-height: 1.25;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
   border-left: 3px solid rgba(255, 255, 255, 0.3);
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.25);
+  word-break: break-word;
 }
 
 .timeline-time-grid {
@@ -558,14 +582,16 @@
   position: absolute;
   padding: 4px 8px;
   border-radius: 4px;
-  font-size: 0.64rem;
-  color: rgba(255, 255, 255, 0.95);
+  font-size: 0.78rem;
+  color: #0b1220;
+  line-height: 1.25;
   overflow: hidden;
   border-left: 3px solid rgba(255, 255, 255, 0.3);
   pointer-events: all;
   cursor: pointer;
   transition: transform 0.1s, box-shadow 0.1s;
   margin: 0 2px;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.25);
 }
 
 .timeline-event:hover {
@@ -576,19 +602,22 @@
 
 .timeline-event-time {
   font-weight: 700;
-  font-size: 0.6rem;
+  font-size: 0.72rem;
   margin-bottom: 2px;
-  opacity: 0.95;
+  color: #0b1220;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.35);
 }
 
 .timeline-event-title {
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.25;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
+  color: #0b1220;
+  word-break: break-word;
 }
 
 /* Current time marker */

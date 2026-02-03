@@ -247,16 +247,30 @@
 }
 
 .app-container.theme-light .current-weather {
-  background: transparent;
-  border: none;
+  background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
+  border: 2px solid rgba(59, 130, 246, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.app-container.theme-light .weather-container.compact .current-weather {
+  background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
+  border: 2px solid rgba(59, 130, 246, 0.25);
+  border-radius: 12px;
+  padding: clamp(8px, 1.2vw, 14px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 .app-container.theme-light .temp {
-  color: #1a202c;
+  color: #0369a1;
+  font-weight: 800;
+  text-shadow: 0 2px 4px rgba(3, 105, 161, 0.15);
 }
 
 .app-container.theme-light .condition {
-  color: #2d3748;
+  color: #0369a1;
+  font-weight: 600;
 }
 
 .app-container.theme-light .location {
@@ -317,16 +331,30 @@
 }
 
 .app-container.theme-light .chip-day {
-  color: #2d3748;
+  color: #1a202c;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .app-container.theme-light .chip-temps {
   color: #1a202c;
-  font-weight: 700;
+  font-weight: 800;
+  font-size: 0.85rem;
 }
 
 .app-container.theme-light .forecast-chip {
-  background: transparent;
-  border: none;
+  background: linear-gradient(135deg, #f0f4f8 0%, #ffffff 100%);
+  border: 2px solid rgba(0, 0, 0, 0.15);
   padding: clamp(6px, 0.8vh, 10px) clamp(8px, 1vw, 12px);
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.app-container.theme-light .forecast-chip:hover {
+  background: linear-gradient(135deg, #e8f0f7 0%, #f8fcff 100%);
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
 }
