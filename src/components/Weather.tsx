@@ -18,6 +18,14 @@ interface ForecastDay {
   icon: string
 }
 
+interface WeatherAlert {
+  event: string
+  description: string
+  start: number
+  end: number
+  senderName: string
+}
+
 type WeatherVariant = 'compact' | 'full'
 
 interface WeatherProps {
@@ -27,6 +35,7 @@ interface WeatherProps {
 export default function Weather({ variant = 'full' }: WeatherProps) {
   const [current, setCurrent] = useState<WeatherData | null>(null)
   const [forecast, setForecast] = useState<ForecastDay[]>([])
+  const [alerts, setAlerts] = useState<WeatherAlert[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -83,6 +92,25 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
 
         const forecastArray = Object.values(forecastMap).slice(0, 5)
         setForecast(forecastArray)
+
+        try {
+          const alertsResponse = await axios.get(
+            `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`
+          )
+          const rawAlerts = alertsResponse.data?.alerts ?? []
+          const normalizedAlerts = rawAlerts.map((alert: any) => ({
+            event: alert.event || 'Weather Alert',
+            description: alert.description || '',
+            start: alert.start || 0,
+            end: alert.end || 0,
+            senderName: alert.sender_name || 'OpenWeather',
+          }))
+          setAlerts(normalizedAlerts)
+        } catch (alertError) {
+          setAlerts([])
+          console.warn('Weather alerts fetch error:', alertError)
+        }
+
         setError('')
       } catch (err) {
         setError('Failed to load weather data')
@@ -121,6 +149,17 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
     return iconMap[icon] || '🌡️'
   }
 
+  const formatAlertTime = (timestamp: number): string => {
+    if (!timestamp) return 'Unknown'
+    return new Date(timestamp * 1000).toLocaleString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+    })
+  }
+
   if (loading) {
     return <div className={`weather-container ${variant}`}>Loading weather...</div>
   }
@@ -131,6 +170,29 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
 
   return (
     <div className={`weather-container ${variant}`}>
+      {alerts.length > 0 && (
+        <div className={`weather-alerts ${variant}`}>
+          {variant === 'compact' ? (
+            <div className="alert-compact">
+              <span className="alert-pill">Alerts</span>
+              <span className="alert-count">{alerts.length}</span>
+            </div>
+          ) : (
+            alerts.map(alert => (
+              <div key={`${alert.event}-${alert.start}`} className="alert-card">
+                <div className="alert-title">⚠️ {alert.event}</div>
+                <div className="alert-meta">
+                  {formatAlertTime(alert.start)} - {formatAlertTime(alert.end)}
+                </div>
+                <div className="alert-source">{alert.senderName}</div>
+                {alert.description && (
+                  <div className="alert-desc">{alert.description}</div>
+                )}
+              </div>
+            ))
+          )}
+        </div>
+      )}
       <div className="current-weather">
         <div className="weather-icon">{current ? getWeatherEmoji(current.icon) : ''}</div>
         <div className="weather-details">

@@ -26,6 +26,77 @@
   font-size: 1.2rem;
 }
 
+.weather-alerts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.weather-alerts.compact {
+  order: 2;
+}
+
+.alert-card {
+  background: rgba(255, 107, 107, 0.12);
+  border: 1px solid rgba(255, 107, 107, 0.35);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.alert-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffd1d1;
+}
+
+.alert-meta {
+  font-size: 0.85rem;
+  color: #ffbdbd;
+  font-weight: 600;
+}
+
+.alert-source {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.alert-desc {
+  font-size: 0.85rem;
+  color: #f8d7d7;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+.alert-compact {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 107, 107, 0.18);
+  border: 1px solid rgba(255, 107, 107, 0.4);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffe1e1;
+}
+
+.alert-pill {
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.alert-count {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-weight: 800;
+}
+
 .current-weather {
   display: flex;
   align-items: center;
@@ -229,6 +300,10 @@
     margin-left: 0;
     align-items: flex-start;
   }
+
+  .weather-alerts.compact {
+    order: 0;
+  }
 }
 
 @media (max-width: 480px) {
@@ -244,6 +319,38 @@
 
 .app-container.theme-light .weather-container.error {
   color: #dc2626;
+}
+
+.app-container.theme-light .alert-card {
+  background: #fff5f5;
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.app-container.theme-light .alert-title {
+  color: #b91c1c;
+}
+
+.app-container.theme-light .alert-meta {
+  color: #dc2626;
+}
+
+.app-container.theme-light .alert-source {
+  color: #7f1d1d;
+}
+
+.app-container.theme-light .alert-desc {
+  color: #7f1d1d;
+}
+
+.app-container.theme-light .alert-compact {
+  background: #ffe4e6;
+  border: 1px solid rgba(225, 29, 72, 0.3);
+  color: #9f1239;
+}
+
+.app-container.theme-light .alert-count {
+  background: rgba(220, 38, 38, 0.15);
 }
 
 .app-container.theme-light .current-weather {
