@@ -1,4 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import { jsxs as _jsxs, jsx as _jsx, Fragment as _Fragment } from "react/jsx-runtime";
 import { useEffect, useMemo, useState } from 'react';
 import '../styles/EmergencyAlertBanner.css';
 const ALERT_SEVERITY_ORDER = {
@@ -122,5 +122,6 @@ export default function EmergencyAlertBanner({ onAlertsChange, manualAlertActive
     useEffect(() => {
         onAlertsChange?.(hasAlerts && !loading && !error);
     }, [hasAlerts, loading, error, onAlertsChange]);
-    return (_jsx(_Fragment, { children: (loading || !hasAlerts) && !manualAlertActive ? null : (_jsxs("div", { className: `alert-banner ${hasAlerts || manualAlertActive ? 'active' : 'inactive'}`, children: [_jsx("div", { className: "alert-label", children: manualAlertActive ? 'TEST' : 'Emergency Alert' }), _jsx("div", { className: "alert-content", "aria-live": "polite", children: _jsx("div", { className: "alert-scroll", children: sortedAlerts.map(alert => (_jsxs("span", { className: `alert-item severity-${alert.severity.toLowerCase()}`, children: [alert.event, ": ", alert.headline || 'Stay alert', " \u2014 ", alert.areaDesc] }, alert.id))) }) })] })) }));
+    const renderAlertItems = (keyPrefix) => sortedAlerts.map(alert => (_jsxs("span", { className: `alert-item severity-${alert.severity.toLowerCase()}`, children: [alert.event, ": ", alert.headline || 'Stay alert', " \u2014 ", alert.areaDesc] }, `${keyPrefix}-${alert.id}`)));
+    return (_jsx(_Fragment, { children: (loading || !hasAlerts) && !manualAlertActive ? null : (_jsxs("div", { className: `alert-banner ${hasAlerts || manualAlertActive ? 'active' : 'inactive'}`, children: [_jsx("div", { className: "alert-label", children: manualAlertActive ? 'TEST' : 'Emergency Alert' }), _jsx("div", { className: "alert-content", "aria-live": "polite", children: _jsx("div", { className: "alert-scroll", children: _jsxs("div", { className: "alert-scroll-marquee", children: [_jsx("div", { className: "alert-scroll-track", children: renderAlertItems('primary') }), _jsx("div", { className: "alert-scroll-track", "aria-hidden": "true", children: renderAlertItems('duplicate') })] }) }) })] })) }));
 }

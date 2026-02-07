@@ -153,6 +153,16 @@ export default function EmergencyAlertBanner({
     onAlertsChange?.(hasAlerts && !loading && !error)
   }, [hasAlerts, loading, error, onAlertsChange])
 
+  const renderAlertItems = (keyPrefix: string) =>
+    sortedAlerts.map(alert => (
+      <span
+        key={`${keyPrefix}-${alert.id}`}
+        className={`alert-item severity-${alert.severity.toLowerCase()}`}
+      >
+        {alert.event}: {alert.headline || 'Stay alert'} — {alert.areaDesc}
+      </span>
+    ))
+
   return (
     <>
       {(loading || !hasAlerts) && !manualAlertActive ? null : (
@@ -160,17 +170,16 @@ export default function EmergencyAlertBanner({
           <div className="alert-label">{manualAlertActive ? 'TEST' : 'Emergency Alert'}</div>
           <div className="alert-content" aria-live="polite">
             <div className="alert-scroll">
-              {sortedAlerts.map(alert => (
-                <span
-                  key={alert.id}
-                  className={`alert-item severity-${alert.severity.toLowerCase()}`}
-                >
-                  {alert.event}: {alert.headline || 'Stay alert'} — {alert.areaDesc}
-                </span>
-              ))}
+              <div className="alert-scroll-marquee">
+                <div className="alert-scroll-track">{renderAlertItems('primary')}</div>
+                <div className="alert-scroll-track" aria-hidden="true">
+                  {renderAlertItems('duplicate')}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       )}
     </>
-  )}
+  )
+}

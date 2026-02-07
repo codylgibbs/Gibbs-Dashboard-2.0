@@ -164,10 +164,25 @@
 }
 
 .alert-scroll {
+  overflow: hidden;
+}
+
+.alert-scroll-marquee {
   display: inline-flex;
+  align-items: center;
+  gap: 0;
+  white-space: nowrap;
+  width: max-content;
+  animation: alert-marquee 26s linear infinite;
+}
+
+.alert-scroll-track {
+  display: inline-flex;
+  align-items: center;
   gap: 32px;
   white-space: nowrap;
-  animation: alert-marquee 22s linear infinite;
+  flex: 0 0 auto;
+  padding-right: 32px;
 }
 
 .alert-item {
