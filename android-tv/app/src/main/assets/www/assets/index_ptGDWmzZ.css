@@ -1,0 +1,5 @@
+/*
+Gibbs-Dashboard-2.0 - A Material Design 3.0 dashboard for your Homelab
+Copyright (C) 2023  Cody Gibbs
+*/
+.md-text-field--filled{--md-text-field-container-color: #3b493b}.md-text-field--outlined{--md-text-field-container-color: transparent}.md-text-field{background-color:var(--md-text-field-container-color);border-radius:var(--md-text-field-container-shape);color:var(--md-text-field-label-text-color);display:inline-flex;height:var(--md-text-field-container-height);position:relative}.md-text-field.md-text-field--disabled{opacity:.38}.md-text-field .md-text-field__input{background-color:transparent;border:none;color:var(--md-text-field-input-text-color);font-family:var(--md-text-field-input-text-font);font-size:var(--md-text-field-input-text-size);font-weight:var(--md-text-field-input-text-weight);height:100%;letter-spacing:var(--md-text-field-input-text-tracking);line-height:var(--md-text-field-input-text-line-height);outline:none;padding:0;width:100%;z-index:1}.md-text-field .md-text-field__input::placeholder{color:var(--md-text-field-input-text-placeholder-color)}.md-text-field .md-text-field__input:read-only{cursor:default}

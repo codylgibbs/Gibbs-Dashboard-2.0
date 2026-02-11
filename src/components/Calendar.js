@@ -172,7 +172,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
             setEvents(uniqueEvents);
         };
         fetchCalendars();
-        const interval = setInterval(fetchCalendars, 5 * 60 * 1000); // Refresh every 5 minutes
+        const interval = setInterval(fetchCalendars, 1 * 60 * 1000); // Refresh every 1 minute
         return () => clearInterval(interval);
     }, [currentDate]);
     useEffect(() => {
@@ -247,6 +247,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
     };
     const parseICS = (icsText) => {
         const events = [];
+        const cancellations = new Set();
         const unfolded = icsText.replace(/\r?\n[ \t]/g, '');
         const lines = unfolded.split(/\r?\n/);
         let currentEvent = {};
@@ -258,7 +259,12 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
                 currentEvent = {};
             }
             else if (trimmed === 'END:VEVENT') {
-                if (currentEvent.title && currentEvent.start) {
+                // Track cancellations
+                if (currentEvent.status === 'CANCELLED' && currentEvent.uid) {
+                    cancellations.add(currentEvent.uid);
+                }
+                // Only add event if not cancelled
+                if (currentEvent.title && currentEvent.start && (!currentEvent.uid || !cancellations.has(currentEvent.uid)) && currentEvent.status !== 'CANCELLED') {
                     let endDate = currentEvent.end;
                     if (!endDate) {
                         if (currentEvent.durationMs) {
@@ -311,6 +317,12 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
                         .replace(/\\,/g, ',')
                         .replace(/\\\\/g, '\\')
                         .trim();
+                }
+                else if (trimmed.startsWith('UID:')) {
+                    currentEvent.uid = trimmed.substring(4);
+                }
+                else if (trimmed.startsWith('STATUS:')) {
+                    currentEvent.status = trimmed.substring(7);
                 }
             }
         }

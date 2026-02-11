@@ -1,0 +1,13 @@
+#Mon Feb 09 21:25:39 EST 2026
+base.0=/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/build/intermediates/dex/debug/mergeExtDexDebug/classes.dex
+base.1=/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/build/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
+base.2=/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/build/intermediates/dex/debug/mergeProjectDexDebug/14/classes.dex
+base.3=/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/build/intermediates/global_synthetics_dex/debug/mergeDebugGlobalSynthetics/classes.dex
+path.0=classes.dex
+path.1=0/classes.dex
+path.2=14/classes.dex
+path.3=classes.dex
+renamed.0=classes.dex
+renamed.1=classes2.dex
+renamed.2=classes3.dex
+renamed.3=classes4.dex
