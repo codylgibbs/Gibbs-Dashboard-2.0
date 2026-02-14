@@ -1,0 +1,186 @@
+/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/build.gradle:13: Warning: Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the android.os.Build.VERSION_CODES javadoc for details. [OldTargetApi]
+    targetSdk 34
+    ~~~~~~~~~~~~
+
+   Explanation for issues of type "OldTargetApi":
+   When your application or sdk runs on a version of Android that is more
+   recent than your targetSdk specifies that it has been tested with, various
+   compatibility modes kick in. This ensures that your application continues
+   to work, but it may look out of place. For example, if the targetSdk is
+   less than 14, your app may get an option button in the UI.
+
+   To fix this issue, set the targetSdk to the highest available value. Then
+   test your app to make sure everything works correctly. You may want to
+   consult the compatibility notes to see what changes apply to each version
+   you are adding support for:
+   https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
+   as well as follow this guide:
+   https://developer.android.com/distribute/best-practices/develop/target-sdk.
+   html
+
+   https://developer.android.com/distribute/best-practices/develop/target-sdk.html
+
+/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml:17: Warning: Attribute usesCleartextTraffic is only used in API level 23 and higher (current min is 21) [UnusedAttribute]
+    android:usesCleartextTraffic="true"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "UnusedAttribute":
+   This check finds attributes set in XML files that were introduced in a
+   version newer than the oldest version targeted by your application (with
+   the minSdkVersion attribute).
+
+   This is not an error; the application will simply ignore the attribute.
+   However, if the attribute is important to the appearance or functionality
+   of your application, you should consider finding an alternative way to
+   achieve the same result with only available attributes, and then you can
+   optionally create a copy of the layout in a layout-vNN folder which will be
+   used on API NN or higher where you can take advantage of the newer
+   attribute.
+
+   Note: This check does not only apply to attributes. For example, some tags
+   can be unused too, such as the new <tag> element in layouts introduced in
+   API 21.
+
+/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/build.gradle:8: Warning: A newer version of compileSdk than 34 is available: 36 [GradleDependency]
+  compileSdk 34
+  ~~~~~~~~~~~~~
+/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/build.gradle:36: Warning: A newer version of androidx.core:core-ktx than 1.12.0 is available: 1.17.0 [GradleDependency]
+  implementation "androidx.core:core-ktx:1.12.0"
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/build.gradle:37: Warning: A newer version of androidx.appcompat:appcompat than 1.6.1 is available: 1.7.1 [GradleDependency]
+  implementation "androidx.appcompat:appcompat:1.6.1"
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/build.gradle:38: Warning: A newer version of androidx.constraintlayout:constraintlayout than 2.1.4 is available: 2.2.1 [GradleDependency]
+  implementation "androidx.constraintlayout:constraintlayout:2.1.4"
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/build.gradle:39: Warning: A newer version of androidx.leanback:leanback than 1.0.0 is available: 1.2.0 [GradleDependency]
+  implementation "androidx.leanback:leanback:1.0.0"
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "GradleDependency":
+   This detector looks for usages of libraries where the version you are using
+   is not the current stable release. Using older versions is fine, and there
+   are cases where you deliberately want to stick with an older version.
+   However, you may simply not be aware that a more recent version is
+   available, and that is what this lint check helps find.
+
+/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/java/com/gibbs/dashboard2/MainActivity.kt:21: Warning: Using setJavaScriptEnabled can introduce XSS vulnerabilities into your application, review carefully [SetJavaScriptEnabled]
+    settings.javaScriptEnabled = true
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "SetJavaScriptEnabled":
+   Your code should not invoke setJavaScriptEnabled if you are not sure that
+   your app really requires JavaScript support.
+
+   https://goo.gle/SetJavaScriptEnabled
+   https://developer.android.com/training/articles/security-tips
+
+/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/res/layout/activity_main.xml:2: Warning: This <FrameLayout> can be replaced with a <merge> tag [MergeRootFrame]
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+^
+
+   Explanation for issues of type "MergeRootFrame":
+   If a <FrameLayout> is the root of a layout and does not provide background
+   or padding etc, it can often be replaced with a <merge> tag which is
+   slightly more efficient. Note that this depends on context, so make sure
+   you understand how the <merge> tag works before proceeding.
+
+   https://android-developers.googleblog.com/2009/03/android-layout-tricks-3-optimize-by.html
+
+/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/res/drawable/app_banner.xml:2: Warning: The resource R.drawable.app_banner appears to be unused [UnusedResources]
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+^
+/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/res/drawable/app_icon2.png: Warning: The resource R.drawable.app_icon2 appears to be unused [UnusedResources]
+/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/res/drawable/ic_launcher_background.xml:2: Warning: The resource R.drawable.ic_launcher_background appears to be unused [UnusedResources]
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+^
+/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/res/drawable/ic_launcher_foreground.xml:2: Warning: The resource R.drawable.ic_launcher_foreground appears to be unused [UnusedResources]
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+^
+/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/res/values/strings.xml:2: Warning: The resource R.string.app_name appears to be unused [UnusedResources]
+  <string name="app_name">Gibbs Dashboard 2.0</string>
+          ~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "UnusedResources":
+   Unused resources make applications larger and slow down builds.
+
+
+   The unused resource check can ignore tests. If you want to include
+   resources that are only referenced from tests, consider packaging them in a
+   test source set instead.
+
+   You can include test sources in the unused resource check by setting the
+   system property lint.unused-resources.include-tests =true, and to exclude
+   them (usually for performance reasons), use
+   lint.unused-resources.exclude-tests =true.
+   ,
+
+   Available options:
+
+   **skip-libraries** (default is true):
+   Whether the unused resource check should skip reporting unused resources in libraries.
+
+   Many libraries will declare resources that are part of the library surface; other modules depending on the library will also reference the resources. To avoid reporting all these resources as unused (in the context of a library), the unused resource check normally skips reporting unused resources in libraries. Instead, run the unused resource check on the consuming app module (along with `checkDependencies=true`).
+
+   However, there are cases where you want to check that all the resources declared in a library are used; in that case, you can disable the skip option.
+
+   To configure this option, use a `lint.xml` file with an <option> like this:
+
+   ```xml
+   <lint>
+       <issue id="UnusedResources">
+           <option name="skip-libraries" value="true" />
+       </issue>
+   </lint>
+   ```
+
+/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/res/drawable-xhdpi/app_icon.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
+/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/res/drawable/app_icon.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
+
+   Explanation for issues of type "IconLauncherShape":
+   According to the Android Design Guide
+   (https://d.android.com/r/studio-ui/designer/material/iconography) your
+   launcher icons should "use a distinct silhouette", a "three-dimensional,
+   front view, with a slight perspective as if viewed from above, so that
+   users perceive some depth."
+
+   The unique silhouette implies that your launcher icon should not be a
+   filled square.
+
+/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/res/drawable/app_icon.png: Warning: Found bitmap drawable res/drawable/app_icon.png in densityless folder [IconLocation]
+/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/res/drawable/app_icon2.png: Warning: Found bitmap drawable res/drawable/app_icon2.png in densityless folder [IconLocation]
+
+   Explanation for issues of type "IconLocation":
+   The res/drawable folder is intended for density-independent graphics such
+   as shapes defined in XML. For bitmaps, move it to drawable-mdpi and
+   consider providing higher and lower resolution versions in drawable-ldpi,
+   drawable-hdpi and drawable-xhdpi. If the icon really is density independent
+   (for example a solid color) you can place it in drawable-nodpi.
+
+   https://developer.android.com/guide/practices/screens_support.html
+
+/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/res/drawable/app_icon2.png: Warning: The following unrelated icon files have identical contents: app_icon.png, app_icon2.png [IconDuplicates]
+
+   Explanation for issues of type "IconDuplicates":
+   If an icon is repeated under different names, you can consolidate and just
+   use one of the icons and delete the others to make your application
+   smaller. However, duplicated icons usually are not intentional and can
+   sometimes point to icons that were accidentally overwritten or accidentally
+   not updated.
+
+/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/res: Warning: Missing density variation folders in src/main/res: drawable-hdpi, drawable-mdpi, drawable-xxhdpi [IconMissingDensityFolder]
+
+   Explanation for issues of type "IconMissingDensityFolder":
+   Icons will look best if a custom version is provided for each of the major
+   screen density classes (low, medium, high, extra-high, extra-extra-high).
+   This lint check identifies folders which are missing, such as
+   drawable-hdpi.
+
+   Low density is not really used much anymore, so this check ignores the ldpi
+   density. To force lint to include it, set the environment variable
+   ANDROID_LINT_INCLUDE_LDPI=true. For more information on current density
+   usage, see https://developer.android.com/about/dashboards
+
+   https://developer.android.com/guide/practices/screens_support.html
+
+0 errors, 20 warnings

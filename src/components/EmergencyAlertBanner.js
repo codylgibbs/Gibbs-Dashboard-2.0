@@ -1,4 +1,4 @@
-import { jsxs as _jsxs, jsx as _jsx, Fragment as _Fragment } from "react/jsx-runtime";
+import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
 import { useEffect, useMemo, useState } from 'react';
 import '../styles/EmergencyAlertBanner.css';
 const ALERT_SEVERITY_ORDER = {
@@ -41,6 +41,7 @@ export default function EmergencyAlertBanner({ onAlertsChange, manualAlertActive
                                 severity: String(properties?.severity || 'Unknown'),
                                 urgency: String(properties?.urgency || 'Unknown'),
                                 areaDesc: properties?.areaDesc || 'Local area',
+                                description: properties?.description || '',
                             };
                         })
                             .filter((alert) => alert.headline || alert.event);
@@ -65,6 +66,7 @@ export default function EmergencyAlertBanner({ onAlertsChange, manualAlertActive
                                 severity: item.severity || 'moderate',
                                 urgency: item.urgency || 'Unknown',
                                 areaDesc: item.areaDesc || item.area || 'Local area',
+                                description: item.description || '',
                             }));
                             alertsList.push(...mapped);
                         }
@@ -107,6 +109,7 @@ export default function EmergencyAlertBanner({ onAlertsChange, manualAlertActive
                 severity: 'severe',
                 urgency: 'Expected',
                 areaDesc: 'Test Display Area',
+                description: 'This is a test of the emergency alert system. No action is required.',
             });
         }
         return all;
@@ -122,6 +125,14 @@ export default function EmergencyAlertBanner({ onAlertsChange, manualAlertActive
     useEffect(() => {
         onAlertsChange?.(hasAlerts && !loading && !error);
     }, [hasAlerts, loading, error, onAlertsChange]);
-    const renderAlertItems = (keyPrefix) => sortedAlerts.map(alert => (_jsxs("span", { className: `alert-item severity-${alert.severity.toLowerCase()}`, children: [alert.event, ": ", alert.headline || 'Stay alert', " \u2014 ", alert.areaDesc] }, `${keyPrefix}-${alert.id}`)));
+    // Prefer description, fallback to headline, then event
+    const renderAlertItems = (keyPrefix) => sortedAlerts.map(alert => {
+        const mainText = alert.description?.trim()
+            ? alert.description
+            : alert.headline?.trim()
+                ? alert.headline
+                : alert.event;
+        return (_jsxs("span", { className: `alert-item severity-${alert.severity.toLowerCase()}`, children: [mainText, alert.areaDesc && (_jsxs("span", { className: "alert-areas", children: [" \u2014 ", _jsx("span", { className: "alert-areas-label", children: "Areas:" }), " ", alert.areaDesc] }))] }, `${keyPrefix}-${alert.id}`));
+    });
     return (_jsx(_Fragment, { children: (loading || !hasAlerts) && !manualAlertActive ? null : (_jsxs("div", { className: `alert-banner ${hasAlerts || manualAlertActive ? 'active' : 'inactive'}`, children: [_jsx("div", { className: "alert-label", children: manualAlertActive ? 'TEST' : 'Emergency Alert' }), _jsx("div", { className: "alert-content", "aria-live": "polite", children: _jsx("div", { className: "alert-scroll", children: _jsxs("div", { className: "alert-scroll-marquee", children: [_jsx("div", { className: "alert-scroll-track", children: renderAlertItems('primary') }), _jsx("div", { className: "alert-scroll-track", "aria-hidden": "true", children: renderAlertItems('duplicate') })] }) }) })] })) }));
 }

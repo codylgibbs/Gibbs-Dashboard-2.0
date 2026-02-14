@@ -1,0 +1,20 @@
+<lint-module
+    format="1"
+    dir="/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app"
+    name=":app"
+    type="APP"
+    maven="GibbsDashboardTV:app:unspecified"
+    agpVersion="9.0.1"
+    buildFolder="build"
+    bootClassPath="/Users/codygibbs/Library/Android/sdk/platforms/android-34/android.jar:/Users/codygibbs/Library/Android/sdk/build-tools/36.0.0/core-lambda-stubs.jar"
+    javaSourceLevel="17"
+    compileTarget="android-34"
+    neverShrinking="true"
+    highlightGradualR8Api="false">
+  <lintOptions
+      abortOnError="true"
+      absolutePaths="true"
+      checkReleaseBuilds="true"
+      explainIssues="true"/>
+  <variant name="release"/>
+</lint-module>

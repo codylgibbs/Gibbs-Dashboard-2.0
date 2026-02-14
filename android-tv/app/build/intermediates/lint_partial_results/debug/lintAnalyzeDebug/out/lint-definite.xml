@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<incidents format="6" by="lint 9.0.1" type="incidents">
+
+    <incident
+        id="OldTargetApi"
+        severity="warning"
+        message="Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the `android.os.Build.VERSION_CODES` javadoc for details.">
+        <fix-replace
+            description="Update targetSdkVersion to 36"
+            oldString="34"
+            replacement="36"
+            priority="0"/>
+        <location
+            file="${:app*projectDir}/build.gradle"
+            line="13"
+            column="5"
+            startOffset="219"
+            endLine="13"
+            endColumn="17"
+            endOffset="231"/>
+    </incident>
+
+    <incident
+        id="GradleDependency"
+        severity="warning"
+        message="A newer version of `compileSdk` than 34 is available: 36">
+        <fix-replace
+            description="Set compileSdk to 36"
+            oldString="34"
+            replacement="36"
+            priority="0"/>
+        <location
+            file="${:app*projectDir}/build.gradle"
+            line="8"
+            column="3"
+            startOffset="127"
+            endLine="8"
+            endColumn="16"
+            endOffset="140"/>
+    </incident>
+
+    <incident
+        id="GradleDependency"
+        severity="warning"
+        message="A newer version of androidx.core:core-ktx than 1.12.0 is available: 1.17.0">
+        <fix-replace
+            description="Change to 1.17.0"
+            family="Update versions"
+            oldString="1.12.0"
+            replacement="1.17.0"
+            priority="0"/>
+        <location
+            file="${:app*projectDir}/build.gradle"
+            line="36"
+            column="18"
+            startOffset="637"
+            endLine="36"
+            endColumn="49"
+            endOffset="668"/>
+    </incident>
+
+    <incident
+        id="GradleDependency"
+        severity="warning"
+        message="A newer version of androidx.appcompat:appcompat than 1.6.1 is available: 1.7.1">
+        <fix-replace
+            description="Change to 1.7.1"
+            family="Update versions"
+            oldString="1.6.1"
+            replacement="1.7.1"
+            priority="0"/>
+        <location
+            file="${:app*projectDir}/build.gradle"
+            line="37"
+            column="18"
+            startOffset="686"
+            endLine="37"
+            endColumn="54"
+            endOffset="722"/>
+    </incident>
+
+    <incident
+        id="GradleDependency"
+        severity="warning"
+        message="A newer version of androidx.constraintlayout:constraintlayout than 2.1.4 is available: 2.2.1">
+        <fix-replace
+            description="Change to 2.2.1"
+            family="Update versions"
+            oldString="2.1.4"
+            replacement="2.2.1"
+            priority="0"/>
+        <location
+            file="${:app*projectDir}/build.gradle"
+            line="38"
+            column="18"
+            startOffset="740"
+            endLine="38"
+            endColumn="68"
+            endOffset="790"/>
+    </incident>
+
+    <incident
+        id="GradleDependency"
+        severity="warning"
+        message="A newer version of androidx.leanback:leanback than 1.0.0 is available: 1.2.0">
+        <fix-replace
+            description="Change to 1.2.0"
+            family="Update versions"
+            oldString="1.0.0"
+            replacement="1.2.0"
+            priority="0"/>
+        <location
+            file="${:app*projectDir}/build.gradle"
+            line="39"
+            column="18"
+            startOffset="808"
+            endLine="39"
+            endColumn="52"
+            endOffset="842"/>
+    </incident>
+
+    <incident
+        id="SetJavaScriptEnabled"
+        severity="warning"
+        message="Using `setJavaScriptEnabled` can introduce XSS vulnerabilities into your application, review carefully">
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*javaDir*0}/com/gibbs/dashboard2/MainActivity.kt"
+            line="21"
+            column="5"
+            startOffset="659"
+            endLine="21"
+            endColumn="38"
+            endOffset="692"/>
+    </incident>
+
+    <incident
+        id="MergeRootFrame"
+        severity="warning"
+        message="This `&lt;FrameLayout>` can be replaced with a `&lt;merge>` tag">
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/layout/activity_main.xml"
+            line="2"
+            column="1"
+            startOffset="39"
+            endLine="10"
+            endColumn="15"
+            endOffset="330"/>
+    </incident>
+
+    <incident
+        id="IconLauncherShape"
+        severity="warning"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details">
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable-xhdpi/app_icon.png"/>
+    </incident>
+
+    <incident
+        id="IconLauncherShape"
+        severity="warning"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details">
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable/app_icon.png"/>
+    </incident>
+
+    <incident
+        id="IconLocation"
+        severity="warning"
+        message="Found bitmap drawable `res/drawable/app_icon.png` in densityless folder">
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable/app_icon.png"/>
+    </incident>
+
+    <incident
+        id="IconLocation"
+        severity="warning"
+        message="Found bitmap drawable `res/drawable/app_icon2.png` in densityless folder">
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable/app_icon2.png"/>
+    </incident>
+
+    <incident
+        id="IconDuplicates"
+        severity="warning"
+        message="The following unrelated icon files have identical contents: app_icon.png, app_icon2.png">
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable/app_icon2.png"/>
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable-xhdpi/app_icon.png"/>
+    </incident>
+
+    <incident
+        id="IconMissingDensityFolder"
+        severity="warning"
+        message="Missing density variation folders in `src/main/res`: drawable-hdpi, drawable-mdpi, drawable-xxhdpi">
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}"/>
+    </incident>
+
+</incidents>

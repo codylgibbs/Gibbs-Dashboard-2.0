@@ -246,85 +246,126 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
         }
     };
     const parseICS = (icsText) => {
+        // Debug logs
+        console.log('--- ICS Parsing Start ---');
+        const debugUIDs = [];
+        const debugCancelledUIDs = [];
         const events = [];
-        const cancellations = new Set();
-        const unfolded = icsText.replace(/\r?\n[ \t]/g, '');
-        const lines = unfolded.split(/\r?\n/);
-        let currentEvent = {};
-        let inEvent = false;
-        for (const line of lines) {
-            const trimmed = line.trim();
-            if (trimmed === 'BEGIN:VEVENT') {
-                inEvent = true;
-                currentEvent = {};
-            }
-            else if (trimmed === 'END:VEVENT') {
-                // Track cancellations
-                if (currentEvent.status === 'CANCELLED' && currentEvent.uid) {
-                    cancellations.add(currentEvent.uid);
+        try {
+            const unfolded = icsText.replace(/\r?\n[ \t]/g, '');
+            const lines = unfolded.split(/\r?\n/);
+            const cancelledUIDs = new Set();
+            // First pass: collect cancelled UIDs
+            let currentEvent = {};
+            let inEvent = false;
+            for (const line of lines) {
+                const trimmed = line.trim();
+                // Log UID and STATUS in first pass
+                if (trimmed.startsWith('UID:')) {
+                    debugUIDs.push(trimmed.substring(4));
                 }
-                // Only add event if not cancelled
-                if (currentEvent.title && currentEvent.start && (!currentEvent.uid || !cancellations.has(currentEvent.uid)) && currentEvent.status !== 'CANCELLED') {
-                    let endDate = currentEvent.end;
-                    if (!endDate) {
-                        if (currentEvent.durationMs) {
-                            endDate = new Date(currentEvent.start.getTime() + currentEvent.durationMs);
-                        }
-                        else if (currentEvent.allDay) {
-                            endDate = addDays(currentEvent.start, 1);
-                        }
-                        else {
-                            endDate = new Date(currentEvent.start.getTime() + 60 * 60 * 1000);
-                        }
+                if (trimmed.startsWith('STATUS:')) {
+                    console.log('STATUS:', trimmed.substring(7));
+                }
+                if (trimmed === 'BEGIN:VEVENT') {
+                    inEvent = true;
+                    currentEvent = {};
+                }
+                else if (trimmed === 'END:VEVENT') {
+                    if (currentEvent.status === 'CANCELLED' && currentEvent.uid) {
+                        debugCancelledUIDs.push(currentEvent.uid);
+                        console.log('Cancelled UID:', currentEvent.uid);
+                        cancelledUIDs.add(currentEvent.uid);
                     }
-                    events.push({
-                        title: currentEvent.title,
-                        start: currentEvent.start,
-                        end: endDate,
-                        rrule: currentEvent.rrule,
-                        allDay: currentEvent.allDay,
-                        location: currentEvent.location,
-                    });
+                    inEvent = false;
                 }
-                inEvent = false;
-            }
-            else if (inEvent) {
-                if (trimmed.startsWith('SUMMARY:')) {
-                    currentEvent.title = trimmed.substring(8);
-                }
-                else if (trimmed.startsWith('DTSTART')) {
-                    const dateStr = trimmed.split(':').slice(1).join(':');
-                    currentEvent.allDay = trimmed.includes('VALUE=DATE');
-                    currentEvent.start = parseICSDate(dateStr);
-                }
-                else if (trimmed.startsWith('DTEND')) {
-                    const dateStr = trimmed.split(':').slice(1).join(':');
-                    currentEvent.allDay = currentEvent.allDay ?? trimmed.includes('VALUE=DATE');
-                    currentEvent.end = parseICSDate(dateStr);
-                }
-                else if (trimmed.startsWith('RRULE:')) {
-                    currentEvent.rrule = trimmed.substring(6);
-                }
-                else if (trimmed.startsWith('DURATION:')) {
-                    const durationStr = trimmed.substring(9);
-                    currentEvent.durationMs = parseDurationMs(durationStr);
-                }
-                else if (trimmed.startsWith('LOCATION:')) {
-                    const rawLocation = trimmed.substring(9);
-                    // Unescape ICS text: replace \n with spaces, \, with commas, and \\ with \
-                    currentEvent.location = rawLocation
-                        .replace(/\\n/g, ', ')
-                        .replace(/\\,/g, ',')
-                        .replace(/\\\\/g, '\\')
-                        .trim();
-                }
-                else if (trimmed.startsWith('UID:')) {
-                    currentEvent.uid = trimmed.substring(4);
-                }
-                else if (trimmed.startsWith('STATUS:')) {
-                    currentEvent.status = trimmed.substring(7);
+                else if (inEvent) {
+                    if (trimmed.startsWith('UID:')) {
+                        currentEvent.uid = trimmed.substring(4);
+                    }
+                    else if (trimmed.startsWith('STATUS:')) {
+                        currentEvent.status = trimmed.substring(7);
+                    }
                 }
             }
+            // Second pass: add only non-cancelled events
+            let eventObj = {};
+            inEvent = false;
+            for (const line of lines) {
+                const trimmed = line.trim();
+                if (trimmed === 'BEGIN:VEVENT') {
+                    inEvent = true;
+                    eventObj = {};
+                }
+                else if (trimmed === 'END:VEVENT') {
+                    if (eventObj.title && eventObj.start &&
+                        (!eventObj.uid || !cancelledUIDs.has(eventObj.uid)) &&
+                        eventObj.status !== 'CANCELLED') {
+                        console.log('Adding event:', eventObj.title, 'UID:', eventObj.uid, 'STATUS:', eventObj.status);
+                        let endDate = eventObj.end;
+                        if (!endDate) {
+                            if (eventObj.durationMs) {
+                                endDate = new Date(eventObj.start.getTime() + eventObj.durationMs);
+                            }
+                            else if (eventObj.allDay) {
+                                endDate = addDays(eventObj.start, 1);
+                            }
+                            else {
+                                endDate = new Date(eventObj.start.getTime() + 60 * 60 * 1000);
+                            }
+                        }
+                        events.push({
+                            title: eventObj.title,
+                            start: eventObj.start,
+                            end: endDate,
+                            rrule: eventObj.rrule,
+                            allDay: eventObj.allDay,
+                            location: eventObj.location,
+                        });
+                    }
+                    inEvent = false;
+                }
+                else if (inEvent) {
+                    if (trimmed.startsWith('SUMMARY:')) {
+                        eventObj.title = trimmed.substring(8);
+                    }
+                    else if (trimmed.startsWith('DTSTART')) {
+                        const dateStr = trimmed.split(':').slice(1).join(':');
+                        eventObj.allDay = trimmed.includes('VALUE=DATE');
+                        eventObj.start = parseICSDate(dateStr);
+                    }
+                    else if (trimmed.startsWith('DTEND')) {
+                        const dateStr = trimmed.split(':').slice(1).join(':');
+                        eventObj.allDay = eventObj.allDay ?? trimmed.includes('VALUE=DATE');
+                        eventObj.end = parseICSDate(dateStr);
+                    }
+                    else if (trimmed.startsWith('RRULE:')) {
+                        eventObj.rrule = trimmed.substring(6);
+                    }
+                    else if (trimmed.startsWith('DURATION:')) {
+                        const durationStr = trimmed.substring(9);
+                        eventObj.durationMs = parseDurationMs(durationStr);
+                    }
+                    else if (trimmed.startsWith('LOCATION:')) {
+                        const rawLocation = trimmed.substring(9);
+                        eventObj.location = rawLocation
+                            .replace(/\\n/g, ', ')
+                            .replace(/\\,/g, ',')
+                            .replace(/\\\\/g, '\\')
+                            .trim();
+                    }
+                    else if (trimmed.startsWith('UID:')) {
+                        eventObj.uid = trimmed.substring(4);
+                    }
+                    else if (trimmed.startsWith('STATUS:')) {
+                        eventObj.status = trimmed.substring(7);
+                    }
+                }
+            }
+        }
+        catch (err) {
+            console.error('Error parsing ICS:', err);
+            // Always return events array, even if empty
         }
         return events;
     };

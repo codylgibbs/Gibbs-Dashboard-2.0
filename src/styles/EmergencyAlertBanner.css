@@ -1,3 +1,36 @@
+@media (min-width: 900px) and (min-height: 500px) {
+    .alert-banner {
+      height: auto !important;
+      min-height: unset !important;
+      padding-top: 4px !important;
+      padding-bottom: 6px !important;
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+      gap: 6px !important;
+      align-items: center !important;
+    }
+    .alert-label {
+      padding-top: 2px !important;
+      padding-bottom: 2px !important;
+      font-size: 0.95rem !important;
+      border-radius: 999px !important;
+    }
+    .alert-content {
+      font-size: 1.05rem !important;
+      line-height: 1.18 !important;
+      padding-top: 2px !important;
+      padding-bottom: 2px !important;
+    }
+  .emergency-alert-banner {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    min-height: unset !important;
+    height: max-content !important;
+    font-size: 0.92rem !important;
+    line-height: 1 !important;
+    border-radius: 0 !important;
+  }
+}
 :root {
   --alert-height: clamp(56px, 6vh, 80px);
 }

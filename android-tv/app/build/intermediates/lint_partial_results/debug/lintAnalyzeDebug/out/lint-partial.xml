@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<incidents format="6" by="lint 9.0.1" type="partial_results">
+    <map id="UnsafeIntentLaunch">
+            <map id="unprotected">
+                <entry
+                    name="com.gibbs.dashboard2.MainActivity"
+                    boolean="true"/>
+            </map>
+    </map>
+    <map id="UnusedResources">
+        <location id="R.drawable.app_banner"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable/app_banner.xml"
+            line="2"
+            column="1"
+            startOffset="39"
+            endLine="4"
+            endColumn="32"
+            endOffset="174"/>
+        <location id="R.drawable.app_icon2"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable/app_icon2.png"/>
+        <location id="R.drawable.ic_launcher_background"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable/ic_launcher_background.xml"
+            line="2"
+            column="1"
+            startOffset="39"
+            endLine="10"
+            endColumn="10"
+            endOffset="329"/>
+        <location id="R.drawable.ic_launcher_foreground"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/drawable/ic_launcher_foreground.xml"
+            line="2"
+            column="1"
+            startOffset="39"
+            endLine="15"
+            endColumn="10"
+            endOffset="533"/>
+        <location id="R.string.app_name"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/values/strings.xml"
+            line="2"
+            column="11"
+            startOffset="22"
+            endLine="2"
+            endColumn="26"
+            endOffset="37"/>
+        <entry
+            name="model"
+            string="drawable[tv_banner(U),app_icon(U),app_banner(D),app_icon2(D),ic_launcher_background(D),ic_launcher_foreground(D)],id[web_view(U)],layout[activity_main(U)],string[app_name(D)],style[Theme_GibbsDashboardTV(U),Theme_AppCompat_NoActionBar(R)];0^1,2^1,9^a;;;"/>
+    </map>
+
+</incidents>

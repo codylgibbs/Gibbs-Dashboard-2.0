@@ -1,0 +1,42 @@
+[
+    {
+        "merged": "com.gibbs.dashboard2.app-release-25:/drawable_tv_banner.xml.flat",
+        "source": "com.gibbs.dashboard2.app-main-26:/drawable/tv_banner.xml"
+    },
+    {
+        "merged": "com.gibbs.dashboard2.app-release-25:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.gibbs.dashboard2.app-main-26:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.gibbs.dashboard2.app-release-25:/drawable_app_banner.xml.flat",
+        "source": "com.gibbs.dashboard2.app-main-26:/drawable/app_banner.xml"
+    },
+    {
+        "merged": "com.gibbs.dashboard2.app-release-25:/drawable_app_icon.png.flat",
+        "source": "com.gibbs.dashboard2.app-main-26:/drawable/app_icon.png"
+    },
+    {
+        "merged": "com.gibbs.dashboard2.app-release-25:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.gibbs.dashboard2.app-main-26:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.gibbs.dashboard2.app-release-25:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.gibbs.dashboard2.app-main-26:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.gibbs.dashboard2.app-release-25:/drawable-xhdpi_app_icon.png.flat",
+        "source": "com.gibbs.dashboard2.app-main-26:/drawable-xhdpi/app_icon.png"
+    },
+    {
+        "merged": "com.gibbs.dashboard2.app-release-25:/drawable_app_icon2.png.flat",
+        "source": "com.gibbs.dashboard2.app-main-26:/drawable/app_icon2.png"
+    },
+    {
+        "merged": "com.gibbs.dashboard2.app-release-25:/layout_activity_main.xml.flat",
+        "source": "com.gibbs.dashboard2.app-main-26:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.gibbs.dashboard2.app-release-25:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.gibbs.dashboard2.app-main-26:/drawable/ic_launcher_background.xml"
+    }
+]
