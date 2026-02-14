@@ -8,6 +8,7 @@ interface NwsAlert {
   severity: string
   urgency: string
   areaDesc: string
+  description?: string // Add description for more detailed info
 }
 
 const ALERT_SEVERITY_ORDER: Record<string, number> = {
@@ -67,6 +68,7 @@ export default function EmergencyAlertBanner({
                   severity: String(properties?.severity || 'Unknown'),
                   urgency: String(properties?.urgency || 'Unknown'),
                   areaDesc: properties?.areaDesc || 'Local area',
+                  description: properties?.description || '',
                 }
               })
               .filter((alert: NwsAlert) => alert.headline || alert.event)
@@ -91,6 +93,7 @@ export default function EmergencyAlertBanner({
                 severity: item.severity || 'moderate',
                 urgency: item.urgency || 'Unknown',
                 areaDesc: item.areaDesc || item.area || 'Local area',
+                description: item.description || '',
               }))
               alertsList.push(...mapped)
             }
@@ -134,6 +137,7 @@ export default function EmergencyAlertBanner({
         severity: 'severe',
         urgency: 'Expected',
         areaDesc: 'Test Display Area',
+        description: 'This is a test of the emergency alert system. No action is required.',
       })
     }
     return all
@@ -153,15 +157,27 @@ export default function EmergencyAlertBanner({
     onAlertsChange?.(hasAlerts && !loading && !error)
   }, [hasAlerts, loading, error, onAlertsChange])
 
+
+  // Prefer description, fallback to headline, then event
   const renderAlertItems = (keyPrefix: string) =>
-    sortedAlerts.map(alert => (
-      <span
-        key={`${keyPrefix}-${alert.id}`}
-        className={`alert-item severity-${alert.severity.toLowerCase()}`}
-      >
-        {alert.event}: {alert.headline || 'Stay alert'} — {alert.areaDesc}
-      </span>
-    ))
+    sortedAlerts.map(alert => {
+      const mainText = alert.description?.trim()
+        ? alert.description
+        : alert.headline?.trim()
+        ? alert.headline
+        : alert.event
+      return (
+        <span
+          key={`${keyPrefix}-${alert.id}`}
+          className={`alert-item severity-${alert.severity.toLowerCase()}`}
+        >
+          {mainText}
+          {alert.areaDesc && (
+            <span className="alert-areas"> — <span className="alert-areas-label">Areas:</span> {alert.areaDesc}</span>
+          )}
+        </span>
+      )
+    })
 
   return (
     <>
