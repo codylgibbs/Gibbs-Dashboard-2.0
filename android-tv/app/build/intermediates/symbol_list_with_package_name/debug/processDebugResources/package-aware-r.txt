@@ -2161,8 +2161,6 @@ layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
 layout support_simple_spinner_dropdown_item
 layout video_surface_fragment
-mipmap ic_launcher
-mipmap ic_launcher_round
 raw lb_voice_failure
 raw lb_voice_no_input
 raw lb_voice_open

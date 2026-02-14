@@ -4,47 +4,47 @@ ADDED from /Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidM
 INJECTED from /Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml:1:1-38:12
 INJECTED from /Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml:1:1-38:12
 INJECTED from /Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml:1:1-38:12
-MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/codygibbs/.gradle/caches/9.1.0/transforms/062d20dd92ff9dd8512fbd5733f83834/transformed/constraintlayout-2.1.4/AndroidManifest.xml:2:1-11:12
-MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/d440b8360801bdcec19cf5ed3b85f9a7/transformed/appcompat-resources-1.6.1/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.appcompat:appcompat:1.6.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/bac061ff7444d4e4423987d37b26009c/transformed/appcompat-1.6.1/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.leanback:leanback:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/45c24ee063bcc76d2159419cf2afb5d6/transformed/leanback-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.fragment:fragment:1.3.6] /Users/codygibbs/.gradle/caches/9.1.0/transforms/33ce9ee3238a822b0334005a9d7865c7/transformed/fragment-1.3.6/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.activity:activity:1.6.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/9b4f59ae110b0efb6ebf20b2966f7adb/transformed/activity-1.6.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.recyclerview:recyclerview:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/07faec4492843b4d59e265d837009e56/transformed/recyclerview-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c27c007250f0c395fcac04b0cd5b4a3f/transformed/legacy-support-core-ui-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/04475527c4ea26c60c0c894fe08d52e4/transformed/drawerlayout-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/9334e150eb5cea6c700fc890fcdb6e41/transformed/emoji2-views-helper-1.2.0/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c7e739cdcdca312a35bd5dfd1060b8cb/transformed/emoji2-1.2.0/AndroidManifest.xml:17:1-35:12
-MERGED from [androidx.media:media:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/7b5db5ee041826fa56d73c6addfabc3a/transformed/media-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/7d5c8b5046b8e339cde533280f983575/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/dcccebbe099758b361fa8ee3f9860902/transformed/vectordrawable-1.1.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/b6befe66c1a9d4f394bd70b4953ad042/transformed/viewpager-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c4bd9e9d633c61fcc0817c514ffab791/transformed/coordinatorlayout-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/2a5469e5055ce41e1071c9657d01cfa6/transformed/slidingpanelayout-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.customview:customview:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/33e7a71dff4218b4a9be90bd54b18714/transformed/customview-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/bd4d0cebdcb74477ddc94247501bdcfb/transformed/legacy-support-core-utils-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.loader:loader:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/40e9a9f2960839de10e2cb0d60c76401/transformed/loader-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c5c7102c1863ece98b1184513d34b325/transformed/swiperefreshlayout-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/57b0f37f7f59039ff474a7f62b4be2cd/transformed/asynclayoutinflater-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/63b12ced028790c35833807282e493c7/transformed/core-1.12.0/AndroidManifest.xml:17:1-30:12
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/51136eed2ed517b70497d79e4f604b41/transformed/lifecycle-viewmodel-2.5.1/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/78ca056417b165ae83621a14657b9911/transformed/lifecycle-viewmodel-savedstate-2.5.1/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.core:core-ktx:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/148b2d4d2500ce5f64f25a3290d81ca5/transformed/core-ktx-1.12.0/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.savedstate:savedstate:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/b254004ea8ad6fcade9360ce220356a5/transformed/savedstate-1.2.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.annotation:annotation-experimental:1.3.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/1cdfa5348c63e61bb12a1d1fafb2a317/transformed/annotation-experimental-1.3.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/ec9d43bd9f5728c3730526230385f4dc/transformed/cursoradapter-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/7e0353b9493383ef027547cbe657e93f/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:17:1-37:12
-MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/6bec7cd5bba17eb9eceb997c9b9da30d/transformed/lifecycle-runtime-2.5.1/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/e360e4626730ff8f808bcd87efb10973/transformed/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/e869ef1bf253c121a81b73ad624d26fd/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:17:1-27:12
-MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/bebb7a84b648379bfd9cbda40e95fd04/transformed/startup-runtime-1.1.1/AndroidManifest.xml:17:1-33:12
-MERGED from [androidx.tracing:tracing:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/62fbbda941e3aac3b16c8170af0cff52/transformed/tracing-1.0.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/dbd7d555f30f27ebcca6229ecf4aed2e/transformed/lifecycle-livedata-2.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/5b60b7d71c96318449ff126b49e2e781/transformed/lifecycle-livedata-core-2.5.1/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.arch.core:core-runtime:2.1.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/36234cfe009f8d44220ef60aa5c24da2/transformed/core-runtime-2.1.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/1bd81ab90cb0d375f85a61272c317816/transformed/documentfile-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/ed5841a9dbadb88bcd56eebb912f6574/transformed/localbroadcastmanager-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.print:print:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/2eab11196d7284f3e71b63332cd93894/transformed/print-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c6199a075abf17d331f6d221313443b6/transformed/constraintlayout-2.1.4/AndroidManifest.xml:2:1-11:12
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/9b55dd0a9c356f52eca09a5da62051b1/transformed/appcompat-resources-1.6.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.appcompat:appcompat:1.6.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/af74ba45bf7299bace9e1e6787371bc5/transformed/appcompat-1.6.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.leanback:leanback:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/d65ed3c94b4db88366b0e529a70d57a0/transformed/leanback-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.fragment:fragment:1.3.6] /Users/codygibbs/.gradle/caches/9.1.0/transforms/176777e1edc9172a4ad912d701ee11b4/transformed/fragment-1.3.6/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.activity:activity:1.6.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/dc596e1d1604820938bcf5589845f416/transformed/activity-1.6.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.recyclerview:recyclerview:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/a84561ac412be56b15150b48bfcfb4ee/transformed/recyclerview-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/18704bc26b2415e6bc9b8150031aa124/transformed/legacy-support-core-ui-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/fc3ec405693ab4a843ddfb6baeb3c468/transformed/drawerlayout-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/bb46044b881261487e4011faeb3a27a8/transformed/emoji2-views-helper-1.2.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/39375d5da5a4c11ec745d13c8240dd7a/transformed/emoji2-1.2.0/AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.media:media:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/f5a519ffa5c2cdf957db806667ef6bac/transformed/media-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/93803e6e93f10656a1f2f2fe0c8d1e9d/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c8007bcd05d89f13e48e75a9fe0908c3/transformed/vectordrawable-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/7ddf02651d6b432ee38dde0cb07718bc/transformed/viewpager-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/6e0e517961173b08fe741ec8a485793e/transformed/coordinatorlayout-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/9a7f2a5e4dd2000bc2b9d264a6af8b18/transformed/slidingpanelayout-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/b48e594708e96ae08ee64418ecef46bd/transformed/customview-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/30401fa95cee1ced22d1de50429da36d/transformed/legacy-support-core-utils-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/cc4ee23043c24d8c37ee8eb4ca53a20a/transformed/loader-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/937c5dab7f492bcfeacf137013c82fbc/transformed/swiperefreshlayout-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/46d3d9a1a60960451bbf5314c093373c/transformed/asynclayoutinflater-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/f44f6cc1a0ed33a3ed825a36eb1196f6/transformed/core-1.12.0/AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/07d31e80f20563a786ab94dea839336f/transformed/lifecycle-viewmodel-2.5.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/ef29aa2b22c9c0e110b13a2036120848/transformed/lifecycle-viewmodel-savedstate-2.5.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.core:core-ktx:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/b4edc18a0e67c000620316e72d1bf7c5/transformed/core-ktx-1.12.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.savedstate:savedstate:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/54d74a2556cf36d89b78ad79b5812338/transformed/savedstate-1.2.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.annotation:annotation-experimental:1.3.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/5c9b0d9b053fd06f7b00666a3a075cb4/transformed/annotation-experimental-1.3.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/3760d13e1c5049b7594f2b1d06f3014a/transformed/cursoradapter-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/da3bcc83c5f9d16c122082994f0ef088/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:17:1-37:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/392efa1cf52a01faa42c698cca911fbc/transformed/lifecycle-runtime-2.5.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/d1b995e27f96019e9ce48b584eb87904/transformed/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/0d56dac91fb7cd0a7ffaa5f09d2f1c02/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/3c8df5ad47e8936707d4bfefb3e3453c/transformed/startup-runtime-1.1.1/AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.tracing:tracing:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/e056e6928dbd8b1391edc881720e163e/transformed/tracing-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/1e085e3b839211434dc710aac00d6a9c/transformed/lifecycle-livedata-2.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/e9c90df810ef41542d56159dbccec558/transformed/lifecycle-livedata-core-2.5.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/457378c0a1097fac144dd533fce87935/transformed/core-runtime-2.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/e7a27851919cfa9e9233c8662e254906/transformed/documentfile-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/1a41481b512419c2805967bd605ad306/transformed/localbroadcastmanager-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.print:print:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/fa087d993aa6e98536a8b9888088988a/transformed/print-1.0.0/AndroidManifest.xml:17:1-22:12
 	package
 		ADDED from /Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml:2:3-33
 		INJECTED from /Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml
@@ -71,28 +71,28 @@ ADDED from /Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidM
 application
 ADDED from /Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml:11:3-37:17
 INJECTED from /Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml:11:3-37:17
-MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/codygibbs/.gradle/caches/9.1.0/transforms/062d20dd92ff9dd8512fbd5733f83834/transformed/constraintlayout-2.1.4/AndroidManifest.xml:9:5-20
-MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/codygibbs/.gradle/caches/9.1.0/transforms/062d20dd92ff9dd8512fbd5733f83834/transformed/constraintlayout-2.1.4/AndroidManifest.xml:9:5-20
-MERGED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c7e739cdcdca312a35bd5dfd1060b8cb/transformed/emoji2-1.2.0/AndroidManifest.xml:23:5-33:19
-MERGED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c7e739cdcdca312a35bd5dfd1060b8cb/transformed/emoji2-1.2.0/AndroidManifest.xml:23:5-33:19
-MERGED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/63b12ced028790c35833807282e493c7/transformed/core-1.12.0/AndroidManifest.xml:28:5-89
-MERGED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/63b12ced028790c35833807282e493c7/transformed/core-1.12.0/AndroidManifest.xml:28:5-89
-MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/7e0353b9493383ef027547cbe657e93f/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:25:5-35:19
-MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/7e0353b9493383ef027547cbe657e93f/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:25:5-35:19
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/e869ef1bf253c121a81b73ad624d26fd/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/e869ef1bf253c121a81b73ad624d26fd/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
-MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/bebb7a84b648379bfd9cbda40e95fd04/transformed/startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
-MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/bebb7a84b648379bfd9cbda40e95fd04/transformed/startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c6199a075abf17d331f6d221313443b6/transformed/constraintlayout-2.1.4/AndroidManifest.xml:9:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c6199a075abf17d331f6d221313443b6/transformed/constraintlayout-2.1.4/AndroidManifest.xml:9:5-20
+MERGED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/39375d5da5a4c11ec745d13c8240dd7a/transformed/emoji2-1.2.0/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/39375d5da5a4c11ec745d13c8240dd7a/transformed/emoji2-1.2.0/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/f44f6cc1a0ed33a3ed825a36eb1196f6/transformed/core-1.12.0/AndroidManifest.xml:28:5-89
+MERGED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/f44f6cc1a0ed33a3ed825a36eb1196f6/transformed/core-1.12.0/AndroidManifest.xml:28:5-89
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/da3bcc83c5f9d16c122082994f0ef088/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:25:5-35:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/da3bcc83c5f9d16c122082994f0ef088/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:25:5-35:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/0d56dac91fb7cd0a7ffaa5f09d2f1c02/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/0d56dac91fb7cd0a7ffaa5f09d2f1c02/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/3c8df5ad47e8936707d4bfefb3e3453c/transformed/startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/3c8df5ad47e8936707d4bfefb3e3453c/transformed/startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
 	android:extractNativeLibs
 		INJECTED from /Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml
 	android:appComponentFactory
-		ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/63b12ced028790c35833807282e493c7/transformed/core-1.12.0/AndroidManifest.xml:28:18-86
+		ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/f44f6cc1a0ed33a3ed825a36eb1196f6/transformed/core-1.12.0/AndroidManifest.xml:28:18-86
 	android:label
 		ADDED from /Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml:12:5-40
 	android:icon
 		ADDED from /Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml:13:5-38
 	android:banner
-		ADDED from /Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml:14:5-40
+		ADDED from /Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml:14:5-41
 	android:theme
 		ADDED from /Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml:16:5-50
 	android:usesCleartextTraffic
@@ -139,135 +139,135 @@ uses-sdk
 INJECTED from /Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml
 INJECTED from /Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml
-MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/codygibbs/.gradle/caches/9.1.0/transforms/062d20dd92ff9dd8512fbd5733f83834/transformed/constraintlayout-2.1.4/AndroidManifest.xml:5:5-7:41
-MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/codygibbs/.gradle/caches/9.1.0/transforms/062d20dd92ff9dd8512fbd5733f83834/transformed/constraintlayout-2.1.4/AndroidManifest.xml:5:5-7:41
-MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/d440b8360801bdcec19cf5ed3b85f9a7/transformed/appcompat-resources-1.6.1/AndroidManifest.xml:20:5-44
-MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/d440b8360801bdcec19cf5ed3b85f9a7/transformed/appcompat-resources-1.6.1/AndroidManifest.xml:20:5-44
-MERGED from [androidx.appcompat:appcompat:1.6.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/bac061ff7444d4e4423987d37b26009c/transformed/appcompat-1.6.1/AndroidManifest.xml:20:5-44
-MERGED from [androidx.appcompat:appcompat:1.6.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/bac061ff7444d4e4423987d37b26009c/transformed/appcompat-1.6.1/AndroidManifest.xml:20:5-44
-MERGED from [androidx.leanback:leanback:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/45c24ee063bcc76d2159419cf2afb5d6/transformed/leanback-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.leanback:leanback:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/45c24ee063bcc76d2159419cf2afb5d6/transformed/leanback-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.fragment:fragment:1.3.6] /Users/codygibbs/.gradle/caches/9.1.0/transforms/33ce9ee3238a822b0334005a9d7865c7/transformed/fragment-1.3.6/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.fragment:fragment:1.3.6] /Users/codygibbs/.gradle/caches/9.1.0/transforms/33ce9ee3238a822b0334005a9d7865c7/transformed/fragment-1.3.6/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.activity:activity:1.6.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/9b4f59ae110b0efb6ebf20b2966f7adb/transformed/activity-1.6.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.activity:activity:1.6.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/9b4f59ae110b0efb6ebf20b2966f7adb/transformed/activity-1.6.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.recyclerview:recyclerview:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/07faec4492843b4d59e265d837009e56/transformed/recyclerview-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.recyclerview:recyclerview:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/07faec4492843b4d59e265d837009e56/transformed/recyclerview-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c27c007250f0c395fcac04b0cd5b4a3f/transformed/legacy-support-core-ui-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c27c007250f0c395fcac04b0cd5b4a3f/transformed/legacy-support-core-ui-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/04475527c4ea26c60c0c894fe08d52e4/transformed/drawerlayout-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/04475527c4ea26c60c0c894fe08d52e4/transformed/drawerlayout-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/9334e150eb5cea6c700fc890fcdb6e41/transformed/emoji2-views-helper-1.2.0/AndroidManifest.xml:5:5-44
-MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/9334e150eb5cea6c700fc890fcdb6e41/transformed/emoji2-views-helper-1.2.0/AndroidManifest.xml:5:5-44
-MERGED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c7e739cdcdca312a35bd5dfd1060b8cb/transformed/emoji2-1.2.0/AndroidManifest.xml:21:5-44
-MERGED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c7e739cdcdca312a35bd5dfd1060b8cb/transformed/emoji2-1.2.0/AndroidManifest.xml:21:5-44
-MERGED from [androidx.media:media:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/7b5db5ee041826fa56d73c6addfabc3a/transformed/media-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.media:media:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/7b5db5ee041826fa56d73c6addfabc3a/transformed/media-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/7d5c8b5046b8e339cde533280f983575/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/7d5c8b5046b8e339cde533280f983575/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/dcccebbe099758b361fa8ee3f9860902/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/dcccebbe099758b361fa8ee3f9860902/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/b6befe66c1a9d4f394bd70b4953ad042/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/b6befe66c1a9d4f394bd70b4953ad042/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c4bd9e9d633c61fcc0817c514ffab791/transformed/coordinatorlayout-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c4bd9e9d633c61fcc0817c514ffab791/transformed/coordinatorlayout-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/2a5469e5055ce41e1071c9657d01cfa6/transformed/slidingpanelayout-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/2a5469e5055ce41e1071c9657d01cfa6/transformed/slidingpanelayout-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.customview:customview:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/33e7a71dff4218b4a9be90bd54b18714/transformed/customview-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.customview:customview:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/33e7a71dff4218b4a9be90bd54b18714/transformed/customview-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/bd4d0cebdcb74477ddc94247501bdcfb/transformed/legacy-support-core-utils-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/bd4d0cebdcb74477ddc94247501bdcfb/transformed/legacy-support-core-utils-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.loader:loader:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/40e9a9f2960839de10e2cb0d60c76401/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.loader:loader:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/40e9a9f2960839de10e2cb0d60c76401/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c5c7102c1863ece98b1184513d34b325/transformed/swiperefreshlayout-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c5c7102c1863ece98b1184513d34b325/transformed/swiperefreshlayout-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/57b0f37f7f59039ff474a7f62b4be2cd/transformed/asynclayoutinflater-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/57b0f37f7f59039ff474a7f62b4be2cd/transformed/asynclayoutinflater-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/63b12ced028790c35833807282e493c7/transformed/core-1.12.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/63b12ced028790c35833807282e493c7/transformed/core-1.12.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/51136eed2ed517b70497d79e4f604b41/transformed/lifecycle-viewmodel-2.5.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/51136eed2ed517b70497d79e4f604b41/transformed/lifecycle-viewmodel-2.5.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/78ca056417b165ae83621a14657b9911/transformed/lifecycle-viewmodel-savedstate-2.5.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/78ca056417b165ae83621a14657b9911/transformed/lifecycle-viewmodel-savedstate-2.5.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.core:core-ktx:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/148b2d4d2500ce5f64f25a3290d81ca5/transformed/core-ktx-1.12.0/AndroidManifest.xml:5:5-44
-MERGED from [androidx.core:core-ktx:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/148b2d4d2500ce5f64f25a3290d81ca5/transformed/core-ktx-1.12.0/AndroidManifest.xml:5:5-44
-MERGED from [androidx.savedstate:savedstate:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/b254004ea8ad6fcade9360ce220356a5/transformed/savedstate-1.2.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.savedstate:savedstate:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/b254004ea8ad6fcade9360ce220356a5/transformed/savedstate-1.2.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.annotation:annotation-experimental:1.3.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/1cdfa5348c63e61bb12a1d1fafb2a317/transformed/annotation-experimental-1.3.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.annotation:annotation-experimental:1.3.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/1cdfa5348c63e61bb12a1d1fafb2a317/transformed/annotation-experimental-1.3.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/ec9d43bd9f5728c3730526230385f4dc/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/ec9d43bd9f5728c3730526230385f4dc/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/7e0353b9493383ef027547cbe657e93f/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:21:5-23:41
-MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/7e0353b9493383ef027547cbe657e93f/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:21:5-23:41
-MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/6bec7cd5bba17eb9eceb997c9b9da30d/transformed/lifecycle-runtime-2.5.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/6bec7cd5bba17eb9eceb997c9b9da30d/transformed/lifecycle-runtime-2.5.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/e360e4626730ff8f808bcd87efb10973/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/e360e4626730ff8f808bcd87efb10973/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/e869ef1bf253c121a81b73ad624d26fd/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/e869ef1bf253c121a81b73ad624d26fd/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/bebb7a84b648379bfd9cbda40e95fd04/transformed/startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
-MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/bebb7a84b648379bfd9cbda40e95fd04/transformed/startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
-MERGED from [androidx.tracing:tracing:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/62fbbda941e3aac3b16c8170af0cff52/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.tracing:tracing:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/62fbbda941e3aac3b16c8170af0cff52/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/dbd7d555f30f27ebcca6229ecf4aed2e/transformed/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/dbd7d555f30f27ebcca6229ecf4aed2e/transformed/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/5b60b7d71c96318449ff126b49e2e781/transformed/lifecycle-livedata-core-2.5.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/5b60b7d71c96318449ff126b49e2e781/transformed/lifecycle-livedata-core-2.5.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.arch.core:core-runtime:2.1.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/36234cfe009f8d44220ef60aa5c24da2/transformed/core-runtime-2.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.arch.core:core-runtime:2.1.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/36234cfe009f8d44220ef60aa5c24da2/transformed/core-runtime-2.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/1bd81ab90cb0d375f85a61272c317816/transformed/documentfile-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/1bd81ab90cb0d375f85a61272c317816/transformed/documentfile-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/ed5841a9dbadb88bcd56eebb912f6574/transformed/localbroadcastmanager-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/ed5841a9dbadb88bcd56eebb912f6574/transformed/localbroadcastmanager-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.print:print:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/2eab11196d7284f3e71b63332cd93894/transformed/print-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.print:print:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/2eab11196d7284f3e71b63332cd93894/transformed/print-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c6199a075abf17d331f6d221313443b6/transformed/constraintlayout-2.1.4/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c6199a075abf17d331f6d221313443b6/transformed/constraintlayout-2.1.4/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/9b55dd0a9c356f52eca09a5da62051b1/transformed/appcompat-resources-1.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/9b55dd0a9c356f52eca09a5da62051b1/transformed/appcompat-resources-1.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.6.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/af74ba45bf7299bace9e1e6787371bc5/transformed/appcompat-1.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.6.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/af74ba45bf7299bace9e1e6787371bc5/transformed/appcompat-1.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.leanback:leanback:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/d65ed3c94b4db88366b0e529a70d57a0/transformed/leanback-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.leanback:leanback:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/d65ed3c94b4db88366b0e529a70d57a0/transformed/leanback-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.fragment:fragment:1.3.6] /Users/codygibbs/.gradle/caches/9.1.0/transforms/176777e1edc9172a4ad912d701ee11b4/transformed/fragment-1.3.6/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.3.6] /Users/codygibbs/.gradle/caches/9.1.0/transforms/176777e1edc9172a4ad912d701ee11b4/transformed/fragment-1.3.6/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.6.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/dc596e1d1604820938bcf5589845f416/transformed/activity-1.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.6.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/dc596e1d1604820938bcf5589845f416/transformed/activity-1.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/a84561ac412be56b15150b48bfcfb4ee/transformed/recyclerview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/a84561ac412be56b15150b48bfcfb4ee/transformed/recyclerview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/18704bc26b2415e6bc9b8150031aa124/transformed/legacy-support-core-ui-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/18704bc26b2415e6bc9b8150031aa124/transformed/legacy-support-core-ui-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/fc3ec405693ab4a843ddfb6baeb3c468/transformed/drawerlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/fc3ec405693ab4a843ddfb6baeb3c468/transformed/drawerlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/bb46044b881261487e4011faeb3a27a8/transformed/emoji2-views-helper-1.2.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/bb46044b881261487e4011faeb3a27a8/transformed/emoji2-views-helper-1.2.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/39375d5da5a4c11ec745d13c8240dd7a/transformed/emoji2-1.2.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/39375d5da5a4c11ec745d13c8240dd7a/transformed/emoji2-1.2.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.media:media:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/f5a519ffa5c2cdf957db806667ef6bac/transformed/media-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.media:media:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/f5a519ffa5c2cdf957db806667ef6bac/transformed/media-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/93803e6e93f10656a1f2f2fe0c8d1e9d/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/93803e6e93f10656a1f2f2fe0c8d1e9d/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c8007bcd05d89f13e48e75a9fe0908c3/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c8007bcd05d89f13e48e75a9fe0908c3/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/7ddf02651d6b432ee38dde0cb07718bc/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/7ddf02651d6b432ee38dde0cb07718bc/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/6e0e517961173b08fe741ec8a485793e/transformed/coordinatorlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/6e0e517961173b08fe741ec8a485793e/transformed/coordinatorlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/9a7f2a5e4dd2000bc2b9d264a6af8b18/transformed/slidingpanelayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/9a7f2a5e4dd2000bc2b9d264a6af8b18/transformed/slidingpanelayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/b48e594708e96ae08ee64418ecef46bd/transformed/customview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/b48e594708e96ae08ee64418ecef46bd/transformed/customview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/30401fa95cee1ced22d1de50429da36d/transformed/legacy-support-core-utils-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/30401fa95cee1ced22d1de50429da36d/transformed/legacy-support-core-utils-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/cc4ee23043c24d8c37ee8eb4ca53a20a/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/cc4ee23043c24d8c37ee8eb4ca53a20a/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/937c5dab7f492bcfeacf137013c82fbc/transformed/swiperefreshlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/937c5dab7f492bcfeacf137013c82fbc/transformed/swiperefreshlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/46d3d9a1a60960451bbf5314c093373c/transformed/asynclayoutinflater-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/46d3d9a1a60960451bbf5314c093373c/transformed/asynclayoutinflater-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/f44f6cc1a0ed33a3ed825a36eb1196f6/transformed/core-1.12.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/f44f6cc1a0ed33a3ed825a36eb1196f6/transformed/core-1.12.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/07d31e80f20563a786ab94dea839336f/transformed/lifecycle-viewmodel-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/07d31e80f20563a786ab94dea839336f/transformed/lifecycle-viewmodel-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/ef29aa2b22c9c0e110b13a2036120848/transformed/lifecycle-viewmodel-savedstate-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/ef29aa2b22c9c0e110b13a2036120848/transformed/lifecycle-viewmodel-savedstate-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core-ktx:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/b4edc18a0e67c000620316e72d1bf7c5/transformed/core-ktx-1.12.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/b4edc18a0e67c000620316e72d1bf7c5/transformed/core-ktx-1.12.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/54d74a2556cf36d89b78ad79b5812338/transformed/savedstate-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/54d74a2556cf36d89b78ad79b5812338/transformed/savedstate-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.annotation:annotation-experimental:1.3.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/5c9b0d9b053fd06f7b00666a3a075cb4/transformed/annotation-experimental-1.3.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.3.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/5c9b0d9b053fd06f7b00666a3a075cb4/transformed/annotation-experimental-1.3.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/3760d13e1c5049b7594f2b1d06f3014a/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/3760d13e1c5049b7594f2b1d06f3014a/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/da3bcc83c5f9d16c122082994f0ef088/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/da3bcc83c5f9d16c122082994f0ef088/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/392efa1cf52a01faa42c698cca911fbc/transformed/lifecycle-runtime-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/392efa1cf52a01faa42c698cca911fbc/transformed/lifecycle-runtime-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/d1b995e27f96019e9ce48b584eb87904/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/d1b995e27f96019e9ce48b584eb87904/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/0d56dac91fb7cd0a7ffaa5f09d2f1c02/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/0d56dac91fb7cd0a7ffaa5f09d2f1c02/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/3c8df5ad47e8936707d4bfefb3e3453c/transformed/startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/3c8df5ad47e8936707d4bfefb3e3453c/transformed/startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.tracing:tracing:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/e056e6928dbd8b1391edc881720e163e/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/e056e6928dbd8b1391edc881720e163e/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/1e085e3b839211434dc710aac00d6a9c/transformed/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/1e085e3b839211434dc710aac00d6a9c/transformed/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/e9c90df810ef41542d56159dbccec558/transformed/lifecycle-livedata-core-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/e9c90df810ef41542d56159dbccec558/transformed/lifecycle-livedata-core-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/457378c0a1097fac144dd533fce87935/transformed/core-runtime-2.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/457378c0a1097fac144dd533fce87935/transformed/core-runtime-2.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/e7a27851919cfa9e9233c8662e254906/transformed/documentfile-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/e7a27851919cfa9e9233c8662e254906/transformed/documentfile-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/1a41481b512419c2805967bd605ad306/transformed/localbroadcastmanager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/1a41481b512419c2805967bd605ad306/transformed/localbroadcastmanager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/fa087d993aa6e98536a8b9888088988a/transformed/print-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/fa087d993aa6e98536a8b9888088988a/transformed/print-1.0.0/AndroidManifest.xml:20:5-44
 	android:targetSdkVersion
 		INJECTED from /Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml
 	android:minSdkVersion
 		INJECTED from /Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml
 provider#androidx.startup.InitializationProvider
-ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c7e739cdcdca312a35bd5dfd1060b8cb/transformed/emoji2-1.2.0/AndroidManifest.xml:24:9-32:20
-MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/7e0353b9493383ef027547cbe657e93f/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:26:9-34:20
-MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/7e0353b9493383ef027547cbe657e93f/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:26:9-34:20
-MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/bebb7a84b648379bfd9cbda40e95fd04/transformed/startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
-MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/bebb7a84b648379bfd9cbda40e95fd04/transformed/startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
+ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/39375d5da5a4c11ec745d13c8240dd7a/transformed/emoji2-1.2.0/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/da3bcc83c5f9d16c122082994f0ef088/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:26:9-34:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/da3bcc83c5f9d16c122082994f0ef088/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:26:9-34:20
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/3c8df5ad47e8936707d4bfefb3e3453c/transformed/startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/3c8df5ad47e8936707d4bfefb3e3453c/transformed/startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
 	tools:node
-		ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c7e739cdcdca312a35bd5dfd1060b8cb/transformed/emoji2-1.2.0/AndroidManifest.xml:28:13-31
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/39375d5da5a4c11ec745d13c8240dd7a/transformed/emoji2-1.2.0/AndroidManifest.xml:28:13-31
 	android:authorities
-		ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c7e739cdcdca312a35bd5dfd1060b8cb/transformed/emoji2-1.2.0/AndroidManifest.xml:26:13-68
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/39375d5da5a4c11ec745d13c8240dd7a/transformed/emoji2-1.2.0/AndroidManifest.xml:26:13-68
 	android:exported
-		ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c7e739cdcdca312a35bd5dfd1060b8cb/transformed/emoji2-1.2.0/AndroidManifest.xml:27:13-37
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/39375d5da5a4c11ec745d13c8240dd7a/transformed/emoji2-1.2.0/AndroidManifest.xml:27:13-37
 	android:name
-		ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c7e739cdcdca312a35bd5dfd1060b8cb/transformed/emoji2-1.2.0/AndroidManifest.xml:25:13-67
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/39375d5da5a4c11ec745d13c8240dd7a/transformed/emoji2-1.2.0/AndroidManifest.xml:25:13-67
 meta-data#androidx.emoji2.text.EmojiCompatInitializer
-ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c7e739cdcdca312a35bd5dfd1060b8cb/transformed/emoji2-1.2.0/AndroidManifest.xml:29:13-31:52
+ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/39375d5da5a4c11ec745d13c8240dd7a/transformed/emoji2-1.2.0/AndroidManifest.xml:29:13-31:52
 	android:value
-		ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c7e739cdcdca312a35bd5dfd1060b8cb/transformed/emoji2-1.2.0/AndroidManifest.xml:31:17-49
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/39375d5da5a4c11ec745d13c8240dd7a/transformed/emoji2-1.2.0/AndroidManifest.xml:31:17-49
 	android:name
-		ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/c7e739cdcdca312a35bd5dfd1060b8cb/transformed/emoji2-1.2.0/AndroidManifest.xml:30:17-75
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/39375d5da5a4c11ec745d13c8240dd7a/transformed/emoji2-1.2.0/AndroidManifest.xml:30:17-75
 permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
-ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/63b12ced028790c35833807282e493c7/transformed/core-1.12.0/AndroidManifest.xml:22:5-24:47
+ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/f44f6cc1a0ed33a3ed825a36eb1196f6/transformed/core-1.12.0/AndroidManifest.xml:22:5-24:47
 	android:protectionLevel
-		ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/63b12ced028790c35833807282e493c7/transformed/core-1.12.0/AndroidManifest.xml:24:9-44
+		ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/f44f6cc1a0ed33a3ed825a36eb1196f6/transformed/core-1.12.0/AndroidManifest.xml:24:9-44
 	android:name
-		ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/63b12ced028790c35833807282e493c7/transformed/core-1.12.0/AndroidManifest.xml:23:9-81
+		ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/f44f6cc1a0ed33a3ed825a36eb1196f6/transformed/core-1.12.0/AndroidManifest.xml:23:9-81
 permission#com.gibbs.dashboard2.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
-ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/63b12ced028790c35833807282e493c7/transformed/core-1.12.0/AndroidManifest.xml:22:5-24:47
+ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/f44f6cc1a0ed33a3ed825a36eb1196f6/transformed/core-1.12.0/AndroidManifest.xml:22:5-24:47
 	android:protectionLevel
-		ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/63b12ced028790c35833807282e493c7/transformed/core-1.12.0/AndroidManifest.xml:24:9-44
+		ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/f44f6cc1a0ed33a3ed825a36eb1196f6/transformed/core-1.12.0/AndroidManifest.xml:24:9-44
 	android:name
-		ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/63b12ced028790c35833807282e493c7/transformed/core-1.12.0/AndroidManifest.xml:23:9-81
+		ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/f44f6cc1a0ed33a3ed825a36eb1196f6/transformed/core-1.12.0/AndroidManifest.xml:23:9-81
 uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
-ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/63b12ced028790c35833807282e493c7/transformed/core-1.12.0/AndroidManifest.xml:26:5-97
+ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/f44f6cc1a0ed33a3ed825a36eb1196f6/transformed/core-1.12.0/AndroidManifest.xml:26:5-97
 	android:name
-		ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/63b12ced028790c35833807282e493c7/transformed/core-1.12.0/AndroidManifest.xml:26:22-94
+		ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/f44f6cc1a0ed33a3ed825a36eb1196f6/transformed/core-1.12.0/AndroidManifest.xml:26:22-94
 uses-permission#com.gibbs.dashboard2.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
-ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/63b12ced028790c35833807282e493c7/transformed/core-1.12.0/AndroidManifest.xml:26:5-97
+ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/f44f6cc1a0ed33a3ed825a36eb1196f6/transformed/core-1.12.0/AndroidManifest.xml:26:5-97
 	android:name
-		ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/63b12ced028790c35833807282e493c7/transformed/core-1.12.0/AndroidManifest.xml:26:22-94
+		ADDED from [androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.1.0/transforms/f44f6cc1a0ed33a3ed825a36eb1196f6/transformed/core-1.12.0/AndroidManifest.xml:26:22-94
 meta-data#androidx.lifecycle.ProcessLifecycleInitializer
-ADDED from [androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/7e0353b9493383ef027547cbe657e93f/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:31:13-33:52
+ADDED from [androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/da3bcc83c5f9d16c122082994f0ef088/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:31:13-33:52
 	android:value
-		ADDED from [androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/7e0353b9493383ef027547cbe657e93f/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:33:17-49
+		ADDED from [androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/da3bcc83c5f9d16c122082994f0ef088/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:33:17-49
 	android:name
-		ADDED from [androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/7e0353b9493383ef027547cbe657e93f/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:32:17-78
+		ADDED from [androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.1.0/transforms/da3bcc83c5f9d16c122082994f0ef088/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:32:17-78
