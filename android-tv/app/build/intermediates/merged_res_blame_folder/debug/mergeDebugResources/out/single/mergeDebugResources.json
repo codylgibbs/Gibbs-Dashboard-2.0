@@ -4,6 +4,10 @@
         "source": "com.gibbs.dashboard2.app-main-27:/drawable/ic_launcher_foreground.xml"
     },
     {
+        "merged": "com.gibbs.dashboard2.app-debug-25:/drawable_app_icon2.png.flat",
+        "source": "com.gibbs.dashboard2.app-main-27:/drawable/app_icon2.png"
+    },
+    {
         "merged": "com.gibbs.dashboard2.app-debug-25:/drawable_app_icon.png.flat",
         "source": "com.gibbs.dashboard2.app-main-27:/drawable/app_icon.png"
     },

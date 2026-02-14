@@ -1414,6 +1414,7 @@ drawable abc_textfield_search_material
 drawable abc_vector_test
 drawable app_banner
 drawable app_icon
+drawable app_icon2
 drawable btn_checkbox_checked_mtrl
 drawable btn_checkbox_checked_to_unchecked_mtrl_animation
 drawable btn_checkbox_unchecked_mtrl
