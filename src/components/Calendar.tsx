@@ -226,7 +226,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
     }
 
     fetchCalendars()
-    const interval = setInterval(fetchCalendars, 1 * 60 * 1000) // Refresh every 1 minute
+    const interval = setInterval(fetchCalendars, 10 * 60 * 1000) // Refresh every 10 minutes
     return () => clearInterval(interval)
   }, [currentDate])
 

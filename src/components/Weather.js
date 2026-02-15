@@ -79,7 +79,7 @@ export default function Weather({ variant = 'full' }) {
             }
         };
         fetchWeather();
-        const interval = setInterval(fetchWeather, 1 * 60 * 1000); // Refresh every 1 minute
+        const interval = setInterval(fetchWeather, 30 * 60 * 1000); // Refresh every 30 minutes
         return () => clearInterval(interval);
     }, []);
     const getWeatherEmoji = (icon) => {
