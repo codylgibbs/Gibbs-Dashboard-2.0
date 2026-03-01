@@ -19,6 +19,8 @@ interface ParsedEvent {
   rrule?: string
   allDay?: boolean
   location?: string
+  exdates?: Date[]
+  uid?: string
 }
 
 const DEFAULT_COLORS = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F']
@@ -410,6 +412,10 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
             eventObj.uid = trimmed.substring(4);
           } else if (trimmed.startsWith('STATUS:')) {
             eventObj.status = trimmed.substring(7);
+          } else if (trimmed.startsWith('EXDATE')) {
+            const dateStr = trimmed.split(':').slice(1).join(':');
+            const dates = dateStr.split(',').map(parseICSDate);
+            eventObj.exdates = (eventObj.exdates || []).concat(dates);
           }
         }
       }
@@ -425,8 +431,12 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
     rangeStart: Date,
     rangeEnd: Date
   ): ParsedEvent[] => {
+    // Handle EXDATEs (deleted instances)
+    const exdates: Date[] = event.exdates || [];
+    const isExcluded = (date: Date) => exdates.some(ed => ed.getTime() === date.getTime());
     if (!event.rrule) {
-      return eventInRange(event, rangeStart, rangeEnd) ? [event] : []
+      // For non-recurring, skip if excluded
+      return eventInRange(event, rangeStart, rangeEnd) && !isExcluded(event.start) ? [event] : []
     }
 
     const rule = parseRRule(event.rrule)
@@ -444,11 +454,12 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
       let count = 0
       while (cursor < rangeEnd) {
         if (until && cursor > until) break
-        if (cursor >= rangeStart) {
+        if (cursor >= rangeStart && !isExcluded(cursor)) {
           occurrences.push({
             title: event.title,
             start: new Date(cursor),
             end: new Date(cursor.getTime() + durationMs),
+            location: event.location,
           })
         }
         count += 1
@@ -484,7 +495,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
 
             if (occDate < event.start) continue
             if (until && occDate > until) continue
-            if (occDate >= rangeStart && occDate < rangeEnd) {
+            if (occDate >= rangeStart && occDate < rangeEnd && !isExcluded(occDate)) {
               occurrences.push({
                 title: event.title,
                 start: new Date(occDate),
@@ -505,7 +516,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
           )
           if (cursor < event.start) continue
           if (until && cursor > until) continue
-          if (cursor >= rangeStart && cursor < rangeEnd) {
+          if (cursor >= rangeStart && cursor < rangeEnd && !isExcluded(cursor)) {
             occurrences.push({
               title: event.title,
               start: new Date(cursor),
@@ -536,7 +547,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
           const dayCode = weekdayToRrule(dayCursor.getDay())
           if (byDays.includes(dayCode)) {
             const occStart = new Date(dayCursor)
-            if (occStart >= event.start) {
+            if (occStart >= event.start && !isExcluded(occStart)) {
               occurrences.push({
                 title: event.title,
                 start: new Date(occStart),
@@ -579,7 +590,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
 
             if (occDate < event.start) continue
             if (until && occDate > until) continue
-            if (occDate >= rangeStart && occDate < rangeEnd) {
+            if (occDate >= rangeStart && occDate < rangeEnd && !isExcluded(occDate)) {
               occurrences.push({
                 title: event.title,
                 start: new Date(occDate),
@@ -604,7 +615,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
 
           if (occDate < event.start) continue
           if (until && occDate > until) continue
-          if (occDate >= rangeStart && occDate < rangeEnd) {
+          if (occDate >= rangeStart && occDate < rangeEnd && !isExcluded(occDate)) {
             occurrences.push({
               title: event.title,
               start: new Date(occDate),
