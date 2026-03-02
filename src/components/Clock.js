@@ -8,7 +8,7 @@ export default function Clock() {
             const now = new Date();
             const estTime = new Intl.DateTimeFormat('en-US', {
                 timeZone: 'America/New_York',
-                hour: '2-digit',
+                hour: 'numeric',
                 minute: '2-digit',
                 hour12: true,
             }).format(now);

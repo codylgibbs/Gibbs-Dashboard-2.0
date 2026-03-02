@@ -172,7 +172,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
             setEvents(uniqueEvents);
         };
         fetchCalendars();
-        const interval = setInterval(fetchCalendars, 1 * 60 * 1000); // Refresh every 1 minute
+        const interval = setInterval(fetchCalendars, 10 * 60 * 1000); // Refresh every 10 minutes
         return () => clearInterval(interval);
     }, [currentDate]);
     useEffect(() => {
@@ -360,6 +360,11 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
                     else if (trimmed.startsWith('STATUS:')) {
                         eventObj.status = trimmed.substring(7);
                     }
+                    else if (trimmed.startsWith('EXDATE')) {
+                        const dateStr = trimmed.split(':').slice(1).join(':');
+                        const dates = dateStr.split(',').map(parseICSDate);
+                        eventObj.exdates = (eventObj.exdates || []).concat(dates);
+                    }
                 }
             }
         }
@@ -370,8 +375,12 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
         return events;
     };
     const expandRecurringEvent = (event, rangeStart, rangeEnd) => {
+        // Handle EXDATEs (deleted instances)
+        const exdates = event.exdates || [];
+        const isExcluded = (date) => exdates.some(ed => ed.getTime() === date.getTime());
         if (!event.rrule) {
-            return eventInRange(event, rangeStart, rangeEnd) ? [event] : [];
+            // For non-recurring, skip if excluded
+            return eventInRange(event, rangeStart, rangeEnd) && !isExcluded(event.start) ? [event] : [];
         }
         const rule = parseRRule(event.rrule);
         if (!rule.freq) {
@@ -387,11 +396,12 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
             while (cursor < rangeEnd) {
                 if (until && cursor > until)
                     break;
-                if (cursor >= rangeStart) {
+                if (cursor >= rangeStart && !isExcluded(cursor)) {
                     occurrences.push({
                         title: event.title,
                         start: new Date(cursor),
                         end: new Date(cursor.getTime() + durationMs),
+                        location: event.location,
                     });
                 }
                 count += 1;
@@ -424,7 +434,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
                             continue;
                         if (until && occDate > until)
                             continue;
-                        if (occDate >= rangeStart && occDate < rangeEnd) {
+                        if (occDate >= rangeStart && occDate < rangeEnd && !isExcluded(occDate)) {
                             occurrences.push({
                                 title: event.title,
                                 start: new Date(occDate),
@@ -444,7 +454,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
                         continue;
                     if (until && cursor > until)
                         continue;
-                    if (cursor >= rangeStart && cursor < rangeEnd) {
+                    if (cursor >= rangeStart && cursor < rangeEnd && !isExcluded(cursor)) {
                         occurrences.push({
                             title: event.title,
                             start: new Date(cursor),
@@ -474,7 +484,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
                     const dayCode = weekdayToRrule(dayCursor.getDay());
                     if (byDays.includes(dayCode)) {
                         const occStart = new Date(dayCursor);
-                        if (occStart >= event.start) {
+                        if (occStart >= event.start && !isExcluded(occStart)) {
                             occurrences.push({
                                 title: event.title,
                                 start: new Date(occStart),
@@ -512,7 +522,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
                             continue;
                         if (until && occDate > until)
                             continue;
-                        if (occDate >= rangeStart && occDate < rangeEnd) {
+                        if (occDate >= rangeStart && occDate < rangeEnd && !isExcluded(occDate)) {
                             occurrences.push({
                                 title: event.title,
                                 start: new Date(occDate),
@@ -532,7 +542,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
                         continue;
                     if (until && occDate > until)
                         continue;
-                    if (occDate >= rangeStart && occDate < rangeEnd) {
+                    if (occDate >= rangeStart && occDate < rangeEnd && !isExcluded(occDate)) {
                         occurrences.push({
                             title: event.title,
                             start: new Date(occDate),
