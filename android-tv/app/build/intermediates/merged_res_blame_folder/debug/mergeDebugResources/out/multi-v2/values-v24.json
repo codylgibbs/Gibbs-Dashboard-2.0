@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.gibbs.dashboard2.app-mergeDebugResources-23:/values-v24/values-v24.xml",
+            "outputFile": "com.gibbs.dashboard2.app-mergeDebugResources-24:/values-v24/values-v24.xml",
             "map": [
                 {
                     "source": "/Users/codygibbs/.gradle/caches/9.3.1/transforms/8e9da0eb9d019531d090e39454046210/transformed/media-1.0.0/res/values-v24/values-v24.xml",
