@@ -18,6 +18,10 @@ function RadarMap() {
   // We'll use zoom 7 for a broad region
   // Show only the latest radar frame (no animation)
   const radarTileUrl = "https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0r-900913/{z}/{x}/{y}.png";
+  const openWeatherApiKey = import.meta.env.VITE_OPENWEATHER_API_KEY as string | undefined
+  const windTileUrl = openWeatherApiKey
+    ? `https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=${openWeatherApiKey}`
+    : null
   return (
     <div style={{ width: '100%', height: '100%', minHeight: 300 }}>
       <MapContainer center={center} zoom={9} style={{ width: '100%', height: '100%', minHeight: 300, borderRadius: '16px', overflow: 'hidden' }}>
@@ -32,12 +36,191 @@ function RadarMap() {
           attribution="Radar &copy; NOAA/NWS"
           opacity={0.7}
         />
+        {windTileUrl && (
+          <TileLayer
+            url={windTileUrl}
+            attribution="Wind &copy; OpenWeather"
+            opacity={0.45}
+          />
+        )}
       </MapContainer>
     </div>
   );
 }
 
-// RainViewer radar embed with fallback handling
+// RainViewer animated radar tiles with NOAA/NWS fallback.
+function RainViewerWithFallback() {
+  const [mode, setMode] = useState<'noaa' | 'rainviewer'>('rainviewer')
+  const [isLightTheme, setIsLightTheme] = useState(false)
+  const [frameUrls, setFrameUrls] = useState<string[]>([])
+  const [frameIndex, setFrameIndex] = useState(0)
+  const [loadingFrames, setLoadingFrames] = useState(true)
+  const rainViewerZoom = 7
+  const rainViewerMaxZoom = 7
+
+  useEffect(() => {
+    const appContainer = document.querySelector('.app-container')
+    if (!appContainer) return
+
+    const updateTheme = () => {
+      setIsLightTheme(appContainer.classList.contains('theme-light'))
+    }
+
+    updateTheme()
+    const observer = new MutationObserver(updateTheme)
+    observer.observe(appContainer, { attributes: true, attributeFilter: ['class'] })
+
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (mode !== 'rainviewer') return
+
+    let cancelled = false
+
+    const loadFrames = async () => {
+      try {
+        setLoadingFrames(true)
+        const response = await fetch('https://api.rainviewer.com/public/weather-maps.json')
+        const data = await response.json()
+        const host = data?.host || 'https://tilecache.rainviewer.com'
+        const past = data?.radar?.past || []
+        const nowcast = data?.radar?.nowcast || []
+        const frames = [...past, ...nowcast].slice(-12)
+
+        const urls = frames
+          .map((frame: { path?: string }) => frame?.path)
+          .filter((path: string | undefined): path is string => Boolean(path))
+          .map((path: string) => `${host}${path}/256/{z}/{x}/{y}/2/1_1.png`)
+
+        if (!cancelled) {
+          if (urls.length === 0) {
+            setMode('noaa')
+          } else {
+            setFrameUrls(urls)
+            setFrameIndex(0)
+          }
+          setLoadingFrames(false)
+        }
+      } catch {
+        if (!cancelled) {
+          setMode('noaa')
+          setLoadingFrames(false)
+        }
+      }
+    }
+
+    loadFrames()
+
+    return () => {
+      cancelled = true
+    }
+  }, [mode])
+
+  useEffect(() => {
+    if (mode !== 'rainviewer' || frameUrls.length < 2) return
+
+    const interval = setInterval(() => {
+      setFrameIndex(index => (index + 1) % frameUrls.length)
+    }, 700)
+
+    return () => clearInterval(interval)
+  }, [mode, frameUrls])
+
+  if (mode === 'noaa') {
+    return (
+      <div style={{ width: '100%', height: '100%', minHeight: 300, position: 'relative' }}>
+        <RadarMap />
+        <button
+          onClick={() => {
+            setMode('rainviewer')
+          }}
+          style={{
+            position: 'absolute',
+            top: 10,
+            right: 10,
+            zIndex: 1200,
+            border: 'none',
+            borderRadius: 8,
+            padding: '6px 10px',
+            cursor: 'pointer',
+            background: isLightTheme ? 'rgba(255,255,255,0.9)' : 'rgba(16,21,31,0.88)',
+            color: isLightTheme ? '#172033' : '#ecf0f6',
+            fontSize: '0.85rem',
+          }}
+        >
+          Try Animated Radar
+        </button>
+      </div>
+    )
+  }
+
+  if (loadingFrames) {
+    return (
+      <div style={{ width: '100%', height: '100%', minHeight: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '16px', background: isLightTheme ? '#eef3f8' : '#10151f', color: isLightTheme ? '#172033' : '#ecf0f6' }}>
+        Loading animated radar...
+      </div>
+    )
+  }
+
+  return (
+    <div style={{ width: '100%', height: '100%', minHeight: 300, position: 'relative' }}>
+      <MapContainer
+        center={[33.8485, -83.2139]}
+        zoom={rainViewerZoom}
+        minZoom={4}
+        maxZoom={rainViewerMaxZoom}
+        style={{ width: '100%', height: '100%', minHeight: 300, borderRadius: '16px', overflow: 'hidden' }}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution="&copy; OpenStreetMap contributors"
+        />
+        <TileLayer
+          key={frameUrls[frameIndex]}
+          url={frameUrls[frameIndex]}
+          attribution="Radar &copy; RainViewer"
+          opacity={0.75}
+          maxNativeZoom={rainViewerMaxZoom}
+          maxZoom={rainViewerMaxZoom}
+        />
+      </MapContainer>
+      <div
+        style={{
+          position: 'absolute',
+          top: 10,
+          left: 10,
+          zIndex: 1200,
+          borderRadius: 8,
+          padding: '6px 10px',
+          background: isLightTheme ? 'rgba(255,255,255,0.9)' : 'rgba(16,21,31,0.88)',
+          color: isLightTheme ? '#172033' : '#ecf0f6',
+          fontSize: '0.82rem',
+        }}
+      >
+        Animated Radar {frameIndex + 1}/{Math.max(frameUrls.length, 1)}
+      </div>
+      <button
+        onClick={() => setMode('noaa')}
+        style={{
+          position: 'absolute',
+          top: 10,
+          right: 10,
+          zIndex: 1200,
+          border: 'none',
+          borderRadius: 8,
+          padding: '6px 10px',
+          cursor: 'pointer',
+          background: isLightTheme ? 'rgba(255,255,255,0.9)' : 'rgba(16,21,31,0.88)',
+          color: isLightTheme ? '#172033' : '#ecf0f6',
+          fontSize: '0.85rem',
+        }}
+      >
+        Show NOAA + Wind
+      </button>
+    </div>
+  )
+}
 
 
 interface WeatherData {
@@ -415,7 +598,7 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
                 <div><strong>Location:</strong> Winterville, GA</div>
               </div>
               <div className="weather-modal-radar" style={{ flex: 2, minWidth: 0, minHeight: 0, height: '100%', width: '100%', display: 'flex', alignItems: 'stretch', justifyContent: 'stretch', position: 'relative' }}>
-                <RadarMap />
+                <RainViewerWithFallback />
               </div>
             </div>
             <div className="hourly-forecast-modal" style={{ marginTop: '2em', fontSize: '1.2em', overflowX: 'auto' }}>

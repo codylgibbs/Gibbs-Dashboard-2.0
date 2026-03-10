@@ -16,7 +16,124 @@ function RadarMap() {
     // We'll use zoom 7 for a broad region
     // Show only the latest radar frame (no animation)
     const radarTileUrl = "https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0r-900913/{z}/{x}/{y}.png";
-    return (_jsx("div", { style: { width: '100%', height: '100%', minHeight: 300 }, children: _jsxs(MapContainer, { center: center, zoom: 9, style: { width: '100%', height: '100%', minHeight: 300, borderRadius: '16px', overflow: 'hidden' }, children: [_jsx(TileLayer, { url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "\u00A9 OpenStreetMap contributors" }), _jsx(TileLayer, { url: radarTileUrl, attribution: "Radar \u00A9 NOAA/NWS", opacity: 0.7 })] }) }));
+    const openWeatherApiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
+    const windTileUrl = openWeatherApiKey
+        ? `https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=${openWeatherApiKey}`
+        : null;
+    return (_jsx("div", { style: { width: '100%', height: '100%', minHeight: 300 }, children: _jsxs(MapContainer, { center: center, zoom: 9, style: { width: '100%', height: '100%', minHeight: 300, borderRadius: '16px', overflow: 'hidden' }, children: [_jsx(TileLayer, { url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "\u00A9 OpenStreetMap contributors" }), _jsx(TileLayer, { url: radarTileUrl, attribution: "Radar \u00A9 NOAA/NWS", opacity: 0.7 }), windTileUrl && (_jsx(TileLayer, { url: windTileUrl, attribution: "Wind \u00A9 OpenWeather", opacity: 0.45 }))] }) }));
+}
+// RainViewer animated radar tiles with NOAA/NWS fallback.
+function RainViewerWithFallback() {
+    const [mode, setMode] = useState('rainviewer');
+    const [isLightTheme, setIsLightTheme] = useState(false);
+    const [frameUrls, setFrameUrls] = useState([]);
+    const [frameIndex, setFrameIndex] = useState(0);
+    const [loadingFrames, setLoadingFrames] = useState(true);
+    const rainViewerZoom = 7;
+    const rainViewerMaxZoom = 7;
+    useEffect(() => {
+        const appContainer = document.querySelector('.app-container');
+        if (!appContainer)
+            return;
+        const updateTheme = () => {
+            setIsLightTheme(appContainer.classList.contains('theme-light'));
+        };
+        updateTheme();
+        const observer = new MutationObserver(updateTheme);
+        observer.observe(appContainer, { attributes: true, attributeFilter: ['class'] });
+        return () => observer.disconnect();
+    }, []);
+    useEffect(() => {
+        if (mode !== 'rainviewer')
+            return;
+        let cancelled = false;
+        const loadFrames = async () => {
+            try {
+                setLoadingFrames(true);
+                const response = await fetch('https://api.rainviewer.com/public/weather-maps.json');
+                const data = await response.json();
+                const host = data?.host || 'https://tilecache.rainviewer.com';
+                const past = data?.radar?.past || [];
+                const nowcast = data?.radar?.nowcast || [];
+                const frames = [...past, ...nowcast].slice(-12);
+                const urls = frames
+                    .map((frame) => frame?.path)
+                    .filter((path) => Boolean(path))
+                    .map((path) => `${host}${path}/256/{z}/{x}/{y}/2/1_1.png`);
+                if (!cancelled) {
+                    if (urls.length === 0) {
+                        setMode('noaa');
+                    }
+                    else {
+                        setFrameUrls(urls);
+                        setFrameIndex(0);
+                    }
+                    setLoadingFrames(false);
+                }
+            }
+            catch {
+                if (!cancelled) {
+                    setMode('noaa');
+                    setLoadingFrames(false);
+                }
+            }
+        };
+        loadFrames();
+        return () => {
+            cancelled = true;
+        };
+    }, [mode]);
+    useEffect(() => {
+        if (mode !== 'rainviewer' || frameUrls.length < 2)
+            return;
+        const interval = setInterval(() => {
+            setFrameIndex(index => (index + 1) % frameUrls.length);
+        }, 700);
+        return () => clearInterval(interval);
+    }, [mode, frameUrls]);
+    if (mode === 'noaa') {
+        return (_jsxs("div", { style: { width: '100%', height: '100%', minHeight: 300, position: 'relative' }, children: [_jsx(RadarMap, {}), _jsx("button", { onClick: () => {
+                        setMode('rainviewer');
+                    }, style: {
+                        position: 'absolute',
+                        top: 10,
+                        right: 10,
+                        zIndex: 1200,
+                        border: 'none',
+                        borderRadius: 8,
+                        padding: '6px 10px',
+                        cursor: 'pointer',
+                        background: isLightTheme ? 'rgba(255,255,255,0.9)' : 'rgba(16,21,31,0.88)',
+                        color: isLightTheme ? '#172033' : '#ecf0f6',
+                        fontSize: '0.85rem',
+                    }, children: "Try Animated Radar" })] }));
+    }
+    if (loadingFrames) {
+        return (_jsx("div", { style: { width: '100%', height: '100%', minHeight: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '16px', background: isLightTheme ? '#eef3f8' : '#10151f', color: isLightTheme ? '#172033' : '#ecf0f6' }, children: "Loading animated radar..." }));
+    }
+    return (_jsxs("div", { style: { width: '100%', height: '100%', minHeight: 300, position: 'relative' }, children: [_jsxs(MapContainer, { center: [33.8485, -83.2139], zoom: rainViewerZoom, minZoom: 4, maxZoom: rainViewerMaxZoom, style: { width: '100%', height: '100%', minHeight: 300, borderRadius: '16px', overflow: 'hidden' }, children: [_jsx(TileLayer, { url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "\u00A9 OpenStreetMap contributors" }), _jsx(TileLayer, { url: frameUrls[frameIndex], attribution: "Radar \u00A9 RainViewer", opacity: 0.75, maxNativeZoom: rainViewerMaxZoom, maxZoom: rainViewerMaxZoom }, frameUrls[frameIndex])] }), _jsxs("div", { style: {
+                    position: 'absolute',
+                    top: 10,
+                    left: 10,
+                    zIndex: 1200,
+                    borderRadius: 8,
+                    padding: '6px 10px',
+                    background: isLightTheme ? 'rgba(255,255,255,0.9)' : 'rgba(16,21,31,0.88)',
+                    color: isLightTheme ? '#172033' : '#ecf0f6',
+                    fontSize: '0.82rem',
+                }, children: ["Animated Radar ", frameIndex + 1, "/", Math.max(frameUrls.length, 1)] }), _jsx("button", { onClick: () => setMode('noaa'), style: {
+                    position: 'absolute',
+                    top: 10,
+                    right: 10,
+                    zIndex: 1200,
+                    border: 'none',
+                    borderRadius: 8,
+                    padding: '6px 10px',
+                    cursor: 'pointer',
+                    background: isLightTheme ? 'rgba(255,255,255,0.9)' : 'rgba(16,21,31,0.88)',
+                    color: isLightTheme ? '#172033' : '#ecf0f6',
+                    fontSize: '0.85rem',
+                }, children: "Show NOAA + Wind" })] }));
 }
 export default function Weather({ variant = 'full' }) {
     const [current, setCurrent] = useState(null);
@@ -192,5 +309,5 @@ export default function Weather({ variant = 'full' }) {
                                                 month: 'short',
                                                 day: 'numeric',
                                                 timeZone: 'America/New_York',
-                                            }) }), _jsx("div", { className: "forecast-icon", children: getWeatherEmoji(day.icon) }), _jsxs("div", { className: "forecast-temps", children: [_jsxs("span", { className: "high", children: [day.high, "\u00B0"] }), _jsxs("span", { className: "low", children: [day.low, "\u00B0"] })] })] }, day.date))) })] }))] }), expandedCurrent && current && (_jsx("div", { className: "weather-modal", onClick: () => setExpandedCurrent(false), children: _jsxs("div", { className: "weather-modal-content", onClick: e => e.stopPropagation(), children: [_jsx("button", { className: "weather-modal-close", onClick: () => setExpandedCurrent(false), "aria-label": "Close weather details", style: { position: 'absolute', top: '1em', right: '1em', fontSize: '2em', background: 'none', border: 'none', color: '#fff', cursor: 'pointer', zIndex: 10000 }, children: "\u00D7" }), _jsxs("div", { className: "weather-modal-header", style: { fontSize: '2em', marginBottom: '1em', display: 'flex', alignItems: 'center', gap: '1em' }, children: [_jsx("span", { className: "weather-modal-date", children: "Current Weather" }), _jsx("span", { className: "weather-modal-icon", children: getWeatherEmoji(current.icon) })] }), _jsxs("div", { style: { display: 'flex', gap: '1em', flex: 1, minHeight: 0, height: '100%', flexWrap: 'wrap' }, children: [_jsxs("div", { className: "weather-modal-details", style: { flex: 1, fontSize: '1em', minWidth: '200px', height: '100%', wordBreak: 'break-word', overflowWrap: 'anywhere' }, children: [_jsxs("div", { children: [_jsx("strong", { children: "Temperature:" }), " ", current.temp, "\u00B0F"] }), _jsxs("div", { children: [_jsx("strong", { children: "Feels Like:" }), " ", current.feelsLike, "\u00B0F"] }), _jsxs("div", { children: [_jsx("strong", { children: "Min:" }), " ", current.min, "\u00B0F"] }), _jsxs("div", { children: [_jsx("strong", { children: "Max:" }), " ", current.max, "\u00B0F"] }), _jsxs("div", { children: [_jsx("strong", { children: "Condition:" }), " ", current.condition, " (", current.description, ")"] }), _jsxs("div", { children: [_jsx("strong", { children: "Humidity:" }), " ", current.humidity, "%"] }), _jsxs("div", { children: [_jsx("strong", { children: "Pressure:" }), " ", current.pressure, " hPa"] }), _jsxs("div", { children: [_jsx("strong", { children: "Clouds:" }), " ", current.clouds, "%"] }), _jsxs("div", { children: [_jsx("strong", { children: "Visibility:" }), " ", current.visibility, " m"] }), _jsxs("div", { children: [_jsx("strong", { children: "Dew Point:" }), " ", current.dewPoint ?? 'N/A', "\u00B0F"] }), _jsxs("div", { children: [_jsx("strong", { children: "Precipitation:" }), " Rain ", current.rain ?? 0, " mm, Snow ", current.snow ?? 0, " mm"] }), _jsxs("div", { children: [_jsx("strong", { children: "Wind:" }), " ", current.windSpeed, " mph, ", current.windDeg, "\u00B0, Gust ", current.windGust ?? 'N/A', " mph"] }), _jsxs("div", { children: [_jsx("strong", { children: "Precipitation Probability:" }), " ", current.pop !== undefined ? Math.round((current.pop ?? 0) * 100) : 'N/A', "%"] }), _jsxs("div", { children: [_jsx("strong", { children: "Location:" }), " Winterville, GA"] })] }), _jsx("div", { className: "weather-modal-radar", style: { flex: 2, minWidth: 0, minHeight: 0, height: '100%', width: '100%', display: 'flex', alignItems: 'stretch', justifyContent: 'stretch', position: 'relative' }, children: _jsx(RadarMap, {}) })] }), _jsxs("div", { className: "hourly-forecast-modal", style: { marginTop: '2em', fontSize: '1.2em', overflowX: 'auto' }, children: [_jsx("div", { className: "hourly-forecast-title", style: { fontSize: '1.5em', marginBottom: '0.5em' }, children: "Hourly Forecast" }), _jsx("div", { className: "hourly-forecast-row", style: { display: 'flex', gap: '1em', paddingBottom: '1em', flexWrap: 'nowrap', justifyContent: 'center', width: '100%' }, children: hourly.map(hour => (_jsxs("div", { className: "hourly-block", style: { minWidth: '60px', padding: '0.25em', background: '#333', borderRadius: '8px', textAlign: 'center', flex: '0 0 auto', fontSize: '0.75em' }, children: [_jsx("div", { className: "hourly-time", style: { fontSize: '0.9em' }, children: new Date(hour.dt * 1000).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York' }) }), _jsx("div", { className: "hourly-icon", style: { fontSize: '1.3em' }, children: getWeatherEmoji(hour.weather[0].icon) }), _jsxs("div", { className: "hourly-temp", children: [Math.round(hour.main.temp), "\u00B0"] }), _jsxs("div", { className: "hourly-pop", children: [hour.pop !== undefined ? Math.round(hour.pop * 100) : 'N/A', "%"] })] }, hour.dt))) })] })] }) })), expandedIndex !== null && forecast[expandedIndex] && (_jsx("div", { className: "weather-modal", onClick: () => setExpandedIndex(null), children: _jsxs("div", { className: "weather-modal-content", onClick: e => e.stopPropagation(), children: [_jsx("button", { className: "weather-modal-close", onClick: () => setExpandedIndex(null), "aria-label": "Close weather details", style: { position: 'absolute', top: '1em', right: '1em', fontSize: '2em', background: 'none', border: 'none', color: '#fff', cursor: 'pointer', zIndex: 10000 }, children: "\u00D7" }), _jsxs("div", { className: "weather-modal-header", style: { fontSize: '2em', marginBottom: '1em', display: 'flex', alignItems: 'center', gap: '1em' }, children: [_jsx("span", { className: "weather-modal-date", children: new Date(forecast[expandedIndex].date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'America/New_York' }) }), _jsx("span", { className: "weather-modal-icon", children: getWeatherEmoji(forecast[expandedIndex].icon) })] }), _jsxs("div", { className: "weather-modal-details", style: { fontSize: '1.5em', overflowY: 'auto', minWidth: '350px' }, children: [_jsxs("div", { children: [_jsx("strong", { children: "High:" }), " ", forecast[expandedIndex].high, "\u00B0F"] }), _jsxs("div", { children: [_jsx("strong", { children: "Low:" }), " ", forecast[expandedIndex].low, "\u00B0F"] }), _jsxs("div", { children: [_jsx("strong", { children: "Condition:" }), " ", forecast[expandedIndex].condition, " (", forecast[expandedIndex].description, ")"] }), _jsxs("div", { children: [_jsx("strong", { children: "Pressure:" }), " ", forecast[expandedIndex].pressure, " hPa"] }), _jsxs("div", { children: [_jsx("strong", { children: "Humidity:" }), " ", forecast[expandedIndex].humidity, "%"] }), _jsxs("div", { children: [_jsx("strong", { children: "Clouds:" }), " ", forecast[expandedIndex].clouds, "%"] }), _jsxs("div", { children: [_jsx("strong", { children: "Visibility:" }), " ", forecast[expandedIndex].visibility, " m"] }), _jsxs("div", { children: [_jsx("strong", { children: "Dew Point:" }), " ", forecast[expandedIndex].dewPoint ?? 'N/A', "\u00B0F"] }), _jsxs("div", { children: [_jsx("strong", { children: "Precipitation:" }), " Rain ", forecast[expandedIndex].rain ?? 0, " mm, Snow ", forecast[expandedIndex].snow ?? 0, " mm"] }), _jsxs("div", { children: [_jsx("strong", { children: "Wind:" }), " ", forecast[expandedIndex].windSpeed, " mph, ", forecast[expandedIndex].windDeg, "\u00B0, Gust ", forecast[expandedIndex].windGust ?? 'N/A', " mph"] }), _jsxs("div", { children: [_jsx("strong", { children: "Precipitation Probability:" }), " ", forecast[expandedIndex].pop !== undefined ? Math.round((forecast[expandedIndex].pop ?? 0) * 100) : 'N/A', "%"] })] })] }) }))] }));
+                                            }) }), _jsx("div", { className: "forecast-icon", children: getWeatherEmoji(day.icon) }), _jsxs("div", { className: "forecast-temps", children: [_jsxs("span", { className: "high", children: [day.high, "\u00B0"] }), _jsxs("span", { className: "low", children: [day.low, "\u00B0"] })] })] }, day.date))) })] }))] }), expandedCurrent && current && (_jsx("div", { className: "weather-modal", onClick: () => setExpandedCurrent(false), children: _jsxs("div", { className: "weather-modal-content", onClick: e => e.stopPropagation(), children: [_jsx("button", { className: "weather-modal-close", onClick: () => setExpandedCurrent(false), "aria-label": "Close weather details", style: { position: 'absolute', top: '1em', right: '1em', fontSize: '2em', background: 'none', border: 'none', color: '#fff', cursor: 'pointer', zIndex: 10000 }, children: "\u00D7" }), _jsxs("div", { className: "weather-modal-header", style: { fontSize: '2em', marginBottom: '1em', display: 'flex', alignItems: 'center', gap: '1em' }, children: [_jsx("span", { className: "weather-modal-date", children: "Current Weather" }), _jsx("span", { className: "weather-modal-icon", children: getWeatherEmoji(current.icon) })] }), _jsxs("div", { style: { display: 'flex', gap: '1em', flex: 1, minHeight: 0, height: '100%', flexWrap: 'wrap' }, children: [_jsxs("div", { className: "weather-modal-details", style: { flex: 1, fontSize: '1em', minWidth: '200px', height: '100%', wordBreak: 'break-word', overflowWrap: 'anywhere' }, children: [_jsxs("div", { children: [_jsx("strong", { children: "Temperature:" }), " ", current.temp, "\u00B0F"] }), _jsxs("div", { children: [_jsx("strong", { children: "Feels Like:" }), " ", current.feelsLike, "\u00B0F"] }), _jsxs("div", { children: [_jsx("strong", { children: "Min:" }), " ", current.min, "\u00B0F"] }), _jsxs("div", { children: [_jsx("strong", { children: "Max:" }), " ", current.max, "\u00B0F"] }), _jsxs("div", { children: [_jsx("strong", { children: "Condition:" }), " ", current.condition, " (", current.description, ")"] }), _jsxs("div", { children: [_jsx("strong", { children: "Humidity:" }), " ", current.humidity, "%"] }), _jsxs("div", { children: [_jsx("strong", { children: "Pressure:" }), " ", current.pressure, " hPa"] }), _jsxs("div", { children: [_jsx("strong", { children: "Clouds:" }), " ", current.clouds, "%"] }), _jsxs("div", { children: [_jsx("strong", { children: "Visibility:" }), " ", current.visibility, " m"] }), _jsxs("div", { children: [_jsx("strong", { children: "Dew Point:" }), " ", current.dewPoint ?? 'N/A', "\u00B0F"] }), _jsxs("div", { children: [_jsx("strong", { children: "Precipitation:" }), " Rain ", current.rain ?? 0, " mm, Snow ", current.snow ?? 0, " mm"] }), _jsxs("div", { children: [_jsx("strong", { children: "Wind:" }), " ", current.windSpeed, " mph, ", current.windDeg, "\u00B0, Gust ", current.windGust ?? 'N/A', " mph"] }), _jsxs("div", { children: [_jsx("strong", { children: "Precipitation Probability:" }), " ", current.pop !== undefined ? Math.round((current.pop ?? 0) * 100) : 'N/A', "%"] }), _jsxs("div", { children: [_jsx("strong", { children: "Location:" }), " Winterville, GA"] })] }), _jsx("div", { className: "weather-modal-radar", style: { flex: 2, minWidth: 0, minHeight: 0, height: '100%', width: '100%', display: 'flex', alignItems: 'stretch', justifyContent: 'stretch', position: 'relative' }, children: _jsx(RainViewerWithFallback, {}) })] }), _jsxs("div", { className: "hourly-forecast-modal", style: { marginTop: '2em', fontSize: '1.2em', overflowX: 'auto' }, children: [_jsx("div", { className: "hourly-forecast-title", style: { fontSize: '1.5em', marginBottom: '0.5em' }, children: "Hourly Forecast" }), _jsx("div", { className: "hourly-forecast-row", style: { display: 'flex', gap: '1em', paddingBottom: '1em', flexWrap: 'nowrap', justifyContent: 'center', width: '100%' }, children: hourly.map(hour => (_jsxs("div", { className: "hourly-block", style: { minWidth: '60px', padding: '0.25em', background: '#333', borderRadius: '8px', textAlign: 'center', flex: '0 0 auto', fontSize: '0.75em' }, children: [_jsx("div", { className: "hourly-time", style: { fontSize: '0.9em' }, children: new Date(hour.dt * 1000).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York' }) }), _jsx("div", { className: "hourly-icon", style: { fontSize: '1.3em' }, children: getWeatherEmoji(hour.weather[0].icon) }), _jsxs("div", { className: "hourly-temp", children: [Math.round(hour.main.temp), "\u00B0"] }), _jsxs("div", { className: "hourly-pop", children: [hour.pop !== undefined ? Math.round(hour.pop * 100) : 'N/A', "%"] })] }, hour.dt))) })] })] }) })), expandedIndex !== null && forecast[expandedIndex] && (_jsx("div", { className: "weather-modal", onClick: () => setExpandedIndex(null), children: _jsxs("div", { className: "weather-modal-content", onClick: e => e.stopPropagation(), children: [_jsx("button", { className: "weather-modal-close", onClick: () => setExpandedIndex(null), "aria-label": "Close weather details", style: { position: 'absolute', top: '1em', right: '1em', fontSize: '2em', background: 'none', border: 'none', color: '#fff', cursor: 'pointer', zIndex: 10000 }, children: "\u00D7" }), _jsxs("div", { className: "weather-modal-header", style: { fontSize: '2em', marginBottom: '1em', display: 'flex', alignItems: 'center', gap: '1em' }, children: [_jsx("span", { className: "weather-modal-date", children: new Date(forecast[expandedIndex].date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'America/New_York' }) }), _jsx("span", { className: "weather-modal-icon", children: getWeatherEmoji(forecast[expandedIndex].icon) })] }), _jsxs("div", { className: "weather-modal-details", style: { fontSize: '1.5em', overflowY: 'auto', minWidth: '350px' }, children: [_jsxs("div", { children: [_jsx("strong", { children: "High:" }), " ", forecast[expandedIndex].high, "\u00B0F"] }), _jsxs("div", { children: [_jsx("strong", { children: "Low:" }), " ", forecast[expandedIndex].low, "\u00B0F"] }), _jsxs("div", { children: [_jsx("strong", { children: "Condition:" }), " ", forecast[expandedIndex].condition, " (", forecast[expandedIndex].description, ")"] }), _jsxs("div", { children: [_jsx("strong", { children: "Pressure:" }), " ", forecast[expandedIndex].pressure, " hPa"] }), _jsxs("div", { children: [_jsx("strong", { children: "Humidity:" }), " ", forecast[expandedIndex].humidity, "%"] }), _jsxs("div", { children: [_jsx("strong", { children: "Clouds:" }), " ", forecast[expandedIndex].clouds, "%"] }), _jsxs("div", { children: [_jsx("strong", { children: "Visibility:" }), " ", forecast[expandedIndex].visibility, " m"] }), _jsxs("div", { children: [_jsx("strong", { children: "Dew Point:" }), " ", forecast[expandedIndex].dewPoint ?? 'N/A', "\u00B0F"] }), _jsxs("div", { children: [_jsx("strong", { children: "Precipitation:" }), " Rain ", forecast[expandedIndex].rain ?? 0, " mm, Snow ", forecast[expandedIndex].snow ?? 0, " mm"] }), _jsxs("div", { children: [_jsx("strong", { children: "Wind:" }), " ", forecast[expandedIndex].windSpeed, " mph, ", forecast[expandedIndex].windDeg, "\u00B0, Gust ", forecast[expandedIndex].windGust ?? 'N/A', " mph"] }), _jsxs("div", { children: [_jsx("strong", { children: "Precipitation Probability:" }), " ", forecast[expandedIndex].pop !== undefined ? Math.round((forecast[expandedIndex].pop ?? 0) * 100) : 'N/A', "%"] })] })] }) }))] }));
 }
