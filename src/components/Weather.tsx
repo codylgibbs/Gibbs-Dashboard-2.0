@@ -352,15 +352,15 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
       </div>
       {/* Modal overlays rendered at top level for current and forecast details */}
       {expandedCurrent && current && (
-        <div className="weather-modal" onClick={() => setExpandedCurrent(false)} style={{ position: 'fixed', top: 0, left: 0, width: '96vw', height: '96vh', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(20,20,20,0.95)' }}>
-          <div className="weather-modal-content" onClick={e => e.stopPropagation()} style={{ width: '100%', height: '100%', maxWidth: '100%', maxHeight: '100%', display: 'flex', flexDirection: 'column', padding: '2em', boxSizing: 'border-box', borderRadius: '32px', background: '#222', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
+        <div className="weather-modal" onClick={() => setExpandedCurrent(false)}>
+          <div className="weather-modal-content" onClick={e => e.stopPropagation()}>
             <button className="weather-modal-close" onClick={() => setExpandedCurrent(false)} aria-label="Close weather details" style={{ position: 'absolute', top: '1em', right: '1em', fontSize: '2em', background: 'none', border: 'none', color: '#fff', cursor: 'pointer', zIndex: 10000 }}>×</button>
             <div className="weather-modal-header" style={{ fontSize: '2em', marginBottom: '1em', display: 'flex', alignItems: 'center', gap: '1em' }}>
               <span className="weather-modal-date">Current Weather</span>
               <span className="weather-modal-icon">{getWeatherEmoji(current.icon)}</span>
             </div>
-            <div style={{ display: 'flex', gap: '3em', flex: 1, minHeight: 0, height: '40vh' }}>
-              <div className="weather-modal-details" style={{ flex: 1, fontSize: '1.5em', minWidth: '350px', height: '100%' }}>
+            <div style={{ display: 'flex', gap: '1em', flex: 1, minHeight: 0, height: '100%', flexWrap: 'wrap' }}>
+              <div className="weather-modal-details" style={{ flex: 1, fontSize: '1em', minWidth: '200px', height: '100%', wordBreak: 'break-word', overflowWrap: 'anywhere' }}>
                 <div><strong>Temperature:</strong> {current.temp}°F</div>
                 <div><strong>Feels Like:</strong> {current.feelsLike}°F</div>
                 <div><strong>Min:</strong> {current.min}°F</div>
@@ -376,14 +376,14 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
                 <div><strong>Precipitation Probability:</strong> {current.pop !== undefined ? Math.round((current.pop ?? 0) * 100) : 'N/A'}%</div>
                 <div><strong>Location:</strong> Winterville, GA</div>
               </div>
-              <div className="weather-modal-radar" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div className="weather-modal-radar" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '200px', height: '100%' }}>
                 <iframe
                   title="Windy.com Radar"
                   src="https://embed.windy.com/embed2.html?lat=33.8485&lon=-83.2139&zoom=8&level=surface&overlay=radar&menu=&message=true&marker=true&calendar=both&pressure=true&type=map&location=coordinates&detail=&detailLat=33.8485&detailLon=-83.2139&metricWind=kt&metricTemp=%C2%B0F"
-                  width="900"
-                  height="650"
+                  width="100%"
+                  height="100%"
                   frameBorder="0"
-                  style={{ borderRadius: '16px', background: '#222', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}
+                  style={{ borderRadius: '16px', background: '#222', boxShadow: '0 4px 16px rgba(0,0,0,0.3)', width: '100%', height: '100%' }}
                   allowFullScreen
                 ></iframe>
               </div>
@@ -392,7 +392,7 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
               <div className="hourly-forecast-title" style={{ fontSize: '1.5em', marginBottom: '0.5em' }}>Hourly Forecast</div>
               <div className="hourly-forecast-row" style={{ display: 'flex', gap: '1em', paddingBottom: '1em', flexWrap: 'nowrap', justifyContent: 'center', width: '100%' }}>
                 {hourly.map(hour => (
-                  <div className="hourly-block" key={hour.dt} style={{ minWidth: '90px', padding: '0.5em', background: '#333', borderRadius: '8px', textAlign: 'center', flex: '0 0 auto', fontSize: '0.95em' }}>
+                  <div className="hourly-block" key={hour.dt} style={{ minWidth: '60px', padding: '0.25em', background: '#333', borderRadius: '8px', textAlign: 'center', flex: '0 0 auto', fontSize: '0.75em' }}>
                     <div className="hourly-time" style={{ fontSize: '0.9em' }}>{new Date(hour.dt * 1000).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York' })}</div>
                     <div className="hourly-icon" style={{ fontSize: '1.3em' }}>{getWeatherEmoji(hour.weather[0].icon)}</div>
                     <div className="hourly-temp">{Math.round(hour.main.temp)}°</div>
@@ -405,8 +405,8 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
         </div>
       )}
       {expandedIndex !== null && forecast[expandedIndex] && (
-        <div className="weather-modal" onClick={() => setExpandedIndex(null)} style={{ position: 'fixed', top: 0, left: 0, width: 'auto', height: 'auto', minWidth: '420px', minHeight: '320px', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(20,20,20,0.65)' }}>
-          <div className="weather-modal-content" onClick={e => e.stopPropagation()} style={{ width: '420px', minHeight: '320px', maxWidth: '90vw', maxHeight: '90vh', display: 'flex', flexDirection: 'column', padding: '2em', boxSizing: 'border-box', borderRadius: '24px', background: '#222', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
+        <div className="weather-modal" onClick={() => setExpandedIndex(null)}>
+          <div className="weather-modal-content" onClick={e => e.stopPropagation()}>
             <button className="weather-modal-close" onClick={() => setExpandedIndex(null)} aria-label="Close weather details" style={{ position: 'absolute', top: '1em', right: '1em', fontSize: '2em', background: 'none', border: 'none', color: '#fff', cursor: 'pointer', zIndex: 10000 }}>×</button>
             <div className="weather-modal-header" style={{ fontSize: '2em', marginBottom: '1em', display: 'flex', alignItems: 'center', gap: '1em' }}>
               <span className="weather-modal-date">{new Date(forecast[expandedIndex].date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'America/New_York' })}</span>
