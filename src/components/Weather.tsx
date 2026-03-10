@@ -2,6 +2,44 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import '../styles/Weather.css'
 
+
+import { MapContainer, TileLayer } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// NOAA/NWS animated radar map centered on Winterville, GA
+function RadarMap() {
+  // Winterville, GA coordinates
+  const center: [number, number] = [33.8485, -83.2139];
+  // NWS radar tile layer (animation)
+  // Example: https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=YOUR_API_KEY
+  // For NWS, use https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi
+  // For animation, we can use the latest radar layer
+  // Example: https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0r-900913/{z}/{x}/{y}.png
+  // We'll use zoom 7 for a broad region
+  // Show only the latest radar frame (no animation)
+  const radarTileUrl = "https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0r-900913/{z}/{x}/{y}.png";
+  return (
+    <div style={{ width: '100%', height: '100%', minHeight: 300 }}>
+      <MapContainer center={center} zoom={9} style={{ width: '100%', height: '100%', minHeight: 300, borderRadius: '16px', overflow: 'hidden' }}>
+        {/* Base map (OpenStreetMap) */}
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution="&copy; OpenStreetMap contributors"
+        />
+        {/* Latest NOAA/NWS radar overlay */}
+        <TileLayer
+          url={radarTileUrl}
+          attribution="Radar &copy; NOAA/NWS"
+          opacity={0.7}
+        />
+      </MapContainer>
+    </div>
+  );
+}
+
+// RainViewer radar embed with fallback handling
+
+
 interface WeatherData {
   temp: number
   feelsLike: number
@@ -376,16 +414,8 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
                 <div><strong>Precipitation Probability:</strong> {current.pop !== undefined ? Math.round((current.pop ?? 0) * 100) : 'N/A'}%</div>
                 <div><strong>Location:</strong> Winterville, GA</div>
               </div>
-              <div className="weather-modal-radar" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '200px', height: '100%' }}>
-                <iframe
-                  title="Windy.com Radar"
-                  src="https://embed.windy.com/embed2.html?lat=33.8485&lon=-83.2139&zoom=8&level=surface&overlay=radar&menu=&message=true&marker=true&calendar=both&pressure=true&type=map&location=coordinates&detail=&detailLat=33.8485&detailLon=-83.2139&metricWind=kt&metricTemp=%C2%B0F"
-                  width="100%"
-                  height="100%"
-                  frameBorder="0"
-                  style={{ borderRadius: '16px', background: '#222', boxShadow: '0 4px 16px rgba(0,0,0,0.3)', width: '100%', height: '100%' }}
-                  allowFullScreen
-                ></iframe>
+              <div className="weather-modal-radar" style={{ flex: 2, minWidth: 0, minHeight: 0, height: '100%', width: '100%', display: 'flex', alignItems: 'stretch', justifyContent: 'stretch', position: 'relative' }}>
+                <RadarMap />
               </div>
             </div>
             <div className="hourly-forecast-modal" style={{ marginTop: '2em', fontSize: '1.2em', overflowX: 'auto' }}>
@@ -431,4 +461,3 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
     </>
   )
 }
-

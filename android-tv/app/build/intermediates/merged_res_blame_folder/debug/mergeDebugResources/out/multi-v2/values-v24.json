@@ -4,7 +4,7 @@
             "outputFile": "com.gibbs.dashboard2.app-mergeDebugResources-23:/values-v24/values-v24.xml",
             "map": [
                 {
-                    "source": "/Users/codygibbs/.gradle/caches/9.3.1/transforms/8e9da0eb9d019531d090e39454046210/transformed/media-1.0.0/res/values-v24/values-v24.xml",
+                    "source": "/Users/codygibbs/.gradle/caches/9.3.1/transforms/d205812cd9a52ced4246c9dba2fd4b92/transformed/media-1.0.0/res/values-v24/values-v24.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/Users/codygibbs/.gradle/caches/9.3.1/transforms/2a86255e63f2ddd69b12c7f9534598d8/transformed/appcompat-1.6.1/res/values-v24/values-v24.xml",
+                    "source": "/Users/codygibbs/.gradle/caches/9.3.1/transforms/09129af0011e5772c28c92ed0a5f8fbb/transformed/appcompat-1.6.1/res/values-v24/values-v24.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",

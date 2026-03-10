@@ -5,8 +5,11 @@
 5    android:versionName="1.0" >
 6
 7    <uses-sdk
+7-->INJECTED
 8        android:minSdkVersion="21"
+8-->INJECTED
 9        android:targetSdkVersion="34" />
+9-->INJECTED
 10
 11    <uses-feature
 11-->/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml:4:3-88
@@ -30,24 +33,25 @@
 20-->/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml:11:5-29
 21
 22    <permission
-22-->[androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/53ccf351e2df6928ebb7bec5b2d82ecc/transformed/core-1.12.0/AndroidManifest.xml:22:5-24:47
+22-->[androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/30750a85727bc67d5cd8720c601fefc8/transformed/core-1.12.0/AndroidManifest.xml:22:5-24:47
 23        android:name="com.gibbs.dashboard2.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
-23-->[androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/53ccf351e2df6928ebb7bec5b2d82ecc/transformed/core-1.12.0/AndroidManifest.xml:23:9-81
+23-->[androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/30750a85727bc67d5cd8720c601fefc8/transformed/core-1.12.0/AndroidManifest.xml:23:9-81
 24        android:protectionLevel="signature" />
-24-->[androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/53ccf351e2df6928ebb7bec5b2d82ecc/transformed/core-1.12.0/AndroidManifest.xml:24:9-44
+24-->[androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/30750a85727bc67d5cd8720c601fefc8/transformed/core-1.12.0/AndroidManifest.xml:24:9-44
 25
 26    <uses-permission android:name="com.gibbs.dashboard2.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
-26-->[androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/53ccf351e2df6928ebb7bec5b2d82ecc/transformed/core-1.12.0/AndroidManifest.xml:26:5-97
-26-->[androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/53ccf351e2df6928ebb7bec5b2d82ecc/transformed/core-1.12.0/AndroidManifest.xml:26:22-94
+26-->[androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/30750a85727bc67d5cd8720c601fefc8/transformed/core-1.12.0/AndroidManifest.xml:26:5-97
+26-->[androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/30750a85727bc67d5cd8720c601fefc8/transformed/core-1.12.0/AndroidManifest.xml:26:22-94
 27
 28    <application
 28-->/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml:13:3-39:17
 29        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-29-->[androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/53ccf351e2df6928ebb7bec5b2d82ecc/transformed/core-1.12.0/AndroidManifest.xml:28:18-86
+29-->[androidx.core:core:1.12.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/30750a85727bc67d5cd8720c601fefc8/transformed/core-1.12.0/AndroidManifest.xml:28:18-86
 30        android:banner="@drawable/tv_banner"
 30-->/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml:16:5-41
 31        android:debuggable="true"
 32        android:extractNativeLibs="true"
+32-->INJECTED
 33        android:icon="@drawable/app_icon"
 33-->/Users/codygibbs/Gibbs-Dashboard-2.0/android-tv/app/src/main/AndroidManifest.xml:15:5-38
 34        android:label="Gibbs Dashboard 2.0"
@@ -98,25 +102,25 @@
 57        </receiver>
 58
 59        <provider
-59-->[androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/93ca26b0a408b6b063bb50c388d96a64/transformed/emoji2-1.2.0/AndroidManifest.xml:24:9-32:20
+59-->[androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/c672b26e6739f4f11e5c69cdf5b2df1f/transformed/emoji2-1.2.0/AndroidManifest.xml:24:9-32:20
 60            android:name="androidx.startup.InitializationProvider"
-60-->[androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/93ca26b0a408b6b063bb50c388d96a64/transformed/emoji2-1.2.0/AndroidManifest.xml:25:13-67
+60-->[androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/c672b26e6739f4f11e5c69cdf5b2df1f/transformed/emoji2-1.2.0/AndroidManifest.xml:25:13-67
 61            android:authorities="com.gibbs.dashboard2.androidx-startup"
-61-->[androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/93ca26b0a408b6b063bb50c388d96a64/transformed/emoji2-1.2.0/AndroidManifest.xml:26:13-68
+61-->[androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/c672b26e6739f4f11e5c69cdf5b2df1f/transformed/emoji2-1.2.0/AndroidManifest.xml:26:13-68
 62            android:exported="false" >
-62-->[androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/93ca26b0a408b6b063bb50c388d96a64/transformed/emoji2-1.2.0/AndroidManifest.xml:27:13-37
+62-->[androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/c672b26e6739f4f11e5c69cdf5b2df1f/transformed/emoji2-1.2.0/AndroidManifest.xml:27:13-37
 63            <meta-data
-63-->[androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/93ca26b0a408b6b063bb50c388d96a64/transformed/emoji2-1.2.0/AndroidManifest.xml:29:13-31:52
+63-->[androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/c672b26e6739f4f11e5c69cdf5b2df1f/transformed/emoji2-1.2.0/AndroidManifest.xml:29:13-31:52
 64                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-64-->[androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/93ca26b0a408b6b063bb50c388d96a64/transformed/emoji2-1.2.0/AndroidManifest.xml:30:17-75
+64-->[androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/c672b26e6739f4f11e5c69cdf5b2df1f/transformed/emoji2-1.2.0/AndroidManifest.xml:30:17-75
 65                android:value="androidx.startup" />
-65-->[androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/93ca26b0a408b6b063bb50c388d96a64/transformed/emoji2-1.2.0/AndroidManifest.xml:31:17-49
+65-->[androidx.emoji2:emoji2:1.2.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/c672b26e6739f4f11e5c69cdf5b2df1f/transformed/emoji2-1.2.0/AndroidManifest.xml:31:17-49
 66            <meta-data
-66-->[androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.3.1/transforms/b76a6b3bcbdc7581005f9ba02770c83a/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:31:13-33:52
+66-->[androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.3.1/transforms/9a0ab21dd3e656bc24c29f63c56eeab9/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:31:13-33:52
 67                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-67-->[androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.3.1/transforms/b76a6b3bcbdc7581005f9ba02770c83a/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:32:17-78
+67-->[androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.3.1/transforms/9a0ab21dd3e656bc24c29f63c56eeab9/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:32:17-78
 68                android:value="androidx.startup" />
-68-->[androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.3.1/transforms/b76a6b3bcbdc7581005f9ba02770c83a/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:33:17-49
+68-->[androidx.lifecycle:lifecycle-process:2.4.1] /Users/codygibbs/.gradle/caches/9.3.1/transforms/9a0ab21dd3e656bc24c29f63c56eeab9/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:33:17-49
 69        </provider>
 70    </application>
 71
