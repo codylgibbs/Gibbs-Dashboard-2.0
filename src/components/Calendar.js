@@ -196,6 +196,14 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
     useEffect(() => {
         if (!settingsOpen)
             return;
+        // Focus the first focusable element in the settings menu
+        const firstFocusable = settingsRef.current?.querySelector('button, input');
+        if (firstFocusable) {
+            // Use a small delay to ensure the element is rendered
+            setTimeout(() => {
+                firstFocusable.focus();
+            }, 0);
+        }
         const handleClickOutside = (event) => {
             const target = event.target;
             if (settingsRef.current?.contains(target))
@@ -207,6 +215,8 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
         const handleKeyDown = (event) => {
             if (event.key === 'Escape') {
                 setSettingsOpen(false);
+                // Return focus to the settings button
+                settingsButtonRef.current?.focus();
             }
         };
         document.addEventListener('mousedown', handleClickOutside);

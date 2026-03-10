@@ -32,7 +32,6 @@
         android:extractNativeLibs="true"
         android:icon="@drawable/app_icon"
         android:label="Gibbs Dashboard 2.0"
-        android:testOnly="true"
         android:theme="@style/Theme.GibbsDashboardTV"
         android:usesCleartextTraffic="true" >
         <activity
