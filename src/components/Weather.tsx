@@ -24,7 +24,19 @@ function RadarMap() {
     : null
   return (
     <div style={{ width: '100%', height: '100%', minHeight: 300 }}>
-      <MapContainer center={center} zoom={9} style={{ width: '100%', height: '100%', minHeight: 300, borderRadius: '16px', overflow: 'hidden' }}>
+      <MapContainer
+        center={center}
+        zoom={9}
+        dragging={false}
+        touchZoom={false}
+        doubleClickZoom={false}
+        scrollWheelZoom={false}
+        boxZoom={false}
+        keyboard={false}
+        zoomControl={false}
+        attributionControl={false}
+        style={{ width: '100%', height: '100%', minHeight: 300, borderRadius: '16px', overflow: 'hidden' }}
+      >
         {/* Base map (OpenStreetMap) */}
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -52,11 +64,18 @@ function RadarMap() {
 function RainViewerWithFallback() {
   const [mode, setMode] = useState<'noaa' | 'rainviewer'>('rainviewer')
   const [isLightTheme, setIsLightTheme] = useState(false)
+  const [isTvDevice, setIsTvDevice] = useState(false)
   const [frameUrls, setFrameUrls] = useState<string[]>([])
   const [frameIndex, setFrameIndex] = useState(0)
   const [loadingFrames, setLoadingFrames] = useState(true)
   const rainViewerZoom = 7
   const rainViewerMaxZoom = 7
+
+  useEffect(() => {
+    const ua = navigator.userAgent || ''
+    const tvPattern = /(Android TV|SmartTV|HbbTV|NetCast|Tizen|Web0S|BRAVIA|AFT|TV)/i
+    setIsTvDevice(tvPattern.test(ua))
+  }, [])
 
   useEffect(() => {
     const appContainer = document.querySelector('.app-container')
@@ -131,26 +150,29 @@ function RainViewerWithFallback() {
     return (
       <div style={{ width: '100%', height: '100%', minHeight: 300, position: 'relative' }}>
         <RadarMap />
-        <button
-          onClick={() => {
-            setMode('rainviewer')
-          }}
-          style={{
-            position: 'absolute',
-            top: 10,
-            right: 10,
-            zIndex: 1200,
-            border: 'none',
-            borderRadius: 8,
-            padding: '6px 10px',
-            cursor: 'pointer',
-            background: isLightTheme ? 'rgba(255,255,255,0.9)' : 'rgba(16,21,31,0.88)',
-            color: isLightTheme ? '#172033' : '#ecf0f6',
-            fontSize: '0.85rem',
-          }}
-        >
-          Try Animated Radar
-        </button>
+        {!isTvDevice && (
+          <button
+            onClick={() => {
+              setMode('rainviewer')
+            }}
+            tabIndex={-1}
+            style={{
+              position: 'absolute',
+              top: 10,
+              right: 10,
+              zIndex: 1200,
+              border: 'none',
+              borderRadius: 8,
+              padding: '6px 10px',
+              cursor: 'pointer',
+              background: isLightTheme ? 'rgba(255,255,255,0.9)' : 'rgba(16,21,31,0.88)',
+              color: isLightTheme ? '#172033' : '#ecf0f6',
+              fontSize: '0.85rem',
+            }}
+          >
+            Try Animated Radar
+          </button>
+        )}
       </div>
     )
   }
@@ -170,6 +192,14 @@ function RainViewerWithFallback() {
         zoom={rainViewerZoom}
         minZoom={4}
         maxZoom={rainViewerMaxZoom}
+        dragging={false}
+        touchZoom={false}
+        doubleClickZoom={false}
+        scrollWheelZoom={false}
+        boxZoom={false}
+        keyboard={false}
+        zoomControl={false}
+        attributionControl={false}
         style={{ width: '100%', height: '100%', minHeight: 300, borderRadius: '16px', overflow: 'hidden' }}
       >
         <TileLayer
@@ -200,24 +230,27 @@ function RainViewerWithFallback() {
       >
         Animated Radar {frameIndex + 1}/{Math.max(frameUrls.length, 1)}
       </div>
-      <button
-        onClick={() => setMode('noaa')}
-        style={{
-          position: 'absolute',
-          top: 10,
-          right: 10,
-          zIndex: 1200,
-          border: 'none',
-          borderRadius: 8,
-          padding: '6px 10px',
-          cursor: 'pointer',
-          background: isLightTheme ? 'rgba(255,255,255,0.9)' : 'rgba(16,21,31,0.88)',
-          color: isLightTheme ? '#172033' : '#ecf0f6',
-          fontSize: '0.85rem',
-        }}
-      >
-        Show NOAA + Wind
-      </button>
+      {!isTvDevice && (
+        <button
+          onClick={() => setMode('noaa')}
+          tabIndex={-1}
+          style={{
+            position: 'absolute',
+            top: 10,
+            right: 10,
+            zIndex: 1200,
+            border: 'none',
+            borderRadius: 8,
+            padding: '6px 10px',
+            cursor: 'pointer',
+            background: isLightTheme ? 'rgba(255,255,255,0.9)' : 'rgba(16,21,31,0.88)',
+            color: isLightTheme ? '#172033' : '#ecf0f6',
+            fontSize: '0.85rem',
+          }}
+        >
+          Show NOAA + Wind
+        </button>
+      )}
     </div>
   )
 }
@@ -288,6 +321,13 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
   const [expandedCurrent, setExpandedCurrent] = useState<boolean>(false)
   const [hourly, setHourly] = useState<any[]>([])
+  const [isTvView, setIsTvView] = useState(false)
+
+  useEffect(() => {
+    const ua = navigator.userAgent || ''
+    const tvPattern = /(Android TV|SmartTV|HbbTV|NetCast|Tizen|Web0S|BRAVIA|AFT|TV)/i
+    setIsTvView(tvPattern.test(ua))
+  }, [])
 
   useEffect(() => {
     const fetchWeather = async () => {
@@ -601,13 +641,45 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
                 <RainViewerWithFallback />
               </div>
             </div>
-            <div className="hourly-forecast-modal" style={{ marginTop: '2em', fontSize: '1.2em', overflowX: 'auto' }}>
-              <div className="hourly-forecast-title" style={{ fontSize: '1.5em', marginBottom: '0.5em' }}>Hourly Forecast</div>
-              <div className="hourly-forecast-row" style={{ display: 'flex', gap: '1em', paddingBottom: '1em', flexWrap: 'nowrap', justifyContent: 'center', width: '100%' }}>
+            <div className="hourly-forecast-modal" style={{ marginTop: '2em', fontSize: isTvView ? '1em' : '1.2em', overflowX: isTvView ? 'hidden' : 'auto' }}>
+              <div className="hourly-forecast-title" style={{ fontSize: isTvView ? '1.25em' : '1.5em', marginBottom: '0.5em' }}>Hourly Forecast</div>
+              <div
+                className="hourly-forecast-row"
+                style={
+                  isTvView
+                    ? {
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(12, minmax(0, 1fr))',
+                        gap: '0.2em',
+                        paddingBottom: '0.5em',
+                        width: '100%',
+                      }
+                    : {
+                        display: 'flex',
+                        gap: '1em',
+                        paddingBottom: '1em',
+                        flexWrap: 'nowrap',
+                        justifyContent: 'center',
+                        width: '100%',
+                      }
+                }
+              >
                 {hourly.map(hour => (
-                  <div className="hourly-block" key={hour.dt} style={{ minWidth: '60px', padding: '0.25em', background: '#333', borderRadius: '8px', textAlign: 'center', flex: '0 0 auto', fontSize: '0.75em' }}>
+                  <div
+                    className="hourly-block"
+                    key={hour.dt}
+                    style={{
+                      minWidth: isTvView ? '0' : '60px',
+                      padding: isTvView ? '0.1em' : '0.25em',
+                      background: '#333',
+                      borderRadius: '8px',
+                      textAlign: 'center',
+                      flex: isTvView ? undefined : '0 0 auto',
+                      fontSize: isTvView ? '0.55em' : '0.75em',
+                    }}
+                  >
                     <div className="hourly-time" style={{ fontSize: '0.9em' }}>{new Date(hour.dt * 1000).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York' })}</div>
-                    <div className="hourly-icon" style={{ fontSize: '1.3em' }}>{getWeatherEmoji(hour.weather[0].icon)}</div>
+                    <div className="hourly-icon" style={{ fontSize: isTvView ? '1.1em' : '1.3em' }}>{getWeatherEmoji(hour.weather[0].icon)}</div>
                     <div className="hourly-temp">{Math.round(hour.main.temp)}°</div>
                     <div className="hourly-pop">{hour.pop !== undefined ? Math.round(hour.pop * 100) : 'N/A'}%</div>
                   </div>
