@@ -305,6 +305,22 @@ interface WeatherAlert {
   senderName: string
 }
 
+const WEATHER_TIME_ZONE = 'America/New_York'
+
+const getDateKeyFromUnix = (timestampSeconds: number, timezoneOffsetSeconds: number): string => {
+  const shifted = new Date((timestampSeconds + timezoneOffsetSeconds) * 1000)
+  const year = shifted.getUTCFullYear()
+  const month = String(shifted.getUTCMonth() + 1).padStart(2, '0')
+  const day = String(shifted.getUTCDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+const formatForecastDate = (dateKey: string, options: Intl.DateTimeFormatOptions): string => {
+  const [year, month, day] = dateKey.split('-').map(Number)
+  const stableDate = new Date(year, month - 1, day, 12)
+  return stableDate.toLocaleDateString('en-US', { ...options, timeZone: WEATHER_TIME_ZONE })
+}
+
 
 type WeatherVariant = 'compact' | 'full'
 
@@ -375,12 +391,17 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
         // Grab first 12 hours for hourly forecast
         setHourly(data.list.slice(0, 12))
 
-        // Process forecast (5-day forecast, one per day at noon)
+        const cityTimezoneOffset = Number(data.city?.timezone ?? 0)
+        const tomorrowKey = getDateKeyFromUnix(
+          Math.floor(Date.now() / 1000) + 24 * 60 * 60,
+          cityTimezoneOffset
+        )
+
+        // Process forecast by city-local day and only keep the next 5 days starting tomorrow.
         const forecastMap: Record<string, ForecastDay> = {}
         
         data.list.forEach((item: any) => {
-          const date = new Date(item.dt * 1000)
-          const dateStr = date.toISOString().split('T')[0]
+          const dateStr = getDateKeyFromUnix(item.dt, cityTimezoneOffset)
           
           if (!forecastMap[dateStr]) {
             forecastMap[dateStr] = {
@@ -422,7 +443,10 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
           }
         })
 
-        const forecastArray = Object.values(forecastMap).slice(0, 5)
+        const forecastArray = Object.values(forecastMap)
+          .sort((a, b) => a.date.localeCompare(b.date))
+          .filter(day => day.date >= tomorrowKey)
+          .slice(0, 5)
         setForecast(forecastArray)
 
         try {
@@ -561,14 +585,13 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
                 onClick={() => setExpandedIndex(expandedIndex === idx ? null : idx)}
                 tabIndex={0}
                 role="button"
-                aria-label={`Show details for ${new Date(day.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}`}
+                aria-label={`Show details for ${formatForecastDate(day.date, { weekday: 'short', month: 'short', day: 'numeric' })}`}
               >
                 <div className="chip-day">
-                  {new Date(day.date).toLocaleDateString('en-US', {
+                  {formatForecastDate(day.date, {
                     weekday: 'short',
                     month: 'short',
                     day: 'numeric',
-                    timeZone: 'America/New_York',
                   })}
                 </div>
                 <div className="chip-icon">{getWeatherEmoji(day.icon)}</div>
@@ -590,14 +613,13 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
                   onClick={() => setExpandedIndex(expandedIndex === idx ? null : idx)}
                   tabIndex={0}
                   role="button"
-                  aria-label={`Show details for ${new Date(day.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}`}
+                  aria-label={`Show details for ${formatForecastDate(day.date, { weekday: 'short', month: 'short', day: 'numeric' })}`}
                 >
                   <div className="forecast-date">
-                    {new Date(day.date).toLocaleDateString('en-US', {
+                    {formatForecastDate(day.date, {
                       weekday: 'short',
                       month: 'short',
                       day: 'numeric',
-                      timeZone: 'America/New_York',
                     })}
                   </div>
                   <div className="forecast-icon">{getWeatherEmoji(day.icon)}</div>
@@ -694,7 +716,7 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
           <div className="weather-modal-content" onClick={e => e.stopPropagation()}>
             <button className="weather-modal-close" onClick={() => setExpandedIndex(null)} aria-label="Close weather details" style={{ position: 'absolute', top: '1em', right: '1em', fontSize: '2em', background: 'none', border: 'none', color: '#fff', cursor: 'pointer', zIndex: 10000 }}>×</button>
             <div className="weather-modal-header" style={{ fontSize: '2em', marginBottom: '1em', display: 'flex', alignItems: 'center', gap: '1em' }}>
-              <span className="weather-modal-date">{new Date(forecast[expandedIndex].date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'America/New_York' })}</span>
+              <span className="weather-modal-date">{formatForecastDate(forecast[expandedIndex].date, { weekday: 'long', month: 'long', day: 'numeric' })}</span>
               <span className="weather-modal-icon">{getWeatherEmoji(forecast[expandedIndex].icon)}</span>
             </div>
             <div className="weather-modal-details" style={{ fontSize: '1.5em', overflowY: 'auto', minWidth: '350px' }}>

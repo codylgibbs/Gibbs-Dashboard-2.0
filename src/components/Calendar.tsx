@@ -106,17 +106,26 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
   }
 
   const fetchIcs = async (url: string): Promise<string> => {
-    // Convert Google Calendar URL to use Vite proxy
+    // Only use Vite dev proxy paths in development.
     let proxyUrl = url
-    try {
-      const parsed = new URL(url)
-      if (parsed.hostname === 'calendar.google.com') {
-        proxyUrl = url.replace('https://calendar.google.com/calendar', '/api/calendar')
-      } else if (parsed.hostname === 'import.calendar.google.com') {
-        proxyUrl = url.replace('https://import.calendar.google.com/calendar', '/api/calendar-import')
+    if (import.meta.env.DEV) {
+      try {
+        const parsed = new URL(url)
+        if (parsed.hostname === 'calendar.google.com') {
+          proxyUrl = url.replace('https://calendar.google.com/calendar', '/api/calendar')
+        } else if (parsed.hostname === 'import.calendar.google.com') {
+          proxyUrl = url.replace('https://import.calendar.google.com/calendar', '/api/calendar-import')
+        }
+      } catch {
+        // leave proxyUrl as-is for non-standard URLs
       }
-    } catch {
-      // leave proxyUrl as-is for non-standard URLs
+    }
+
+    const ensureIcsResponse = (text: string): string => {
+      if (!text.includes('BEGIN:VCALENDAR')) {
+        throw new Error('Response is not valid ICS data')
+      }
+      return text
     }
     
     try {
@@ -124,7 +133,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`)
       }
-      return response.text()
+      return ensureIcsResponse(await response.text())
     } catch (error) {
       console.error(`Failed to fetch calendar from ${url}:`, error)
       // Try fallback proxies
@@ -139,7 +148,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
           if (!response.ok) {
             throw new Error(`HTTP ${response.status}`)
           }
-          return response.text()
+          return ensureIcsResponse(await response.text())
         } catch (proxyError) {
           console.warn(`Calendar proxy failed for ${url}:`, proxyError)
         }
