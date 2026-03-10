@@ -379,7 +379,7 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
               <div className="weather-modal-radar" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <iframe
                   title="Windy.com Radar"
-                  src="https://embed.windy.com/embed2.html?lat=33.8485&lon=-83.2139&zoom=8&level=surface&overlay=radar&menu=&message=true&marker=true&calendar=now&pressure=true&type=map&location=coordinates&detail=&detailLat=33.8485&detailLon=-83.2139&metricWind=kt&metricTemp=%C2%B0F"
+                  src="https://embed.windy.com/embed2.html?lat=33.8485&lon=-83.2139&zoom=8&level=surface&overlay=radar&menu=&message=true&marker=true&calendar=both&pressure=true&type=map&location=coordinates&detail=&detailLat=33.8485&detailLon=-83.2139&metricWind=kt&metricTemp=%C2%B0F"
                   width="900"
                   height="650"
                   frameBorder="0"

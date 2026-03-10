@@ -8,7 +8,6 @@ MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/codygibbs/
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /Users/codygibbs/.gradle/caches/9.3.1/transforms/196aa59bd6e5be92c54920580fdbf917/transformed/appcompat-resources-1.6.1/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.appcompat:appcompat:1.6.1] /Users/codygibbs/.gradle/caches/9.3.1/transforms/2a86255e63f2ddd69b12c7f9534598d8/transformed/appcompat-1.6.1/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.leanback:leanback:1.0.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/31d2104fc8a71040717a1a7b1506cbc4/transformed/leanback-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.webkit:webkit:1.11.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/aee9cdecc40bd77a20cf5518029e6f93/transformed/webkit-1.11.0/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.fragment:fragment:1.3.6] /Users/codygibbs/.gradle/caches/9.3.1/transforms/c0868f5816b6593c9e24a580d886f3f0/transformed/fragment-1.3.6/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.activity:activity:1.6.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/1def707b0f99dd53bc8ed0c2ecaf2a5e/transformed/activity-1.6.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.recyclerview:recyclerview:1.0.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/164a595f37a129d829ae4799df39f4ab/transformed/recyclerview-1.0.0/AndroidManifest.xml:17:1-22:12
@@ -154,8 +153,6 @@ MERGED from [androidx.appcompat:appcompat:1.6.1] /Users/codygibbs/.gradle/caches
 MERGED from [androidx.appcompat:appcompat:1.6.1] /Users/codygibbs/.gradle/caches/9.3.1/transforms/2a86255e63f2ddd69b12c7f9534598d8/transformed/appcompat-1.6.1/AndroidManifest.xml:20:5-44
 MERGED from [androidx.leanback:leanback:1.0.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/31d2104fc8a71040717a1a7b1506cbc4/transformed/leanback-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.leanback:leanback:1.0.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/31d2104fc8a71040717a1a7b1506cbc4/transformed/leanback-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.webkit:webkit:1.11.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/aee9cdecc40bd77a20cf5518029e6f93/transformed/webkit-1.11.0/AndroidManifest.xml:5:5-44
-MERGED from [androidx.webkit:webkit:1.11.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/aee9cdecc40bd77a20cf5518029e6f93/transformed/webkit-1.11.0/AndroidManifest.xml:5:5-44
 MERGED from [androidx.fragment:fragment:1.3.6] /Users/codygibbs/.gradle/caches/9.3.1/transforms/c0868f5816b6593c9e24a580d886f3f0/transformed/fragment-1.3.6/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.fragment:fragment:1.3.6] /Users/codygibbs/.gradle/caches/9.3.1/transforms/c0868f5816b6593c9e24a580d886f3f0/transformed/fragment-1.3.6/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.activity:activity:1.6.0] /Users/codygibbs/.gradle/caches/9.3.1/transforms/1def707b0f99dd53bc8ed0c2ecaf2a5e/transformed/activity-1.6.0/AndroidManifest.xml:20:5-44
