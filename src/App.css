@@ -5,8 +5,8 @@
   width: 100vw;
   background: radial-gradient(circle at top, #1b1f25 0%, #0f1114 55%, #0a0b0d 100%);
   overflow: hidden;
-  padding: clamp(12px, 1.5vw, 24px) clamp(16px, 2vw, 32px) clamp(18px, 2vw, 32px);
-  gap: clamp(10px, 1.2vw, 20px);
+  padding: clamp(8px, 1vw, 18px) clamp(12px, 1.4vw, 24px) 0;
+  gap: clamp(6px, 0.8vw, 12px);
 }
 
 .app-container.theme-light {
@@ -14,14 +14,14 @@
 }
 
 .app-container.has-alerts {
-  padding-bottom: clamp(70px, 8vh, 110px);
+  padding-bottom: calc(var(--alert-height) + clamp(6px, 1vh, 14px));
 }
 
 .top-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: clamp(6px, 0.8vh, 12px) clamp(4px, 0.6vw, 10px) clamp(10px, 1.2vh, 18px);
+  padding: clamp(4px, 0.5vh, 8px) clamp(2px, 0.3vw, 6px) clamp(6px, 0.8vh, 12px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -42,6 +42,13 @@
 }
 
 .main-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content > .calendar {
   flex: 1;
   min-height: 0;
 }

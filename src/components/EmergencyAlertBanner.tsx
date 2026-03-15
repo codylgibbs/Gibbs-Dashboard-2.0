@@ -172,9 +172,6 @@ export default function EmergencyAlertBanner({
           className={`alert-item severity-${alert.severity.toLowerCase()}`}
         >
           {mainText}
-          {alert.areaDesc && (
-            <span className="alert-areas"> — <span className="alert-areas-label">Areas:</span> {alert.areaDesc}</span>
-          )}
         </span>
       )
     })

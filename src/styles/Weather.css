@@ -263,6 +263,25 @@
   color: #d4d7db;
 }
 
+.condition-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: center;
+  text-align: center;
+}
+
+.daily-range {
+  font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+  color: #b6bdc8;
+  font-weight: 600;
+}
+
+.weather-container.compact .daily-range {
+  font-size: clamp(0.78rem, 1vw, 1rem);
+  color: #c4ccd7;
+}
+
 .location {
   font-size: 1rem;
   color: #888;
@@ -296,7 +315,7 @@
   display: flex;
   align-items: center;
   gap: clamp(4px, 0.8vw, 10px);
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   overflow-x: auto;
   margin-left: clamp(8px, 2vw, 24px);
 }
@@ -412,7 +431,7 @@
 
 @media (max-width: 480px) {
   .forecast-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(5, minmax(120px, 1fr));
   }
 }
 /* Light Theme Overrides */
@@ -482,6 +501,10 @@
 .app-container.theme-light .condition {
   color: #0369a1;
   font-weight: 600;
+}
+
+.app-container.theme-light .daily-range {
+  color: #0c4a6e;
 }
 
 .app-container.theme-light .location {

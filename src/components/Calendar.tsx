@@ -43,6 +43,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
   const [settingsOpen, setSettingsOpen] = useState(false)
   const settingsRef = useRef<HTMLDivElement | null>(null)
   const settingsButtonRef = useRef<HTMLButtonElement | null>(null)
+  const timelineBodyRef = useRef<HTMLDivElement | null>(null)
   const [viewMode, setViewMode] = useState<ViewMode>(() => {
     try {
       const stored = localStorage.getItem('calendarViewMode')
@@ -63,6 +64,11 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
     } catch {
       return []
     }
+  })
+  const [timelineLayout, setTimelineLayout] = useState({
+    allDayHeight: 36,
+    hourHeight: 20,
+    timelineHeight: 480,
   })
 
   const getCalendarColors = (count: number): string[] => {
@@ -263,6 +269,44 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
 
   useEffect(() => {
     localStorage.setItem('calendarViewMode', viewMode)
+  }, [viewMode])
+
+  useEffect(() => {
+    if (viewMode !== 'weekly') return
+
+    const updateTimelineLayout = () => {
+      const body = timelineBodyRef.current
+      if (!body) return
+
+      const bodyHeight = body.clientHeight
+      if (bodyHeight <= 0) return
+
+      const allDayHeight = Math.max(28, Math.min(40, Math.round(bodyHeight * 0.075)))
+      const timelineHeight = Math.max(bodyHeight - allDayHeight, 240)
+      const hourHeight = timelineHeight / 24
+
+      setTimelineLayout({
+        allDayHeight,
+        hourHeight,
+        timelineHeight,
+      })
+    }
+
+    updateTimelineLayout()
+
+    const observer = new ResizeObserver(() => {
+      updateTimelineLayout()
+    })
+
+    if (timelineBodyRef.current) {
+      observer.observe(timelineBodyRef.current)
+    }
+
+    window.addEventListener('resize', updateTimelineLayout)
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', updateTimelineLayout)
+    }
   }, [viewMode])
 
   useEffect(() => {
@@ -973,20 +1017,32 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
 
   const buildWeekLanes = (segments: ReturnType<typeof buildMultiDaySegments>) => {
     const sorted = [...segments].sort((a, b) => a.startCol - b.startCol || b.span - a.span)
-    const lanes: typeof sorted[] = []
-    const laneEnds: number[] = []
+    // Keep two visible lanes and prefer the lower lane first so single bars sit at the bottom.
+    const lanes: typeof sorted[] = [[], []]
+    const laneEnds: number[] = [-1, -1]
+    const overflowLaneEnds: number[] = []
 
     sorted.forEach(segment => {
-      let laneIndex = laneEnds.findIndex(end => segment.startCol > end)
-      if (laneIndex === -1) {
-        laneIndex = laneEnds.length
-        laneEnds.push(segment.startCol + segment.span - 1)
+      const segmentEnd = segment.startCol + segment.span - 1
+      const availableVisibleLanes = [0, 1].filter(index => segment.startCol > laneEnds[index])
+
+      if (availableVisibleLanes.length > 0) {
+        const laneIndex = Math.max(...availableVisibleLanes)
+        laneEnds[laneIndex] = segmentEnd
+        lanes[laneIndex].push(segment)
+        return
+      }
+
+      let overflowIndex = overflowLaneEnds.findIndex(end => segment.startCol > end)
+      if (overflowIndex === -1) {
+        overflowIndex = overflowLaneEnds.length
+        overflowLaneEnds.push(segmentEnd)
         lanes.push([segment])
         return
       }
 
-      laneEnds[laneIndex] = segment.startCol + segment.span - 1
-      lanes[laneIndex].push(segment)
+      overflowLaneEnds[overflowIndex] = segmentEnd
+      lanes[overflowIndex + 2].push(segment)
     })
 
     return lanes
@@ -1082,10 +1138,12 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
     const startMinutes = displayStart.getHours() * 60 + displayStart.getMinutes()
     const endMinutes = displayEnd.getHours() * 60 + displayEnd.getMinutes()
     const durationMinutes = endMinutes - startMinutes
+    const pixelsPerMinute = timelineLayout.timelineHeight / (24 * 60)
+    const minimumEventHeight = Math.max(timelineLayout.hourHeight * 0.45, 10)
 
     return {
-      top: (startMinutes / 60) * 60, // 60px per hour
-      height: Math.max((durationMinutes / 60) * 60, 30), // minimum 30px
+      top: startMinutes * pixelsPerMinute,
+      height: Math.max(durationMinutes * pixelsPerMinute, minimumEventHeight),
       startMinutes,
       endMinutes,
     }
@@ -1144,7 +1202,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
   const getCurrentTimePosition = (): number => {
     const now = new Date()
     const minutes = now.getHours() * 60 + now.getMinutes()
-    return (minutes / 60) * 60 + 60 // 60px per hour + all-day row height
+    return minutes * (timelineLayout.timelineHeight / (24 * 60)) + timelineLayout.allDayHeight
   }
 
   return (
@@ -1388,18 +1446,18 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
               )
             })}
           </div>
-          <div className="timeline-body">
+          <div className="timeline-body" ref={timelineBodyRef}>
             <div className="timeline-hours">
-              <div className="timeline-all-day-label">all-day</div>
+              <div className="timeline-all-day-label" style={{ height: `${timelineLayout.allDayHeight}px` }}>all-day</div>
               {getHourSlots().map(hour => (
-                <div key={hour} className="timeline-hour-label">
+                <div key={hour} className="timeline-hour-label" style={{ height: `${timelineLayout.hourHeight}px` }}>
                   {formatHourLabel(hour)}
                 </div>
               ))}
             </div>
             <div className="timeline-grid">
               {/* All-day events row */}
-              <div className="timeline-all-day-row">
+              <div className="timeline-all-day-row" style={{ height: `${timelineLayout.allDayHeight}px` }}>
                 {getWeekDays().map((date, dayIndex) => {
                   const dayEvents = getEventsForDate(date).filter(e => isAllDayEvent(e))
                   return (
@@ -1421,7 +1479,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
               {/* Time grid */}
               <div className="timeline-time-grid">
                 {getHourSlots().map(hour => (
-                  <div key={hour} className="timeline-hour-row">
+                  <div key={hour} className="timeline-hour-row" style={{ height: `${timelineLayout.hourHeight}px` }}>
                     {getWeekDays().map((_date, dayIndex) => (
                       <div key={dayIndex} className="timeline-hour-cell"></div>
                     ))}
@@ -1429,7 +1487,13 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
                 ))}
               </div>
               {/* Events overlay */}
-              <div className="timeline-events-overlay">
+              <div
+                className="timeline-events-overlay"
+                style={{
+                  top: `${timelineLayout.allDayHeight}px`,
+                  height: `${timelineLayout.timelineHeight}px`,
+                }}
+              >
                 {getWeekDays().map((date, dayIndex) => {
                   const dayEvents = getEventsForDate(date).filter(e => !isAllDayEvent(e))
                   const layoutedEvents = layoutEventsInColumns(dayEvents, date)

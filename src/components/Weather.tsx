@@ -527,27 +527,20 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
   return (
     <>
       <div className={`weather-container ${variant}`}>
-        {alerts.length > 0 && (
+        {variant !== 'compact' && alerts.length > 0 && (
           <div className={`weather-alerts ${variant}`}>
-            {variant === 'compact' ? (
-              <div className="alert-compact">
-                <span className="alert-pill">Alerts</span>
-                <span className="alert-count">{alerts.length}</span>
-              </div>
-            ) : (
-              alerts.map(alert => (
-                <div key={`${alert.event}-${alert.start}`} className="alert-card">
-                  <div className="alert-title">⚠️ {alert.event}</div>
-                  <div className="alert-meta">
-                    {formatAlertTime(alert.start)} - {formatAlertTime(alert.end)}
-                  </div>
-                  <div className="alert-source">{alert.senderName}</div>
-                  {alert.description && (
-                    <div className="alert-desc">{alert.description}</div>
-                  )}
+            {alerts.map(alert => (
+              <div key={`${alert.event}-${alert.start}`} className="alert-card">
+                <div className="alert-title">⚠️ {alert.event}</div>
+                <div className="alert-meta">
+                  {formatAlertTime(alert.start)} - {formatAlertTime(alert.end)}
                 </div>
-              ))
-            )}
+                <div className="alert-source">{alert.senderName}</div>
+                {alert.description && (
+                  <div className="alert-desc">{alert.description}</div>
+                )}
+              </div>
+            ))}
           </div>
         )}
         <div className="current-weather">
@@ -565,7 +558,10 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
                   >{current ? getWeatherEmoji(current.icon) : ''}</div>
                   <div className="temp">{current?.temp}°F</div>
                 </div>
-                <div className="condition">{current?.condition}</div>
+                <div className="condition-block">
+                  <div className="condition">{current?.condition}</div>
+                  <div className="daily-range">H {current?.max}° / L {current?.min}°</div>
+                </div>
                 <div className="location">Winterville, GA</div>
                 <div className="additional">
                   <span>💧 {current?.humidity}%</span>

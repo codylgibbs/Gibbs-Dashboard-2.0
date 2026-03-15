@@ -206,7 +206,7 @@
   gap: 0;
   white-space: nowrap;
   width: max-content;
-  animation: alert-marquee 40s linear infinite;
+  animation: alert-marquee 70s linear infinite;
 }
 
 .alert-scroll-track {

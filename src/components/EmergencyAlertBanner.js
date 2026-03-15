@@ -132,7 +132,7 @@ export default function EmergencyAlertBanner({ onAlertsChange, manualAlertActive
             : alert.headline?.trim()
                 ? alert.headline
                 : alert.event;
-        return (_jsxs("span", { className: `alert-item severity-${alert.severity.toLowerCase()}`, children: [mainText, alert.areaDesc && (_jsxs("span", { className: "alert-areas", children: [" \u2014 ", _jsx("span", { className: "alert-areas-label", children: "Areas:" }), " ", alert.areaDesc] }))] }, `${keyPrefix}-${alert.id}`));
+        return (_jsx("span", { className: `alert-item severity-${alert.severity.toLowerCase()}`, children: mainText }, `${keyPrefix}-${alert.id}`));
     });
     return (_jsx(_Fragment, { children: (loading || !hasAlerts) && !manualAlertActive ? null : (_jsxs("div", { className: `alert-banner ${hasAlerts || manualAlertActive ? 'active' : 'inactive'}`, children: [_jsx("div", { className: "alert-label", children: manualAlertActive ? 'TEST' : 'Emergency Alert' }), _jsx("div", { className: "alert-content", "aria-live": "polite", children: _jsx("div", { className: "alert-scroll", children: _jsxs("div", { className: "alert-scroll-marquee", children: [_jsx("div", { className: "alert-scroll-track", children: renderAlertItems('primary') }), _jsx("div", { className: "alert-scroll-track", "aria-hidden": "true", children: renderAlertItems('duplicate') })] }) }) })] })) }));
 }

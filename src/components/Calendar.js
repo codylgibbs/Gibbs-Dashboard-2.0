@@ -10,6 +10,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
     const [settingsOpen, setSettingsOpen] = useState(false);
     const settingsRef = useRef(null);
     const settingsButtonRef = useRef(null);
+    const timelineBodyRef = useRef(null);
     const [viewMode, setViewMode] = useState(() => {
         try {
             const stored = localStorage.getItem('calendarViewMode');
@@ -33,6 +34,11 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
         catch {
             return [];
         }
+    });
+    const [timelineLayout, setTimelineLayout] = useState({
+        allDayHeight: 36,
+        hourHeight: 20,
+        timelineHeight: 480,
     });
     const getCalendarColors = (count) => {
         const colors = [];
@@ -200,6 +206,38 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
     }, [hiddenCalendars]);
     useEffect(() => {
         localStorage.setItem('calendarViewMode', viewMode);
+    }, [viewMode]);
+    useEffect(() => {
+        if (viewMode !== 'weekly')
+            return;
+        const updateTimelineLayout = () => {
+            const body = timelineBodyRef.current;
+            if (!body)
+                return;
+            const bodyHeight = body.clientHeight;
+            if (bodyHeight <= 0)
+                return;
+            const allDayHeight = Math.max(28, Math.min(40, Math.round(bodyHeight * 0.075)));
+            const timelineHeight = Math.max(bodyHeight - allDayHeight, 240);
+            const hourHeight = timelineHeight / 24;
+            setTimelineLayout({
+                allDayHeight,
+                hourHeight,
+                timelineHeight,
+            });
+        };
+        updateTimelineLayout();
+        const observer = new ResizeObserver(() => {
+            updateTimelineLayout();
+        });
+        if (timelineBodyRef.current) {
+            observer.observe(timelineBodyRef.current);
+        }
+        window.addEventListener('resize', updateTimelineLayout);
+        return () => {
+            observer.disconnect();
+            window.removeEventListener('resize', updateTimelineLayout);
+        };
     }, [viewMode]);
     useEffect(() => {
         if (!settingsOpen)
@@ -842,18 +880,28 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
     };
     const buildWeekLanes = (segments) => {
         const sorted = [...segments].sort((a, b) => a.startCol - b.startCol || b.span - a.span);
-        const lanes = [];
-        const laneEnds = [];
+        // Keep two visible lanes and prefer the lower lane first so single bars sit at the bottom.
+        const lanes = [[], []];
+        const laneEnds = [-1, -1];
+        const overflowLaneEnds = [];
         sorted.forEach(segment => {
-            let laneIndex = laneEnds.findIndex(end => segment.startCol > end);
-            if (laneIndex === -1) {
-                laneIndex = laneEnds.length;
-                laneEnds.push(segment.startCol + segment.span - 1);
+            const segmentEnd = segment.startCol + segment.span - 1;
+            const availableVisibleLanes = [0, 1].filter(index => segment.startCol > laneEnds[index]);
+            if (availableVisibleLanes.length > 0) {
+                const laneIndex = Math.max(...availableVisibleLanes);
+                laneEnds[laneIndex] = segmentEnd;
+                lanes[laneIndex].push(segment);
+                return;
+            }
+            let overflowIndex = overflowLaneEnds.findIndex(end => segment.startCol > end);
+            if (overflowIndex === -1) {
+                overflowIndex = overflowLaneEnds.length;
+                overflowLaneEnds.push(segmentEnd);
                 lanes.push([segment]);
                 return;
             }
-            laneEnds[laneIndex] = segment.startCol + segment.span - 1;
-            lanes[laneIndex].push(segment);
+            overflowLaneEnds[overflowIndex] = segmentEnd;
+            lanes[overflowIndex + 2].push(segment);
         });
         return lanes;
     };
@@ -928,9 +976,11 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
         const startMinutes = displayStart.getHours() * 60 + displayStart.getMinutes();
         const endMinutes = displayEnd.getHours() * 60 + displayEnd.getMinutes();
         const durationMinutes = endMinutes - startMinutes;
+        const pixelsPerMinute = timelineLayout.timelineHeight / (24 * 60);
+        const minimumEventHeight = Math.max(timelineLayout.hourHeight * 0.45, 10);
         return {
-            top: (startMinutes / 60) * 60, // 60px per hour
-            height: Math.max((durationMinutes / 60) * 60, 30), // minimum 30px
+            top: startMinutes * pixelsPerMinute,
+            height: Math.max(durationMinutes * pixelsPerMinute, minimumEventHeight),
             startMinutes,
             endMinutes,
         };
@@ -983,7 +1033,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
     const getCurrentTimePosition = () => {
         const now = new Date();
         const minutes = now.getHours() * 60 + now.getMinutes();
-        return (minutes / 60) * 60 + 60; // 60px per hour + all-day row height
+        return minutes * (timelineLayout.timelineHeight / (24 * 60)) + timelineLayout.allDayHeight;
     };
     return (_jsxs("div", { className: "calendar", children: [_jsxs("div", { className: "calendar-toolbar", children: [viewMode !== 'monthly' && _jsx("h2", { className: "calendar-title", children: titleLabel }), _jsxs("div", { className: "calendar-controls", children: [_jsx("button", { className: "calendar-btn icon", "aria-label": "Settings", "aria-pressed": settingsOpen, onClick: () => setSettingsOpen((open) => !open), ref: settingsButtonRef, children: "\u2699\uFE0E" }), settingsOpen && (_jsxs("div", { className: "calendar-settings", role: "dialog", "aria-label": "Calendar settings", ref: settingsRef, children: [_jsx("div", { className: "settings-title", children: "Navigate" }), _jsxs("div", { className: "settings-nav-buttons", children: [_jsx("button", { className: "calendar-btn nav", onClick: () => {
                                                     goToPrev();
@@ -1027,10 +1077,13 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
                     })] })), viewMode === 'weekly' && (_jsxs("div", { className: "calendar-grid weekly-timeline", children: [_jsxs("div", { className: "timeline-header", children: [_jsx("div", { className: "timeline-header-corner" }), getWeekDays().map((date, index) => {
                                 const isTodayFlag = isDateToday(date);
                                 return (_jsx("div", { className: `timeline-header-day ${isTodayFlag ? 'today' : ''}`, children: _jsxs("div", { className: "timeline-day-name", children: [['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][index], " ", _jsx("span", { className: "timeline-day-num", children: date.getDate() })] }) }, index));
-                            })] }), _jsxs("div", { className: "timeline-body", children: [_jsxs("div", { className: "timeline-hours", children: [_jsx("div", { className: "timeline-all-day-label", children: "all-day" }), getHourSlots().map(hour => (_jsx("div", { className: "timeline-hour-label", children: formatHourLabel(hour) }, hour)))] }), _jsxs("div", { className: "timeline-grid", children: [_jsx("div", { className: "timeline-all-day-row", children: getWeekDays().map((date, dayIndex) => {
+                            })] }), _jsxs("div", { className: "timeline-body", ref: timelineBodyRef, children: [_jsxs("div", { className: "timeline-hours", children: [_jsx("div", { className: "timeline-all-day-label", style: { height: `${timelineLayout.allDayHeight}px` }, children: "all-day" }), getHourSlots().map(hour => (_jsx("div", { className: "timeline-hour-label", style: { height: `${timelineLayout.hourHeight}px` }, children: formatHourLabel(hour) }, hour)))] }), _jsxs("div", { className: "timeline-grid", children: [_jsx("div", { className: "timeline-all-day-row", style: { height: `${timelineLayout.allDayHeight}px` }, children: getWeekDays().map((date, dayIndex) => {
                                             const dayEvents = getEventsForDate(date).filter(e => isAllDayEvent(e));
                                             return (_jsx("div", { className: "timeline-all-day-cell", children: dayEvents.map(event => (_jsx("div", { className: "timeline-all-day-event", style: { backgroundColor: event.color }, title: event.title, children: event.title }, event.id))) }, dayIndex));
-                                        }) }), _jsx("div", { className: "timeline-time-grid", children: getHourSlots().map(hour => (_jsx("div", { className: "timeline-hour-row", children: getWeekDays().map((_date, dayIndex) => (_jsx("div", { className: "timeline-hour-cell" }, dayIndex))) }, hour))) }), _jsx("div", { className: "timeline-events-overlay", children: getWeekDays().map((date, dayIndex) => {
+                                        }) }), _jsx("div", { className: "timeline-time-grid", children: getHourSlots().map(hour => (_jsx("div", { className: "timeline-hour-row", style: { height: `${timelineLayout.hourHeight}px` }, children: getWeekDays().map((_date, dayIndex) => (_jsx("div", { className: "timeline-hour-cell" }, dayIndex))) }, hour))) }), _jsx("div", { className: "timeline-events-overlay", style: {
+                                            top: `${timelineLayout.allDayHeight}px`,
+                                            height: `${timelineLayout.timelineHeight}px`,
+                                        }, children: getWeekDays().map((date, dayIndex) => {
                                             const dayEvents = getEventsForDate(date).filter(e => !isAllDayEvent(e));
                                             const layoutedEvents = layoutEventsInColumns(dayEvents, date);
                                             return (_jsx("div", { className: "timeline-day-events", style: { left: `${(dayIndex / 7) * 100}%` }, children: layoutedEvents.map(({ event, column, totalColumns }) => {
