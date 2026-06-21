@@ -5,8 +5,6 @@ const DEFAULT_COLORS = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '
 export default function Calendar({ theme, onThemeChange, manualAlertActive, onToggleManualAlert }) {
     const [events, setEvents] = useState([]);
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [daysInMonth, setDaysInMonth] = useState([]);
-    const [firstDayOffset, setFirstDayOffset] = useState(0);
     const [settingsOpen, setSettingsOpen] = useState(false);
     const settingsRef = useRef(null);
     const settingsButtonRef = useRef(null);
@@ -130,8 +128,20 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
             const urls = calendarUrlsStr.split(',').map(u => u.trim());
             const calendarColors = getCalendarColors(urls.length);
             const allEvents = [];
-            const rangeStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-            const rangeEnd = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
+            let rangeStart;
+            let rangeEnd;
+            if (viewMode === 'monthly') {
+                const rs = new Date(currentDate);
+                rs.setDate(currentDate.getDate() - currentDate.getDay());
+                rs.setHours(0, 0, 0, 0);
+                rangeStart = rs;
+                rangeEnd = new Date(rs);
+                rangeEnd.setDate(rs.getDate() + 35);
+            }
+            else {
+                rangeStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+                rangeEnd = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
+            }
             let eventCounter = 0;
             for (let i = 0; i < urls.length; i++) {
                 try {
@@ -188,19 +198,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
         fetchCalendars();
         const interval = setInterval(fetchCalendars, 10 * 60 * 1000); // Refresh every 10 minutes
         return () => clearInterval(interval);
-    }, [currentDate]);
-    useEffect(() => {
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth();
-        const firstDay = new Date(year, month, 1);
-        const lastDay = new Date(year, month + 1, 0);
-        setFirstDayOffset(firstDay.getDay());
-        const days = [];
-        for (let i = 1; i <= lastDay.getDate(); i++) {
-            days.push(i);
-        }
-        setDaysInMonth(days);
-    }, [currentDate]);
+    }, [currentDate, viewMode]);
     useEffect(() => {
         localStorage.setItem('hiddenCalendars', JSON.stringify(hiddenCalendars));
     }, [hiddenCalendars]);
@@ -278,7 +276,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
         const month = currentDate.getMonth();
         const day = currentDate.getDate();
         if (viewMode === 'monthly') {
-            setCurrentDate(new Date(year, month - 1, 1));
+            setCurrentDate(new Date(year, month, day - 7));
         }
         else if (viewMode === 'weekly') {
             setCurrentDate(new Date(year, month, day - 7));
@@ -292,7 +290,7 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
         const month = currentDate.getMonth();
         const day = currentDate.getDate();
         if (viewMode === 'monthly') {
-            setCurrentDate(new Date(year, month + 1, 1));
+            setCurrentDate(new Date(year, month, day + 7));
         }
         else if (viewMode === 'weekly') {
             setCurrentDate(new Date(year, month, day + 7));
@@ -713,49 +711,45 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
         const seconds = Number(match[4] ?? 0);
         return (((days * 24 + hours) * 60 + minutes) * 60 + seconds) * 1000;
     };
-    const getEventsForDay = (day) => {
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth();
-        const targetDate = new Date(year, month, day);
+    // Date-based event lookup for rolling monthly view
+    const getEventsForDayDate = (date) => {
+        const targetDate = new Date(date);
         targetDate.setHours(0, 0, 0, 0);
-        const filteredEvents = events.filter(event => {
-            if (hiddenCalendars.includes(event.calendarIndex)) {
+        return events.filter(event => {
+            if (hiddenCalendars.includes(event.calendarIndex))
                 return false;
-            }
-            // Skip all-day events (they're shown as spanning bars)
-            if (isAllDayEvent(event)) {
+            if (isAllDayEvent(event))
                 return false;
-            }
             const eventStart = new Date(event.start);
             const eventEnd = new Date(event.end);
             eventStart.setHours(0, 0, 0, 0);
             eventEnd.setHours(0, 0, 0, 0);
-            // Skip multi-day events (they're shown in the multi-day section)
             const sameDay = eventStart.toDateString() === getAdjustedEndDate(event.end).toDateString();
-            if (!sameDay || event.daysSpanned > 1) {
+            if (!sameDay || event.daysSpanned > 1)
                 return false;
-            }
             if (eventEnd.getTime() === eventStart.getTime()) {
                 return targetDate.getTime() === eventStart.getTime();
             }
             return targetDate >= eventStart && targetDate < eventEnd;
-        });
-        // Sort events by start time
-        return filteredEvents.sort((a, b) => a.start.getTime() - b.start.getTime());
+        }).sort((a, b) => a.start.getTime() - b.start.getTime());
     };
-    const isToday = (day) => {
-        const today = new Date();
-        return (day === today.getDate() &&
-            currentDate.getMonth() === today.getMonth() &&
-            currentDate.getFullYear() === today.getFullYear());
-    };
-    const monthShort = currentDate.toLocaleString('en-US', { month: 'short' });
     const year = currentDate.getFullYear();
     const lastDayOfMonth = new Date(year, currentDate.getMonth() + 1, 0).getDate();
+    // Rolling window constants
+    const ROLLING_WEEKS = 5;
+    const rollStart = new Date(currentDate);
+    rollStart.setDate(currentDate.getDate() - currentDate.getDay());
+    rollStart.setHours(0, 0, 0, 0);
+    const rollEnd = new Date(rollStart);
+    rollEnd.setDate(rollStart.getDate() + ROLLING_WEEKS * 7);
     // Generate title label based on view mode
     let titleLabel = '';
     if (viewMode === 'monthly') {
-        titleLabel = `${monthShort} 1 - ${monthShort} ${lastDayOfMonth}, ${year}`;
+        const rollEndDisplay = new Date(rollStart);
+        rollEndDisplay.setDate(rollStart.getDate() + ROLLING_WEEKS * 7 - 1);
+        const startStr = rollStart.toLocaleString('en-US', { month: 'short', day: 'numeric' });
+        const endStr = rollEndDisplay.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        titleLabel = `${startStr} – ${endStr}`;
     }
     else if (viewMode === 'weekly') {
         const dayOfWeek = currentDate.getDay();
@@ -839,6 +833,8 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
         return `${startHour12}${startMinuteText}${startSuffix}`;
     };
     const buildMultiDaySegments = () => {
+        // Legacy month-based segment builder (kept for reference; rolling view uses buildMultiDaySegmentsRolling)
+        const firstDayOffset = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
         const segments = [];
         events.forEach(event => {
             if (hiddenCalendars.includes(event.calendarIndex))
@@ -878,6 +874,43 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
         });
         return segments;
     };
+    const buildMultiDaySegmentsRolling = (rollStart, rollEnd, numWeeks) => {
+        const segments = [];
+        const MS_PER_DAY = 24 * 60 * 60 * 1000;
+        events.forEach(event => {
+            if (hiddenCalendars.includes(event.calendarIndex))
+                return;
+            const eventStart = new Date(event.start);
+            const eventEnd = getAdjustedEndDate(event.end);
+            const sameDay = eventStart.toDateString() === eventEnd.toDateString();
+            if (sameDay && event.daysSpanned <= 1 && !isAllDayEvent(event))
+                return;
+            if (eventEnd < rollStart || eventStart >= rollEnd)
+                return;
+            const clampedStart = eventStart < rollStart ? new Date(rollStart) : eventStart;
+            const clampedEnd = eventEnd >= rollEnd ? new Date(rollEnd.getTime() - 1) : eventEnd;
+            const startDayIndex = Math.floor((clampedStart.getTime() - rollStart.getTime()) / MS_PER_DAY);
+            const endDayIndex = Math.floor((clampedEnd.getTime() - rollStart.getTime()) / MS_PER_DAY);
+            let dayCursor = Math.max(0, startDayIndex);
+            while (dayCursor <= endDayIndex && dayCursor < numWeeks * 7) {
+                const weekIndex = Math.floor(dayCursor / 7);
+                const startCol = dayCursor % 7;
+                const weekEndDayIndex = (weekIndex + 1) * 7 - 1;
+                const segmentEndDayIndex = Math.min(endDayIndex, weekEndDayIndex);
+                const span = segmentEndDayIndex - dayCursor + 1;
+                segments.push({
+                    id: `${event.id}-r${dayCursor}`,
+                    title: event.title,
+                    color: event.color,
+                    weekIndex,
+                    startCol,
+                    span,
+                });
+                dayCursor = segmentEndDayIndex + 1;
+            }
+        });
+        return segments;
+    };
     const buildWeekLanes = (segments) => {
         const sorted = [...segments].sort((a, b) => a.startCol - b.startCol || b.span - a.span);
         // Keep two visible lanes and prefer the lower lane first so single bars sit at the bottom.
@@ -905,19 +938,19 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
         });
         return lanes;
     };
-    const totalSlots = firstDayOffset + daysInMonth.length;
-    const weekCount = Math.ceil(totalSlots / 7);
-    const weeks = Array.from({ length: weekCount }, (_, weekIndex) => Array.from({ length: 7 }, (_, dayIndex) => {
-        const dayNumber = weekIndex * 7 + dayIndex - firstDayOffset + 1;
-        return dayNumber >= 1 && dayNumber <= daysInMonth.length ? dayNumber : null;
-    }));
-    const multiDaySegments = buildMultiDaySegments();
+    const multiDaySegments = buildMultiDaySegmentsRolling(rollStart, rollEnd, ROLLING_WEEKS);
     const segmentsByWeek = multiDaySegments.reduce((acc, segment) => {
         if (!acc[segment.weekIndex])
             acc[segment.weekIndex] = [];
         acc[segment.weekIndex].push(segment);
         return acc;
     }, {});
+    // Rolling weeks: 5 rows of 7 Date objects starting from Sunday of currentDate's week
+    const weeks = Array.from({ length: ROLLING_WEEKS }, (_, weekIndex) => Array.from({ length: 7 }, (_, dayIndex) => {
+        const d = new Date(rollStart);
+        d.setDate(rollStart.getDate() + weekIndex * 7 + dayIndex);
+        return d;
+    }));
     // Helper function for weekly view
     const getWeekDays = () => {
         const dayOfWeek = currentDate.getDay();
@@ -1038,13 +1071,13 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
     return (_jsxs("div", { className: "calendar", children: [_jsxs("div", { className: "calendar-toolbar", children: [viewMode !== 'monthly' && _jsx("h2", { className: "calendar-title", children: titleLabel }), _jsxs("div", { className: "calendar-controls", children: [_jsx("button", { className: "calendar-btn icon", "aria-label": "Settings", "aria-pressed": settingsOpen, onClick: () => setSettingsOpen((open) => !open), ref: settingsButtonRef, children: "\u2699\uFE0E" }), settingsOpen && (_jsxs("div", { className: "calendar-settings", role: "dialog", "aria-label": "Calendar settings", ref: settingsRef, children: [_jsx("div", { className: "settings-title", children: "Navigate" }), _jsxs("div", { className: "settings-nav-buttons", children: [_jsx("button", { className: "calendar-btn nav", onClick: () => {
                                                     goToPrev();
                                                     setSettingsOpen(false);
-                                                }, "aria-label": `Previous ${viewMode === 'monthly' ? 'month' : viewMode === 'weekly' ? 'week' : 'day'}`, children: "\u2190 Prev" }), _jsx("button", { className: "calendar-btn nav", onClick: () => {
+                                                }, "aria-label": `Previous ${viewMode === 'daily' ? 'day' : 'week'}`, children: "\u2190 Prev" }), _jsx("button", { className: "calendar-btn nav", onClick: () => {
                                                     goToToday();
                                                     setSettingsOpen(false);
                                                 }, "aria-label": "Go to today", children: "Today" }), _jsx("button", { className: "calendar-btn nav", onClick: () => {
                                                     goToNext();
                                                     setSettingsOpen(false);
-                                                }, "aria-label": `Next ${viewMode === 'monthly' ? 'month' : viewMode === 'weekly' ? 'week' : 'day'}`, children: "Next \u2192" })] }), _jsx("div", { className: "settings-title", children: "View" }), _jsxs("div", { className: "settings-view-modes", children: [_jsx("button", { className: `view-mode-btn ${viewMode === 'monthly' ? 'active' : ''}`, onClick: () => {
+                                                }, "aria-label": `Next ${viewMode === 'daily' ? 'day' : 'week'}`, children: "Next \u2192" })] }), _jsx("div", { className: "settings-title", children: "View" }), _jsxs("div", { className: "settings-view-modes", children: [_jsx("button", { className: `view-mode-btn ${viewMode === 'monthly' ? 'active' : ''}`, onClick: () => {
                                                     setViewMode('monthly');
                                                     setSettingsOpen(false);
                                                 }, "aria-pressed": viewMode === 'monthly', children: "Monthly" }), _jsx("button", { className: `view-mode-btn ${viewMode === 'weekly' ? 'active' : ''}`, onClick: () => {
@@ -1065,14 +1098,13 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
                                             gridColumn: `${segment.startCol + 1} / span ${segment.span}`,
                                             gridRow: `${laneIndex + 1}`,
                                             backgroundColor: segment.color,
-                                        }, title: segment.title, children: _jsx("span", { className: "multiday-title", children: segment.title }) }, segment.id)))) }), week.map((day, dayIndex) => {
-                                    if (!day) {
-                                        return _jsx("div", { className: "calendar-cell empty" }, `empty-${weekIndex}-${dayIndex}`);
-                                    }
-                                    const dayEvents = getEventsForDay(day);
-                                    const isTodayFlag = isToday(day);
+                                        }, title: segment.title, children: _jsx("span", { className: "multiday-title", children: segment.title }) }, segment.id)))) }), week.map((date, _dayIndex) => {
+                                    const dayEvents = getEventsForDayDate(date);
+                                    const isTodayFlag = isDateToday(date);
                                     const shouldScroll = dayEvents.length > 3;
-                                    return (_jsxs("div", { className: `calendar-cell ${isTodayFlag ? 'today' : ''}`, children: [_jsx("div", { className: "day-number", children: _jsx("span", { className: "day-date", children: day }) }), _jsx("div", { className: `day-events ${shouldScroll ? 'scrollable' : ''}`, children: dayEvents.map(event => (_jsxs("div", { className: "event-row", title: event.title, children: [_jsx("span", { className: "event-dot", style: { backgroundColor: event.color } }), _jsx("span", { className: "event-time", children: formatEventStartTime(event) }), _jsx("span", { className: "event-title", children: event.title })] }, event.id))) })] }, day));
+                                    return (_jsxs("div", { className: `calendar-cell ${isTodayFlag ? 'today' : ''}`, children: [_jsx("div", { className: "day-number", children: _jsx("span", { className: "day-date", children: date.getDate() === 1
+                                                        ? date.toLocaleString('en-US', { month: 'short', day: 'numeric' })
+                                                        : date.getDate() }) }), _jsx("div", { className: `day-events ${shouldScroll ? 'scrollable' : ''}`, children: dayEvents.map(event => (_jsxs("div", { className: "event-row", title: event.title, children: [_jsx("span", { className: "event-dot", style: { backgroundColor: event.color } }), _jsx("span", { className: "event-time", children: formatEventStartTime(event) }), _jsx("span", { className: "event-title", children: event.title })] }, event.id))) })] }, date.toISOString()));
                                 })] }, `week-${weekIndex}`));
                     })] })), viewMode === 'weekly' && (_jsxs("div", { className: "calendar-grid weekly-timeline", children: [_jsxs("div", { className: "timeline-header", children: [_jsx("div", { className: "timeline-header-corner" }), getWeekDays().map((date, index) => {
                                 const isTodayFlag = isDateToday(date);
