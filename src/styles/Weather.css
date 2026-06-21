@@ -1,3 +1,52 @@
+/* Weather modal tabs */
+.weather-modal-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1em;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  padding-bottom: 8px;
+}
+
+.weather-modal-tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: rgba(255,255,255,0.5);
+  font-size: 1em;
+  font-weight: 600;
+  padding: 6px 16px;
+  cursor: pointer;
+  border-radius: 6px 6px 0 0;
+  transition: color 0.15s, border-color 0.15s;
+  margin-bottom: -9px;
+}
+
+.weather-modal-tab:hover {
+  color: rgba(255,255,255,0.8);
+}
+
+.weather-modal-tab.active {
+  color: #fff;
+  border-bottom-color: #3b82f6;
+}
+
+.weather-modal-tab-panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.weather-modal-radar-panel {
+  overflow: hidden;
+}
+
+.weather-modal-radar-panel > * {
+  flex: 1;
+  min-height: 400px;
+}
+
 /* Responsive modal styles for TV and large screens */
 .weather-modal {
   position: fixed;
@@ -15,50 +64,76 @@
 .weather-modal-content {
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   min-width: 0;
   min-height: 0;
   display: flex;
   flex-direction: column;
   padding: 2em;
   box-sizing: border-box;
-  border-radius: 24px;
+  border-radius: 0;
   background: #222;
   box-shadow: 0 8px 32px rgba(0,0,0,0.5);
   overflow-y: auto;
   position: relative;
 }
 
+/* Mid-size screens: centered card */
+@media (min-width: 769px) {
+  .weather-modal-content {
+    border-radius: 24px;
+    max-width: min(92vw, 1100px);
+    max-height: 88vh;
+    max-height: 88dvh;
+    height: auto;
+    width: auto;
+    min-width: min(600px, 90vw);
+  }
+}
+
+/* Large and very large screens */
 @media (min-width: 1400px) {
   .weather-modal-content {
-    max-width: 1100px;
+    max-width: min(88vw, 1300px);
+    max-height: 85vh;
+    font-size: clamp(0.9rem, 1vw, 1.1rem);
+  }
+}
+
+/* 4K — root font already scaled, modal can be wider */
+@media (min-width: 2560px) {
+  .weather-modal-content {
+    max-width: min(80vw, 1600px);
     max-height: 80vh;
-    font-size: 0.9em;
   }
 }
 
-@media (max-width: 900px) {
+/* Phone: full screen, no border radius */
+@media (max-width: 768px) {
   .weather-modal-content {
-    max-width: 98vw;
+    border-radius: 0;
     padding: 1em;
-    font-size: 1em;
+    font-size: 1rem;
+    max-width: 100vw;
+    max-height: 100vh;
+    max-height: 100dvh;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .weather-modal-content {
-    min-width: 90vw;
-    min-height: 200px;
-    padding: 0.5em;
-    font-size: 0.9em;
+    padding: 0.75em;
+    font-size: 0.9rem;
   }
 }
+/* Compact weather in top-bar on desktop/TV */
 @media (min-width: 900px) and (min-height: 500px) {
   .forecast-chip {
-    padding: 1px 4px !important;
-    min-width: 36px !important;
-    font-size: 0.62rem !important;
-    gap: 1px !important;
-    border-radius: 5px !important;
+    padding: clamp(3px, 0.4vh, 6px) clamp(4px, 0.5vw, 8px) !important;
+    min-width: clamp(44px, 5vw, 72px) !important;
+    font-size: clamp(0.6rem, 0.75vw, 0.85rem) !important;
+    gap: 2px !important;
+    border-radius: 6px !important;
     align-items: center !important;
   }
   .forecast-compact {
@@ -67,36 +142,22 @@
     margin-left: 0 !important;
   }
   .chip-day {
-    font-size: 0.62rem !important;
+    font-size: clamp(0.58rem, 0.7vw, 0.8rem) !important;
     text-align: center !important;
     white-space: nowrap !important;
     width: 100%;
     display: block;
   }
-
   .weather-container {
-    font-size: 0.7rem;
-    padding: 0.05rem 0.1rem 0.05rem 0.1rem;
+    font-size: clamp(0.7rem, 0.85vw, 1rem);
+    padding: 0.1rem 0.15rem;
     margin-bottom: 0.05rem;
     max-height: min-content;
   }
-  .weather-forecast-block {
-    width: auto;
-    height: auto;
-    min-width: fit-content;
-    min-height: unset;
-    font-size: 0.35rem;
-    margin: 0;
-    padding: 0;
-    flex: 0 0 auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: left;
-  }
   .weather-header {
-    font-size: 0.6rem;
-    padding: 0.01rem 0 0.01rem 0;
-    margin-bottom: 0.01rem;
+    font-size: clamp(0.6rem, 0.75vw, 0.85rem);
+    padding: 0.05rem 0;
+    margin-bottom: 0.05rem;
   }
 }
 .weather-container {

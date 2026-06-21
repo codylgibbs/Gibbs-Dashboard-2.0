@@ -19,3 +19,22 @@ html, body, #root {
 body {
   overflow: hidden;
 }
+
+/* Allow scrolling on phones/tablets */
+@media (max-width: 768px) {
+  body {
+    overflow: auto;
+    overflow-x: hidden;
+  }
+}
+
+/* Scale root font size on very large displays so all rem values scale naturally */
+@media (min-width: 1920px) {
+  html { font-size: 18px; }
+}
+@media (min-width: 2560px) {
+  html { font-size: 22px; }
+}
+@media (min-width: 3840px) {
+  html { font-size: 28px; }
+}

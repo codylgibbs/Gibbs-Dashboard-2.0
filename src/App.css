@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
+  height: 100dvh; /* better mobile viewport handling */
   width: 100vw;
   background: radial-gradient(circle at top, #1b1f25 0%, #0f1114 55%, #0a0b0d 100%);
   overflow: hidden;
@@ -53,36 +54,69 @@
   min-height: 0;
 }
 
+/* Phones and tablets — scrollable, fluid height */
+@media (max-width: 768px) {
+  .app-container {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow: visible;
+    padding: 10px 12px 0;
+    gap: 10px;
+  }
+
+  .main-content {
+    flex: 1 0 auto;
+    min-height: 55vh;
+  }
+
+  .has-alerts .main-content {
+    padding-bottom: calc(var(--alert-height) + 8px);
+  }
+}
+
 /* Small phones */
 @media (max-width: 480px) {
   .app-container {
-    padding: 8px 10px 12px;
+    padding: 8px 8px 0;
     gap: 8px;
   }
-  
+
   .top-bar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
+    flex-wrap: wrap;
+    gap: 6px;
   }
-  
+
+  .top-left {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
   .top-right {
-    justify-content: center;
+    flex: 0 0 auto;
   }
 }
 
 /* Tablets */
 @media (max-width: 768px) and (min-width: 481px) {
-  .app-container {
-    padding: 12px 14px 16px;
+  .top-bar {
+    gap: 12px;
   }
 }
 
-/* Very large displays (4K+) */
+/* Large TVs (1920p) — root font already scaled, just add padding */
+@media (min-width: 1920px) {
+  .app-container {
+    padding: clamp(18px, 1.2vw, 32px) clamp(28px, 1.8vw, 48px) 0;
+    gap: clamp(12px, 0.9vw, 20px);
+  }
+}
+
+/* 4K+ — root font scaled to 22–28px in index.css, padding stays proportional */
 @media (min-width: 2560px) {
   .app-container {
-    padding: 28px 40px 40px;
-    gap: 24px;
+    padding: clamp(24px, 1.4vw, 48px) clamp(36px, 2vw, 64px) 0;
+    gap: clamp(16px, 1vw, 28px);
   }
 }
 

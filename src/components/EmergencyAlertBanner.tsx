@@ -131,7 +131,7 @@ export default function EmergencyAlertBanner({
     const all = [...alerts]
     if (manualAlertActive) {
       all.unshift({
-        id: 'test-' + Date.now(),
+        id: 'test-alert',
         headline: 'This is a test emergency alert',
         event: 'Test Alert',
         severity: 'severe',

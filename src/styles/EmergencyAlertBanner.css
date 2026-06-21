@@ -207,6 +207,9 @@
   white-space: nowrap;
   width: max-content;
   animation: alert-marquee 70s linear infinite;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 .alert-scroll-track {

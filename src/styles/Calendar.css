@@ -129,7 +129,7 @@
 }
 
 .calendar-title {
-  font-size: clamp(0.95rem, 1.3vw, 1.55rem);
+  font-size: clamp(0.95rem, 1.3vw, 2rem);
   font-weight: 600;
   color: #f1f3f6;
   margin: 0;
@@ -355,10 +355,10 @@
   text-align: center;
   font-weight: 700;
   color: #e4ebf5;
-  font-size: clamp(0.55rem, 0.75vw, 0.85rem);
-  padding: clamp(6px, 1vh, 12px) 0 clamp(5px, 0.8vh, 10px);
+  font-size: clamp(0.55rem, 0.75vw, 1rem);
+  padding: clamp(6px, 1vh, 14px) 0 clamp(5px, 0.8vh, 12px);
   text-transform: uppercase;
-  letter-spacing: clamp(0.8px, 0.1vw, 1.4px);
+  letter-spacing: clamp(0.8px, 0.1vw, 1.6px);
   background: rgba(13, 16, 22, 0.95);
   border-right: 0.5px solid rgba(255, 255, 255, 0.08);
   border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
@@ -416,6 +416,7 @@
   flex-direction: column;
   position: relative;
   z-index: 1;
+  min-height: clamp(48px, 10vh, 120px); /* ensures touch-friendly size on mobile */
 }
 
 .calendar-cell.today {
@@ -436,7 +437,7 @@
   gap: 2px;
   text-transform: uppercase;
   letter-spacing: 0.6px;
-  font-size: clamp(0.47rem, 0.6vw, 0.65rem);
+  font-size: clamp(0.47rem, 0.6vw, 0.8rem);
   color: #dbe4f0;
   z-index: 3;
 }
@@ -447,13 +448,13 @@
 }
 
 .day-date {
-  width: clamp(20px, 2.4vw, 28px);
-  height: clamp(20px, 2.4vw, 28px);
+  width: clamp(20px, 2.4vw, 34px);
+  height: clamp(20px, 2.4vw, 34px);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  font-size: clamp(0.68rem, 0.85vw, 0.9rem);
+  font-size: clamp(0.68rem, 0.85vw, 1rem);
   font-weight: 600;
   color: #f3f7fc;
 }
@@ -483,7 +484,7 @@
   grid-template-columns: 10px auto 1fr;
   align-items: center;
   gap: clamp(4px, 0.6vw, 8px);
-  font-size: clamp(0.55rem, 0.7vw, 0.8rem);
+  font-size: clamp(0.55rem, 0.7vw, 0.95rem);
   color: #edf3fb;
   white-space: nowrap;
   overflow: hidden;
@@ -544,18 +545,26 @@
 @media (max-width: 480px) {
   .calendar {
     border-radius: 12px;
+    overflow-x: auto;
   }
-  
+
   .calendar-cell {
-    padding: 4px 6px;
+    padding: 4px 4px;
+    min-height: 56px;
   }
-  
+
   .day-events {
-    gap: 4px;
+    gap: 3px;
+    padding-left: 24px;
   }
-  
+
   .calendar-title {
     font-size: 1rem;
+  }
+
+  /* Make calendar grid scrollable horizontally on very small phones */
+  .calendar-grid {
+    min-width: 320px;
   }
 }
 

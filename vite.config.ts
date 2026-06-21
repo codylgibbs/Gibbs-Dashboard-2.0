@@ -4,6 +4,10 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: './',
   plugins: [react()],
+  resolve: {
+    // Prefer .tsx/.ts over .js so compiled artifacts in src don't shadow source files
+    extensions: ['.mjs', '.ts', '.tsx', '.js', '.jsx', '.json'],
+  },
   server: {
     host: '0.0.0.0',
     port: 5173,
