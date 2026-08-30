@@ -27,8 +27,8 @@ function App() {
             return;
         }
         let isMounted = true;
-        const lat = 33.8485;
-        const lon = -83.2139;
+        const lat = 33.9671;
+        const lon = -83.2807;
         const fetchSunTimes = async () => {
             try {
                 const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;

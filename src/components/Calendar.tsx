@@ -28,6 +28,21 @@ const DEFAULT_COLORS = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '
 type ViewMode = 'monthly' | 'weekly' | 'daily'
 type Theme = 'dark' | 'light' | 'auto'
 
+const getLocalDateKey = (date: Date): string => {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+const getNextMidnightDelay = (): number => {
+  const now = new Date()
+  const nextMidnight = new Date(now)
+  nextMidnight.setDate(now.getDate() + 1)
+  nextMidnight.setHours(0, 0, 2, 0)
+  return Math.max(1000, nextMidnight.getTime() - now.getTime())
+}
+
 interface CalendarProps {
   theme: Theme
   onThemeChange: (theme: Theme) => void
@@ -265,6 +280,43 @@ export default function Calendar({ theme, onThemeChange, manualAlertActive, onTo
   useEffect(() => {
     localStorage.setItem('calendarViewMode', viewMode)
   }, [viewMode])
+
+  useEffect(() => {
+    let activeDateKey = getLocalDateKey(new Date())
+    let midnightTimer: ReturnType<typeof setTimeout> | null = null
+
+    const syncToToday = () => {
+      const today = new Date()
+      const todayKey = getLocalDateKey(today)
+      if (todayKey !== activeDateKey) {
+        activeDateKey = todayKey
+        setCurrentDate(today)
+      }
+    }
+
+    const scheduleMidnightSync = () => {
+      midnightTimer = setTimeout(() => {
+        syncToToday()
+        scheduleMidnightSync()
+      }, getNextMidnightDelay())
+    }
+
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        syncToToday()
+      }
+    }
+
+    scheduleMidnightSync()
+    window.addEventListener('focus', syncToToday)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    return () => {
+      if (midnightTimer) clearTimeout(midnightTimer)
+      window.removeEventListener('focus', syncToToday)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
+  }, [])
 
   useEffect(() => {
     if (viewMode !== 'weekly') return

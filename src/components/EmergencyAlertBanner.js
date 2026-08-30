@@ -8,8 +8,8 @@ const ALERT_SEVERITY_ORDER = {
     minor: 4,
     unknown: 5,
 };
-const LAT = 33.8485;
-const LON = -83.2139;
+const LAT = 33.9671;
+const LON = -83.2807;
 export default function EmergencyAlertBanner({ onAlertsChange, manualAlertActive }) {
     const [alerts, setAlerts] = useState([]);
     const [loading, setLoading] = useState(true);

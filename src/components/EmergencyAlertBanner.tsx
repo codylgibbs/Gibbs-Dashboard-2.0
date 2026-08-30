@@ -19,8 +19,8 @@ const ALERT_SEVERITY_ORDER: Record<string, number> = {
   unknown: 5,
 }
 
-const LAT = 33.8485
-const LON = -83.2139
+const LAT = 33.9671
+const LON = -83.2807
 
 interface EmergencyAlertBannerProps {
   onAlertsChange?: (hasAlerts: boolean) => void

@@ -4,8 +4,8 @@ import '../styles/Weather.css'
 import { MapContainer, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 
-const LAT = 33.8485
-const LON = -83.2139
+const LAT = 33.9671
+const LON = -83.2807
 const ZOOM = 7
 const FRAME_INTERVAL_MS = 500
 
@@ -152,6 +152,14 @@ const getDateKeyFromUnix = (timestampSeconds: number, timezoneOffsetSeconds: num
   return `${year}-${month}-${day}`
 }
 
+const getLocalHourFromUnix = (timestampSeconds: number, timezoneOffsetSeconds: number): number => {
+  return new Date((timestampSeconds + timezoneOffsetSeconds) * 1000).getUTCHours()
+}
+
+const getDailyIconScore = (timestampSeconds: number, timezoneOffsetSeconds: number): number => {
+  return Math.abs(getLocalHourFromUnix(timestampSeconds, timezoneOffsetSeconds) - 14)
+}
+
 const formatForecastDate = (dateKey: string, options: Intl.DateTimeFormatOptions): string => {
   const [year, month, day] = dateKey.split('-').map(Number)
   const stableDate = new Date(year, month - 1, day, 12)
@@ -195,52 +203,36 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
           return
         }
 
-        // Winterville, GA coordinates: 33.8485, -83.2139
-        const lat = 33.8485
-        const lon = -83.2139
+        const lat = LAT
+        const lon = LON
 
-        const response = await axios.get(
-          `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`
-        )
+        const [currentResponse, forecastResponse] = await Promise.all([
+          axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`),
+          axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`),
+        ])
 
-        const data = response.data
-        const currentData = data.list[0]
-
-        setCurrent({
-          temp: Math.round(currentData.main.temp),
-          feelsLike: Math.round(currentData.main.feels_like),
-          min: Math.round(currentData.main.temp_min),
-          max: Math.round(currentData.main.temp_max),
-          pressure: currentData.main.pressure,
-          humidity: currentData.main.humidity,
-          windSpeed: Math.round(currentData.wind.speed),
-          windDeg: currentData.wind.deg,
-          windGust: currentData.wind.gust,
-          visibility: currentData.visibility,
-          dewPoint: currentData.main.dew_point,
-          clouds: currentData.clouds.all,
-          pop: currentData.pop,
-          rain: currentData.rain?.['3h'] || currentData.rain?.['1h'] || 0,
-          snow: currentData.snow?.['3h'] || currentData.snow?.['1h'] || 0,
-          condition: currentData.weather[0].main,
-          description: currentData.weather[0].description,
-          icon: currentData.weather[0].icon,
-        })
+        const data = forecastResponse.data
+        const currentData = currentResponse.data
 
         // Grab first 12 hours for hourly forecast
         setHourly(data.list.slice(0, 12))
 
         const cityTimezoneOffset = Number(data.city?.timezone ?? 0)
+        const todayKey = getDateKeyFromUnix(
+          currentData.dt ?? Math.floor(Date.now() / 1000),
+          cityTimezoneOffset
+        )
         const tomorrowKey = getDateKeyFromUnix(
           Math.floor(Date.now() / 1000) + 24 * 60 * 60,
           cityTimezoneOffset
         )
 
         // Process forecast by city-local day and only keep the next 5 days starting tomorrow.
-        const forecastMap: Record<string, ForecastDay> = {}
+        const forecastMap: Record<string, ForecastDay & { iconScore: number }> = {}
         
         data.list.forEach((item: any) => {
           const dateStr = getDateKeyFromUnix(item.dt, cityTimezoneOffset)
+          const iconScore = getDailyIconScore(item.dt, cityTimezoneOffset)
           
           if (!forecastMap[dateStr]) {
             forecastMap[dateStr] = {
@@ -261,31 +253,58 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
               condition: item.weather[0].main,
               description: item.weather[0].description,
               icon: item.weather[0].icon,
+              iconScore,
             }
           } else {
             forecastMap[dateStr].high = Math.max(forecastMap[dateStr].high, Math.round(item.main.temp_max))
             forecastMap[dateStr].low = Math.min(forecastMap[dateStr].low, Math.round(item.main.temp_min))
-            forecastMap[dateStr].pressure = item.main.pressure
-            forecastMap[dateStr].humidity = item.main.humidity
-            forecastMap[dateStr].windSpeed = Math.round(item.wind.speed)
-            forecastMap[dateStr].windDeg = item.wind.deg
-            forecastMap[dateStr].windGust = item.wind.gust
-            forecastMap[dateStr].visibility = item.visibility
-            forecastMap[dateStr].dewPoint = item.main.dew_point
-            forecastMap[dateStr].clouds = item.clouds.all
-            forecastMap[dateStr].pop = item.pop
-            forecastMap[dateStr].rain = item.rain?.['3h'] || item.rain?.['1h'] || 0
-            forecastMap[dateStr].snow = item.snow?.['3h'] || item.snow?.['1h'] || 0
-            forecastMap[dateStr].condition = item.weather[0].main
-            forecastMap[dateStr].description = item.weather[0].description
-            forecastMap[dateStr].icon = item.weather[0].icon
+            if (iconScore < forecastMap[dateStr].iconScore) {
+              forecastMap[dateStr].pressure = item.main.pressure
+              forecastMap[dateStr].humidity = item.main.humidity
+              forecastMap[dateStr].windSpeed = Math.round(item.wind.speed)
+              forecastMap[dateStr].windDeg = item.wind.deg
+              forecastMap[dateStr].windGust = item.wind.gust
+              forecastMap[dateStr].visibility = item.visibility
+              forecastMap[dateStr].dewPoint = item.main.dew_point
+              forecastMap[dateStr].clouds = item.clouds.all
+              forecastMap[dateStr].pop = item.pop
+              forecastMap[dateStr].rain = item.rain?.['3h'] || item.rain?.['1h'] || 0
+              forecastMap[dateStr].snow = item.snow?.['3h'] || item.snow?.['1h'] || 0
+              forecastMap[dateStr].condition = item.weather[0].main
+              forecastMap[dateStr].description = item.weather[0].description
+              forecastMap[dateStr].icon = item.weather[0].icon
+              forecastMap[dateStr].iconScore = iconScore
+            }
           }
+        })
+
+        const todayForecast = forecastMap[todayKey]
+        setCurrent({
+          temp: Math.round(currentData.main.temp),
+          feelsLike: Math.round(currentData.main.feels_like),
+          min: todayForecast?.low ?? Math.round(currentData.main.temp_min),
+          max: todayForecast?.high ?? Math.round(currentData.main.temp_max),
+          pressure: currentData.main.pressure,
+          humidity: currentData.main.humidity,
+          windSpeed: Math.round(currentData.wind.speed),
+          windDeg: currentData.wind.deg,
+          windGust: currentData.wind.gust,
+          visibility: currentData.visibility,
+          dewPoint: undefined,
+          clouds: currentData.clouds.all,
+          pop: undefined,
+          rain: currentData.rain?.['1h'] || currentData.rain?.['3h'] || 0,
+          snow: currentData.snow?.['1h'] || currentData.snow?.['3h'] || 0,
+          condition: currentData.weather[0].main,
+          description: currentData.weather[0].description,
+          icon: currentData.weather[0].icon,
         })
 
         const forecastArray = Object.values(forecastMap)
           .sort((a, b) => a.date.localeCompare(b.date))
           .filter(day => day.date >= tomorrowKey)
           .slice(0, 5)
+          .map(({ iconScore, ...day }) => day)
         setForecast(forecastArray)
 
         // Fetch onecall (alerts + UV) and air pollution in parallel
@@ -367,24 +386,6 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
     })
   }
 
-  const getHeatIndex = (tempF: number, humidity: number): number | null => {
-    if (tempF < 80) return null
-    const T = tempF, RH = humidity
-    return Math.round(
-      -42.379 + 2.04901523*T + 10.14333127*RH
-      - 0.22475541*T*RH - 0.00683783*T*T
-      - 0.05391553*RH*RH + 0.00122874*T*T*RH
-      + 0.00085282*T*RH*RH - 0.00000199*T*T*RH*RH
-    )
-  }
-
-  const getWindChill = (tempF: number, windMph: number): number | null => {
-    if (tempF > 50 || windMph < 3) return null
-    return Math.round(
-      35.74 + 0.6215*tempF - 35.75*Math.pow(windMph, 0.16) + 0.4275*tempF*Math.pow(windMph, 0.16)
-    )
-  }
-
   const uvLabel = (uv: number): string => {
     if (uv <= 2) return 'Low'
     if (uv <= 5) return 'Moderate'
@@ -452,13 +453,11 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
                 <div className="condition-block">
                   <div className="condition">{current?.condition}</div>
                   <div className="daily-range">H {current?.max}° / L {current?.min}°</div>
-                  {current && (() => {
-                    const hi = getHeatIndex(current.temp, current.humidity)
-                    const wc = getWindChill(current.temp, current.windSpeed)
-                    if (hi != null) return <div className="feels-like-index" style={{ color: '#fb923c', fontWeight: 600 }}>Heat Index {hi}°F</div>
-                    if (wc != null) return <div className="feels-like-index" style={{ color: '#60a5fa', fontWeight: 600 }}>Wind Chill {wc}°F</div>
-                    return null
-                  })()}
+                  {current && (
+                    <div className="feels-like-index" style={{ color: '#fb923c', fontWeight: 600 }}>
+                      Feels Like {current.feelsLike}°F
+                    </div>
+                  )}
                 </div>
                 <div className="location">Winterville, GA</div>
                 <div className="additional">
@@ -549,13 +548,6 @@ export default function Weather({ variant = 'full' }: WeatherProps) {
               <div className="weather-modal-details" style={{ flex: 1, fontSize: '1em', minWidth: '200px', height: '100%', wordBreak: 'break-word', overflowWrap: 'anywhere' }}>
                 <div><strong>Temperature:</strong> {current.temp}°F</div>
                 <div><strong>Feels Like:</strong> {current.feelsLike}°F</div>
-                {(() => {
-                  const hi = getHeatIndex(current.temp, current.humidity)
-                  const wc = getWindChill(current.temp, current.windSpeed)
-                  if (hi != null) return <div><strong>Heat Index:</strong> <span style={{ color: '#fb923c' }}>{hi}°F</span></div>
-                  if (wc != null) return <div><strong>Wind Chill:</strong> <span style={{ color: '#60a5fa' }}>{wc}°F</span></div>
-                  return null
-                })()}
                 <div><strong>Min:</strong> {current.min}°F</div>
                 <div><strong>Max:</strong> {current.max}°F</div>
                 <div><strong>Condition:</strong> {current.condition} ({current.description})</div>
